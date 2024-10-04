@@ -19,6 +19,7 @@ export default function Home() {
             Get started by editing <code>app/page.tsx</code>
           </li>
           <li>Save and see your changes instantly.</li>
+          <p className="">Yoo</p>
         </ol>
 
         <div className={styles.ctas}>
