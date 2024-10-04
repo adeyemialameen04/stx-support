@@ -7,6 +7,7 @@
     "access": "public"
   },
   "exports": {
-    "./config": "./tailwind.config.js"
+    "./config": "./tailwind.config.js",
+    "./postcss.config.mjs": "./postcss.config.mjs"
   }
 }
