@@ -1,0 +1,10 @@
+{
+  "extends": "@repo/typescript-config/nextjs.json",
+  "compilerOptions": {
+    "paths": {
+      "@web/*": ["./apps/web/*"],
+      "@server/*": ["./apps/server//*"]
+    }
+  },
+  "exclude": ["node_modules", "next", ".next"]
+}
