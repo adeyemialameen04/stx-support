@@ -17,19 +17,10 @@ export const verifyPasswdHash = async (
   return isMatch;
 };
 
-// Define interfaces for our data structures
-interface UserData {
-  id: string;
-  username: string;
-  // ... other user properties
-}
-
 interface TokenResult {
   token: string;
   expiryTimestamp: number;
 }
-
-// type User = z.infer<typeof insertUserSchema>;
 
 export async function createAccessToken(
   data: any,

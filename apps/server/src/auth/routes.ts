@@ -11,6 +11,7 @@ import {
   refreshTokenSecurity,
   accessTokenSecurity,
 } from "@/lib/helpers";
+import { zodToOpenAPI } from "@/posts/test";
 
 const tags = ["auth"];
 
@@ -51,7 +52,7 @@ export const loginRoute = createRoute({
     body: {
       content: {
         "application/json": {
-          schema: authSchema.openapi("Auth"),
+          schema: zodToOpenAPI(authSchema),
         },
       },
     },
@@ -105,7 +106,6 @@ export const refreshRoute = createRoute({
       },
       description: "Refresh Access Tokens",
     },
-    // 401: createErrorSchema(401, "string", "Unauthorized"),
   },
   security: refreshTokenSecurity,
   tags,

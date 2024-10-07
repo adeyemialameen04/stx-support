@@ -3,9 +3,14 @@ import { settings } from "./config/settings";
 import { swaggerUI } from "@hono/swagger-ui";
 import { main } from "./db";
 import { createPath } from "./utils/path";
-import { OpenAPIHono } from "@hono/zod-openapi";
+import { extendZodWithOpenApi, OpenAPIHono } from "@hono/zod-openapi";
 import * as userRouter from "./users";
 import * as authRouter from "./auth";
+import * as postsRouter from "./posts";
+import { apiReference } from "@scalar/hono-api-reference";
+import { z } from "zod";
+
+extendZodWithOpenApi(z);
 
 const app = new OpenAPIHono();
 app.use("*", logger());
@@ -35,6 +40,16 @@ app.openAPIRegistry.registerComponent("securitySchemes", "RefreshTokenBearer", {
   scheme: "bearer",
   bearerFormat: "JWT",
 });
+app.use(
+  "/reference",
+  apiReference({
+    darkMode: true,
+
+    spec: {
+      url: "/openapi.json",
+    },
+  }),
+);
 
 app.get("/docs", swaggerUI({ url: "openapi.json" }));
 
@@ -43,6 +58,7 @@ app.get("/", (c) => {
 });
 app.route(createPath("/auth"), authRouter.default);
 app.route(createPath("/users"), userRouter.default);
+app.route(createPath("/posts"), postsRouter.default);
 
 await main();
 
