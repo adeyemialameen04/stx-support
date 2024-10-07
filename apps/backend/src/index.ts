@@ -1,14 +1,24 @@
 import swagger from "@elysiajs/swagger";
-import { Elysia, t } from "elysia";
-import { main } from "./db";
+import { Elysia, error, t } from "elysia";
 import { authRoutes } from "./auth/routes";
 import serverTiming from "@elysiajs/server-timing";
 import logixlysia from "logixlysia";
 import { postsRoutes } from "./posts/routes";
+import { settings } from "./config/settings";
+import {
+  AuthenticationError,
+  AuthorizationError,
+  InvariantError,
+} from "./exceptions/errors";
+import logger from "./utils/logger";
+
+const tags = [
+  { name: "Auth", description: "Authentication endpoints" },
+  { name: "Posts", description: "Posts endpoints" },
+];
 
 const app = new Elysia();
 app
-  .use(serverTiming())
   .use(
     logixlysia({
       config: {
@@ -18,6 +28,7 @@ app
       },
     }),
   )
+  .use(serverTiming())
   .use(
     swagger({
       exclude: ["/doc", "/doc/json"],
@@ -50,10 +61,7 @@ app
             url: "https://github.com/adeyemialameen04",
           },
         },
-        tags: [
-          // { name: "users", description: "Users endpoints" },
-          { name: "Auth", description: "Authentication endpoints" },
-        ],
+        tags,
       },
     }),
   )
@@ -89,20 +97,48 @@ app
             url: "https://github.com/adeyemialameen04",
           },
         },
-        tags: [
-          // { name: "users", description: "Users endpoints" },
-          { name: "Auth", description: "Authentication endpoints" },
-          { name: "Posts", description: "Posts endpoints" },
-        ],
+        tags,
       },
     }),
   )
-  .use(authRoutes)
-  .use(postsRoutes)
-  .onError(({ code }) => {
-    if (code === "NOT_FOUND") {
-      return "Route not found :()";
+  .error("AUTHENTICATION_ERROR", AuthenticationError)
+  .error("AUTHORIZATION_ERROR", AuthorizationError)
+  .error("INVARIANT_ERROR", InvariantError)
+  .onError(({ code, error, set }) => {
+    switch (code) {
+      case "AUTHORIZATION_ERROR":
+        set.status = 401;
+        return {
+          status: 401,
+          error: error.name,
+          detail: error.message,
+        };
+      case "INVARIANT_ERROR":
+        set.status = 400;
+        return {
+          status: 401,
+          error: error.name,
+          detail: error.message,
+        };
+      case "NOT_FOUND":
+        set.status = 404;
+
+        return {
+          status: 401,
+          error: error.name,
+          detail: error.message,
+        };
+
+      case "INTERNAL_SERVER_ERROR":
+        set.status = 500;
+        return {
+          status: "error",
+          detail: "Something went wrong!",
+          error: error.name,
+        };
     }
   })
+  .use(authRoutes)
+  .use(postsRoutes)
+
   .listen(3000);
-// await main();

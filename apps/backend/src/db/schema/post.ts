@@ -8,11 +8,10 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 import { user } from "./user";
-import { InferSelectModel, relations } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import { categoryTable, userTable } from ".";
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
 import { t } from "elysia";
-// import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 export const statusEnum = pgEnum("status", ["published", "draft", "archived"]);
 
@@ -46,67 +45,5 @@ export const postRelations = relations(post, ({ one, many }) => ({
 
 export const insertPostSchema = createInsertSchema(post);
 export const selectPostSchema = createSelectSchema(post, {
-  content: t.Object({}),
+  content: t.Unknown(),
 });
-
-// export const insertPostSchema = createInsertSchema(post).omit({
-//   createdAt: true,
-//   updatedAt: true,
-//   id: true,
-// });
-// export const selectPostSchema = createSelectSchema(post);
-
-// const baseSchema = createInsertSchema(post, {
-//   title: (schema) => schema.title.min(1),
-//   userId: (schema) => schema.userId.min(1),
-//   categoryId: (schema) => schema.categoryId.min(1),
-// }).pick({
-//   title: true,
-//   userId: true,
-//   categoryId: true,
-//   content: true,
-// });
-
-// Schema for creating a post
-// export const createPostSchema = z.object({
-//   title: baseSchema.shape.title,
-//   userId: baseSchema.shape.userId,
-//   categoryId: baseSchema.shape.categoryId,
-//   content: baseSchema.shape.content,
-// });
-//
-// // Schema for editing a post
-// export const editPostSchema = z.object({
-//   id: z.number().min(1),
-//   title: baseSchema.shape.title,
-//   userId: baseSchema.shape.userId,
-//   categoryId: baseSchema.shape.categoryId,
-//   content: baseSchema.shape.content,
-//   tagIds: z.array(z.number()),
-// });
-
-// postSchema.openapi(openApiSchema);
-
-// const basePostSchema = z.object({
-//   id: z.string().uuid(),
-//   userId: z.string().uuid(),
-//   title: z.string().max(255),
-//   status: z.enum(["published", "draft", "archived"]),
-//   isPublic: z.boolean(),
-//   content: z.any(), // You might want to be more specific here
-//   categoryId: z.string().uuid(),
-//   createdAt: z.string().datetime(),
-//   updatedAt: z.string().datetime(),
-// });
-//
-// export const insertPostSchema = basePostSchema
-//   .omit({ id: true, createdAt: true, updatedAt: true })
-//   .openapi({
-//     title: "InsertPost",
-//     description: "Schema for inserting a new post",
-//   });
-//
-// export const selectPostSchema = basePostSchema.openapi({
-//   title: "SelectPost",
-//   description: "Schema for selecting a post",
-// });
