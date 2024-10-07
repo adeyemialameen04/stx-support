@@ -10,6 +10,7 @@
   "dependencies": {
     "@hono/swagger-ui": "^0.4.1",
     "@hono/zod-openapi": "^0.16.2",
+    "@scalar/hono-api-reference": "^0.5.150",
     "@ts-rest/core": "^3.51.0",
     "@ts-rest/open-api": "^3.51.0",
     "@types/jsonwebtoken": "^9.0.7",

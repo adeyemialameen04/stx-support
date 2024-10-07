@@ -7,12 +7,12 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-import { category } from "./category";
 import { user } from "./user";
 import { InferSelectModel, relations } from "drizzle-orm";
-import { categoryTable, commentTable, userTable } from ".";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { z } from "zod";
+import { categoryTable, userTable } from ".";
+import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
+import { t } from "elysia";
+// import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 export const statusEnum = pgEnum("status", ["published", "draft", "archived"]);
 
@@ -26,7 +26,7 @@ export const post = pgTable("post", {
   isPublic: boolean("is_public").default(true).notNull(),
   content: json("content").notNull(),
   categoryId: uuid("category_id")
-    .references(() => category.id)
+    .references(() => categoryTable.id)
     .notNull(),
   createdAt: timestamp("created_at", { mode: "string" }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { mode: "string" }).notNull().defaultNow(),
@@ -37,48 +37,53 @@ export const postRelations = relations(post, ({ one, many }) => ({
     fields: [post.userId],
     references: [userTable.id],
   }),
-  comments: many(commentTable),
+  // comments: many(commentTable),
   category: one(categoryTable, {
     fields: [post.categoryId],
     references: [categoryTable.id],
   }),
 }));
 
-export const insertPostSchema = createInsertSchema(post).omit({
-  createdAt: true,
-  updatedAt: true,
-  id: true,
+export const insertPostSchema = createInsertSchema(post);
+export const selectPostSchema = createSelectSchema(post, {
+  content: t.Object({}),
 });
-export const selectPostSchema = createSelectSchema(post);
 
-const baseSchema = createInsertSchema(post, {
-  title: (schema) => schema.title.min(1),
-  userId: (schema) => schema.userId.min(1),
-  categoryId: (schema) => schema.categoryId.min(1),
-}).pick({
-  title: true,
-  userId: true,
-  categoryId: true,
-  content: true,
-});
+// export const insertPostSchema = createInsertSchema(post).omit({
+//   createdAt: true,
+//   updatedAt: true,
+//   id: true,
+// });
+// export const selectPostSchema = createSelectSchema(post);
+
+// const baseSchema = createInsertSchema(post, {
+//   title: (schema) => schema.title.min(1),
+//   userId: (schema) => schema.userId.min(1),
+//   categoryId: (schema) => schema.categoryId.min(1),
+// }).pick({
+//   title: true,
+//   userId: true,
+//   categoryId: true,
+//   content: true,
+// });
 
 // Schema for creating a post
-export const createPostSchema = z.object({
-  title: baseSchema.shape.title,
-  userId: baseSchema.shape.userId,
-  categoryId: baseSchema.shape.categoryId,
-  content: baseSchema.shape.content,
-});
-
-// Schema for editing a post
-export const editPostSchema = z.object({
-  id: z.number().min(1),
-  title: baseSchema.shape.title,
-  userId: baseSchema.shape.userId,
-  categoryId: baseSchema.shape.categoryId,
-  content: baseSchema.shape.content,
-  tagIds: z.array(z.number()),
-});
+// export const createPostSchema = z.object({
+//   title: baseSchema.shape.title,
+//   userId: baseSchema.shape.userId,
+//   categoryId: baseSchema.shape.categoryId,
+//   content: baseSchema.shape.content,
+// });
+//
+// // Schema for editing a post
+// export const editPostSchema = z.object({
+//   id: z.number().min(1),
+//   title: baseSchema.shape.title,
+//   userId: baseSchema.shape.userId,
+//   categoryId: baseSchema.shape.categoryId,
+//   content: baseSchema.shape.content,
+//   tagIds: z.array(z.number()),
+// });
 
 // postSchema.openapi(openApiSchema);
 
