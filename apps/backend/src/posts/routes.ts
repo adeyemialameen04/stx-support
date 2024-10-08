@@ -57,7 +57,6 @@ export const postsRoutes = new Elysia({ prefix: "/posts", tags })
               body,
               payload && "user" in payload ? payload.user.id : "",
             );
-            console.log("created", post);
 
             set.status = "Created";
             return post;
@@ -75,45 +74,79 @@ export const postsRoutes = new Elysia({ prefix: "/posts", tags })
             },
           },
         )
-        .patch(
-          "/:id",
-          async ({ params: { id }, body, set, payload }) => {
-            const post = await postService.isPostOwner(
-              id,
-              payload && "user" in payload ? payload.user.id : "",
-            );
-            if (post.length === 0) {
-              throw new NotFoundError(
-                "Post not found or you don't have permission to edit it",
-              );
-            }
-
-            const updatedPost = await postService.updatePost(id, body);
-            return updatedPost;
-          },
+        .guard(
           {
             params: t.Object({
               id: t.String({ format: "uuid" }),
             }),
-            body: t.Partial(
-              t.Omit(insertPostSchema, [
-                "userId",
-                "id",
-                "createdAt",
-                "updatedAt",
-                "userId",
-              ]),
-            ),
-            detail: {
-              summary: "Edit Post",
-              description: "Edits a Post",
-            },
-            response: {
-              201: selectPostSchema,
-              401: ERRORS.UNAUTHORIZED,
-              404: ERRORS.NOT_FOUND,
-              400: ERRORS.INVARIANT,
-            },
           },
+          (app) =>
+            app
+              .patch(
+                "/:id",
+                async ({ params: { id }, body, set, payload }) => {
+                  const post = await postService.isPostOwner(
+                    id,
+                    payload && "user" in payload ? payload.user.id : "",
+                  );
+                  if (post.length === 0) {
+                    throw new NotFoundError(
+                      "Post not found or you don't have permission to edit it",
+                    );
+                  }
+
+                  const updatedPost = await postService.updatePost(id, body);
+                  return updatedPost;
+                },
+                {
+                  body: t.Partial(
+                    t.Omit(insertPostSchema, [
+                      "userId",
+                      "id",
+                      "createdAt",
+                      "updatedAt",
+                      "userId",
+                    ]),
+                  ),
+                  response: {
+                    201: selectPostSchema,
+                    401: ERRORS.UNAUTHORIZED,
+                    404: ERRORS.NOT_FOUND,
+                    400: ERRORS.INVARIANT,
+                  },
+                  detail: {
+                    summary: "Edit Post",
+                    description: "Edits a Post",
+                  },
+                },
+              )
+              .delete(
+                "/:id",
+                async ({ params: { id }, payload }) => {
+                  const post = await postService.isPostOwner(
+                    id,
+                    payload && "user" in payload ? payload.user.id : "",
+                  );
+                  if (post.length === 0) {
+                    throw new NotFoundError(
+                      "Post not found or you don't have permission to edit it",
+                    );
+                  }
+                  const deletedPost = await postService.deletePost(id);
+                  return deletedPost;
+                },
+                {
+                  detail: {
+                    summary: "Delete Post",
+                    description: "Deleted a Post",
+                  },
+                  response: {
+                    204: selectPostSchema,
+                    401: ERRORS.UNAUTHORIZED,
+                    404: ERRORS.NOT_FOUND,
+                    400: ERRORS.INVARIANT,
+                  },
+                },
+              ),
         ),
   );
