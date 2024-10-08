@@ -81,4 +81,8 @@ export const postService = {
 
     return post;
   },
+
+  deletePost: async (id: string) => {
+    return await db.delete(postTable).where(eq(postTable.id, id)).returning();
+  },
 };
