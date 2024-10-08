@@ -6,15 +6,13 @@ import { AuthorizationError, NotFoundError } from "../exceptions/errors";
 import { ERRORS } from "../models/error-models";
 import { accessTokenPlugin } from "../plugins/auth";
 import { omitDb } from "../models/omit";
+import { CreatePostModel } from "../models/posts";
 
 const tags = ["Posts"];
 
 export const postsRoutes = new Elysia({ prefix: "/posts", tags })
   .use(accessTokenPlugin)
-  .model(
-    "CreatePostModel",
-    t.Omit(insertPostSchema, ["id", "createdAt", "updatedAt", "status"]),
-  )
+  .model("CreatePostModel", CreatePostModel)
   .model("PostModel", selectPostSchema)
   .guard(
     {
@@ -68,13 +66,9 @@ export const postsRoutes = new Elysia({ prefix: "/posts", tags })
             response: {
               201: selectPostSchema,
               401: ERRORS.UNAUTHORIZED,
+              400: ERRORS.INVARIANT,
             },
-            body: t.Omit(insertPostSchema, [
-              "id",
-              "userId",
-              "createdAt",
-              "updatedAt",
-            ]),
+            body: "CreatePostModel",
             detail: {
               summary: "Create Post",
               description: "Creates a new post",
@@ -84,17 +78,17 @@ export const postsRoutes = new Elysia({ prefix: "/posts", tags })
         .patch(
           "/:id",
           async ({ params: { id }, body, set, payload }) => {
-            if (payload) {
-              const post = await postService.isPostOwner(id, payload.user.id);
-              if (post.length === 0) {
-                throw new NotFoundError(
-                  "Post not found or you don't have permission to edit it",
-                );
-              }
+            const post = await postService.isPostOwner(
+              id,
+              payload && "user" in payload ? payload.user.id : "",
+            );
+            if (post.length === 0) {
+              throw new NotFoundError(
+                "Post not found or you don't have permission to edit it",
+              );
             }
 
             const updatedPost = await postService.updatePost(id, body);
-
             return updatedPost;
           },
           {
@@ -118,6 +112,7 @@ export const postsRoutes = new Elysia({ prefix: "/posts", tags })
               201: selectPostSchema,
               401: ERRORS.UNAUTHORIZED,
               404: ERRORS.NOT_FOUND,
+              400: ERRORS.INVARIANT,
             },
           },
         ),

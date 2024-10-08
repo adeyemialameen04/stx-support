@@ -45,7 +45,11 @@ export const postRelations = relations(post, ({ one, many }) => ({
 
 export const insertPostSchema = createInsertSchema(post, {
   content: t.Object({}),
-  status: t.Enum({ status: "published" }),
+  status: t.Enum({
+    published: "published",
+    draft: "draft",
+    archived: "archived",
+  }),
 });
 
 export const selectPostSchema = createSelectSchema(post, {

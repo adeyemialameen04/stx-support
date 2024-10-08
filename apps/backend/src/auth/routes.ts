@@ -194,17 +194,20 @@ export const authRoutes = new Elysia({ prefix: "/auth", tags })
         async ({ accessJwt, payload }) => {
           const accessTokenExpiry = Math.floor(Date.now() / 1000) + 15 * 60;
 
-          const accessToken = await accessJwt.sign({
-            user: payload && payload.user,
-            jti: uuidv4(),
-            refresh: false,
-            exp: accessTokenExpiry,
-          });
+          if (payload) {
+            const accessToken = await accessJwt.sign({
+              user: payload && payload.user,
+              jti: uuidv4(),
+              refresh: false,
+              exp: accessTokenExpiry,
+            });
 
-          return {
-            accessToken,
-            accessTokenExpiry,
-          };
+            return {
+              accessToken,
+              accessTokenExpiry,
+            };
+          }
+          throw new AuthorizationError("Unauthorized");
         },
         {
           async beforeHandle({ payload }) {

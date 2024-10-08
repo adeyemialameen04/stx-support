@@ -1,12 +1,5 @@
 {
   "name": "testing-turbo",
-  "private": true,
-  "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
-  },
   "devDependencies": {
     "prettier": "^3.2.5",
     "turbo": "^2.1.3",
@@ -16,12 +9,18 @@
     "node": ">=18"
   },
   "packageManager": "bun@1.1.27",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
   "dependencies": {
-    "elysia": "^1.1.18",
-    "logixlysia": "^3.7.0"
+    "@types/bun": "^1.1.10"
   }
 }
