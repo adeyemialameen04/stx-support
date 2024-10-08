@@ -12,6 +12,7 @@ import {
 import { ERRORS } from "./models/error-models";
 import { docs } from "./plugins/docs";
 import { errors } from "./plugins/errors";
+import { usersRoutes } from "./users/routes";
 
 const app = new Elysia();
 app
@@ -29,7 +30,7 @@ app
 
   .use(errors)
   .use(authRoutes)
-
+  .use(usersRoutes)
   .use(postsRoutes)
 
   .listen(3000);

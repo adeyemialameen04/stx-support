@@ -5,12 +5,15 @@ import { accessTokenSecurity } from "../utils/helpers";
 import { AuthorizationError, NotFoundError } from "../exceptions/errors";
 import { ERRORS } from "../models/error-models";
 import { accessTokenPlugin } from "../plugins/auth";
-import { omitDb } from "../models/omit";
 import { CreatePostModel } from "../models/posts";
 
 const tags = ["Posts"];
 
-export const postsRoutes = new Elysia({ prefix: "/posts", tags })
+export const postsRoutes = new Elysia({
+  prefix: "/posts",
+  tags,
+  name: "api.posts",
+})
   .use(accessTokenPlugin)
   .model("CreatePostModel", CreatePostModel)
   .model("PostModel", selectPostSchema)

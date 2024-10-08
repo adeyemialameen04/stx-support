@@ -27,7 +27,7 @@ export const jwtPlugin = new Elysia({ name: "jwt/plugin" })
     as: "scoped",
   });
 
-export const accessTokenPlugin = new Elysia({ name: "access/plugin" })
+export const accessTokenPlugin = new Elysia({ name: "plugin.access" })
   .use(bearer())
   .use(
     jwt({
@@ -57,7 +57,7 @@ export const accessTokenPlugin = new Elysia({ name: "access/plugin" })
     };
   });
 
-export const refreshTokenPlugin = new Elysia({ name: "refresh/plugin" })
+export const refreshTokenPlugin = new Elysia({ name: "plugin.refresh" })
   .use(bearer())
   .use(
     jwt({

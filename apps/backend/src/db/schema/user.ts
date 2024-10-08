@@ -8,7 +8,7 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 import { postTable } from ".";
-import { createSelectSchema } from "drizzle-typebox";
+import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
 
 export const user = pgTable(
   "user",
@@ -23,7 +23,7 @@ export const user = pgTable(
     stxAddressMainnet: text("stx_address_mainnet").notNull(),
     btcAddressTestnet: text("btc_address_testnet"),
     btcAddressMainnet: text("btc_address_mainnet"),
-    password_hash: text("password_hash").notNull(),
+    passwordHash: text("password_hash").notNull(),
     createdAt: timestamp("created_at", { mode: "string" })
       .notNull()
       .defaultNow(),
@@ -39,6 +39,7 @@ export const user = pgTable(
 );
 
 export const selectUserSchema = createSelectSchema(user);
+export const insertUserSchema = createInsertSchema(user);
 
 export const userRelations = relations(user, ({ many }) => ({
   posts: many(postTable),
