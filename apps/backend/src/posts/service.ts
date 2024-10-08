@@ -1,12 +1,12 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../db";
 import { postTable } from "../db/schema";
-import { insertPostSchema } from "../db/schema/post";
-import { AuthorizationError } from "../exceptions/errors";
-import { t } from "elysia";
+import { CreatePostModel } from "../models/posts";
+import postgres from "postgres";
+import { InvariantError } from "../exceptions/errors";
 
-const createP = t.Omit(insertPostSchema, ["userId"]);
-type Post = typeof createP.static;
+type Post = typeof CreatePostModel.static;
+
 export const postService = {
   getUserPosts: async (id: string) => {
     const posts = db.select().from(postTable).where(eq(postTable.userId, id));
@@ -15,12 +15,25 @@ export const postService = {
   },
 
   createPost: async (data: Post, userId: string) => {
-    const [post] = await db
-      .insert(postTable)
-      .values({ ...data, userId })
-      .returning();
+    try {
+      const [post] = await db
+        .insert(postTable)
+        .values({ ...data, userId })
+        .returning();
 
-    return post;
+      return post;
+    } catch (err) {
+      if (err instanceof postgres.PostgresError) {
+        if (err.code === "23503") {
+          if (err.detail?.includes("category_id")) {
+            throw new InvariantError("Invalid category ID");
+          }
+          if (err.detail?.includes("user_id")) {
+            throw new InvariantError("Invalid User ID");
+          }
+        }
+      }
+    }
   },
 
   checkPostExist: async (id: string) => {
@@ -36,15 +49,28 @@ export const postService = {
     id: string,
     data: Partial<typeof postTable.$inferInsert>,
   ) => {
-    const { userId: _, ...updateData } = data;
+    try {
+      const { userId: _, ...updateData } = data;
 
-    const [updatedPost] = await db
-      .update(postTable)
-      .set({ ...updateData })
-      .where(eq(postTable.id, id))
-      .returning();
+      const [updatedPost] = await db
+        .update(postTable)
+        .set({ ...updateData })
+        .where(eq(postTable.id, id))
+        .returning();
 
-    return updatedPost;
+      return updatedPost;
+    } catch (err) {
+      if (err instanceof postgres.PostgresError) {
+        if (err.code === "23503") {
+          if (err.detail?.includes("category_id")) {
+            throw new InvariantError("Invalid category ID");
+          }
+          if (err.detail?.includes("user_id")) {
+            throw new InvariantError("Invalid User ID");
+          }
+        }
+      }
+    }
   },
 
   isPostOwner: async (id: string, userId: string) => {
