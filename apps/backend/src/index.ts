@@ -9,8 +9,10 @@ import {
   AuthenticationError,
   AuthorizationError,
   InvariantError,
+  NotFoundError,
 } from "./exceptions/errors";
 import logger from "./utils/logger";
+import { ERRORS } from "./models/error-models";
 
 const tags = [
   { name: "Auth", description: "Authentication endpoints" },
@@ -101,9 +103,18 @@ app
       },
     }),
   )
+  .model(
+    "ErrorModels",
+    t.Object({
+      UNAUTHORIZED: ERRORS.UNAUTHORIZED,
+      NOT_FOUND: ERRORS.NOT_FOUND,
+      CONFLICT: ERRORS.CONFLICT,
+    }),
+  )
   .error("AUTHENTICATION_ERROR", AuthenticationError)
   .error("AUTHORIZATION_ERROR", AuthorizationError)
   .error("INVARIANT_ERROR", InvariantError)
+  .error("NOT_FOUND", NotFoundError)
   .onError(({ code, error, set }) => {
     switch (code) {
       case "AUTHORIZATION_ERROR":
@@ -122,7 +133,6 @@ app
         };
       case "NOT_FOUND":
         set.status = 404;
-
         return {
           status: 401,
           error: error.name,

@@ -1,6 +1,4 @@
-import jwt from "@elysiajs/jwt";
 import Elysia, { t } from "elysia";
-import env from "../env";
 import { db } from "../db";
 import { userTable } from "../db/schema";
 import { selectUserSchema } from "../db/schema/user";
@@ -10,107 +8,19 @@ import { v4 as uuidv4 } from "uuid";
 import { ERRORS } from "../models/error-models";
 import { AuthModel, LoginResponseModel, PayloadModel } from "../models/auth";
 import { authService } from "./service";
+import {
+  accessTokenPlugin,
+  jwtPlugin,
+  refreshTokenPlugin,
+} from "../plugins/auth";
+import { AuthorizationError } from "../exceptions/errors";
 
 const tags = ["Auth"];
 export const authRoutes = new Elysia({ prefix: "/auth", tags })
   .use(bearer())
   .model("AuthModel", AuthModel)
   .model("LoginResponseModel", LoginResponseModel)
-  // Jwts
-  .use(
-    jwt({
-      name: "accessJwt",
-      secret: env.SECRET_KEY,
-      exp: "15m",
-      schema: PayloadModel,
-    }),
-  )
-  .use(
-    jwt({
-      name: "refreshJwt",
-      secret: env.SECRET_KEY,
-      exp: "7d",
-      schema: PayloadModel,
-    }),
-  )
-  // Middleware functions
-  .derive(({ bearer, accessJwt, refreshJwt, set, error }) => {
-    let payload: any;
-
-    return {
-      accessTokenMiddleware: async () => {
-        if (!bearer) {
-          return error(401, {
-            status: 401,
-            detail: "Bearer Token Required",
-            error: "Unauthorized",
-          });
-        }
-
-        try {
-          payload = await accessJwt.verify(bearer);
-          if (!payload) {
-            return error(401, {
-              status: 401,
-              detail: "Invalid token",
-              error: "Unauthorized",
-            });
-          }
-
-          if (payload.refresh) {
-            return error(401, {
-              status: 401,
-              detail: "Invalid token type. Access token required.",
-              error: "Unauthorized",
-            });
-          }
-        } catch (err) {
-          console.error("Token verification error:", err);
-          return error(401, {
-            status: 401,
-            detail: "Token verification failed",
-            error: "Unauthorized",
-          });
-        }
-      },
-      refreshTokenMiddleware: async () => {
-        if (!bearer) {
-          return error(401, {
-            status: 401,
-            detail: "Bearer Token Required",
-            error: "Unauthorized",
-          });
-        }
-
-        try {
-          payload = await refreshJwt.verify(bearer);
-          if (!payload) {
-            return error(401, {
-              status: 401,
-              detail: "Invalid token",
-              error: "Unauthorized",
-            });
-          }
-
-          if (!payload.refresh) {
-            return error(401, {
-              status: 401,
-              detail: "Invalid token type. Refresh token required.",
-              error: "Unauthorized",
-            });
-          }
-        } catch (err) {
-          console.error("Token verification error:", err);
-          return error(401, {
-            status: 401,
-            detail: "Token verification failed",
-            error: "Unauthorized",
-          });
-        }
-      },
-      getPayload: () => payload,
-    };
-  })
+  .use(jwtPlugin)
   .guard(
     {
       body: AuthModel,
@@ -239,73 +149,82 @@ export const authRoutes = new Elysia({ prefix: "/auth", tags })
       description: "Require user to be logged in",
     },
   })
-  .get(
-    "/logout",
-    async ({ getPayload }) => {
-      const payload = await getPayload();
-      console.log(payload);
+  .guard({}, (app) =>
+    app.use(accessTokenPlugin).get(
+      "/logout",
+      async ({ payload }) => {
+        console.log(payload);
 
-      return {
-        status: 200,
-        detail: "Logged out successfully",
-      };
-    },
-    {
-      beforeHandle: [
-        async ({ accessTokenMiddleware }) => await accessTokenMiddleware(),
-      ],
-      response: {
-        200: t.Object({
-          status: t.Number({ default: 200 }),
-          detail: t.String({ default: "Logout successful" }),
-        }),
-        401: ERRORS.UNAUTHORIZED,
+        return {
+          status: 200,
+          detail: "Logged out successfully",
+        };
       },
-      detail: {
-        summary: "Logout",
-        description: "Logs current user out",
-        security: accessTokenSecurity,
-      },
-    },
-  )
-  .guard({
-    detail: {
-      security: refreshTokenSecurity,
-      description: "Require user to be logged in",
-    },
-  })
-  .get(
-    "/refresh",
-    async ({ accessJwt, getPayload }) => {
-      const payload = await getPayload();
-      const accessTokenExpiry = Math.floor(Date.now() / 1000) + 15 * 60;
-
-      const accessToken = await accessJwt.sign({
-        user: payload.user,
-        jti: uuidv4(),
-        refresh: false,
-        exp: accessTokenExpiry,
-      });
-
-      return {
-        accessToken,
-        accessTokenExpiry,
-      };
-    },
-    {
-      beforeHandle: [({ refreshTokenMiddleware }) => refreshTokenMiddleware()],
-      response: {
-        200: t.Object({
-          accessToken: t.String(),
-          accessTokenExpiry: t.Number({
-            default: Date.now(),
+      {
+        async beforeHandle({ payload }) {
+          if (!payload) {
+            throw new AuthorizationError("Invalid Token");
+          }
+        },
+        response: {
+          200: t.Object({
+            status: t.Number({ default: 200 }),
+            detail: t.String({ default: "Logout successful" }),
           }),
-        }),
-        401: ERRORS.UNAUTHORIZED,
+          401: ERRORS.UNAUTHORIZED,
+        },
+        detail: {
+          summary: "Logout",
+          description: "Logs current user out",
+          security: accessTokenSecurity,
+        },
       },
+    ),
+  )
+  .guard(
+    {
       detail: {
-        summary: "Refresh",
-        description: "Refresh access token",
+        security: refreshTokenSecurity,
+        description: "Require user to be logged in",
       },
     },
+    (app) =>
+      app.use(refreshTokenPlugin).get(
+        "/refresh",
+        async ({ accessJwt, payload }) => {
+          const accessTokenExpiry = Math.floor(Date.now() / 1000) + 15 * 60;
+
+          const accessToken = await accessJwt.sign({
+            user: payload && payload.user,
+            jti: uuidv4(),
+            refresh: false,
+            exp: accessTokenExpiry,
+          });
+
+          return {
+            accessToken,
+            accessTokenExpiry,
+          };
+        },
+        {
+          async beforeHandle({ payload }) {
+            if (!payload) {
+              throw new AuthorizationError("Invalid Token");
+            }
+          },
+          response: {
+            200: t.Object({
+              accessToken: t.String(),
+              accessTokenExpiry: t.Number({
+                default: Date.now(),
+              }),
+            }),
+            401: ERRORS.UNAUTHORIZED,
+          },
+          detail: {
+            summary: "Refresh",
+            description: "Refresh access token",
+          },
+        },
+      ),
   );

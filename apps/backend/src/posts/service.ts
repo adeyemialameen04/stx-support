@@ -1,8 +1,12 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db } from "../db";
 import { postTable } from "../db/schema";
+import { insertPostSchema } from "../db/schema/post";
+import { AuthorizationError } from "../exceptions/errors";
+import { t } from "elysia";
 
-// type Post =
+const createP = t.Omit(insertPostSchema, ["userId"]);
+type Post = typeof createP.static;
 export const postService = {
   getUserPosts: async (id: string) => {
     const posts = db.select().from(postTable).where(eq(postTable.userId, id));
@@ -10,5 +14,45 @@ export const postService = {
     return posts;
   },
 
-  // createPost: async (post: )
+  createPost: async (data: Post, userId: string) => {
+    const [post] = await db
+      .insert(postTable)
+      .values({ ...data, userId })
+      .returning();
+
+    return post;
+  },
+
+  checkPostExist: async (id: string) => {
+    const [post] = await db
+      .select()
+      .from(postTable)
+      .where(eq(postTable.id, id));
+
+    return post;
+  },
+
+  updatePost: async (
+    id: string,
+    data: Partial<typeof postTable.$inferInsert>,
+  ) => {
+    const { userId: _, ...updateData } = data;
+
+    const [updatedPost] = await db
+      .update(postTable)
+      .set({ ...updateData })
+      .where(eq(postTable.id, id))
+      .returning();
+
+    return updatedPost;
+  },
+
+  isPostOwner: async (id: string, userId: string) => {
+    const post = await db
+      .select()
+      .from(postTable)
+      .where(and(eq(postTable.id, id), eq(postTable.userId, userId)));
+
+    return post;
+  },
 };

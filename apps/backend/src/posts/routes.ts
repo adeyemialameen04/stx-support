@@ -1,48 +1,29 @@
-import bearer from "@elysiajs/bearer";
 import Elysia, { t } from "elysia";
 import { insertPostSchema, selectPostSchema } from "../db/schema/post";
-import jwt from "@elysiajs/jwt";
-import { PayloadModel } from "../models/auth";
-import env from "../env";
 import { postService } from "./service";
 import { accessTokenSecurity } from "../utils/helpers";
-import { AuthorizationError } from "../exceptions/errors";
+import { AuthorizationError, NotFoundError } from "../exceptions/errors";
 import { ERRORS } from "../models/error-models";
+import { accessTokenPlugin } from "../plugins/auth";
+import { omitDb } from "../models/omit";
 
 const tags = ["Posts"];
 
-export const authService = new Elysia({ name: "auth/service" })
-  .use(bearer())
-  .use(
-    jwt({
-      name: "accessJwt",
-      secret: env.SECRET_KEY,
-      exp: "15m",
-      schema: PayloadModel,
-    }),
-  )
-  .guard({
-    as: "scoped",
-  })
-  .derive({ as: "scoped" }, async ({ bearer, accessJwt }) => {
-    if (!bearer) {
-      return { payload: null };
-    }
-
-    const token = await accessJwt.verify(bearer);
-
-    return {
-      payload: token,
-    };
-  });
-
 export const postsRoutes = new Elysia({ prefix: "/posts", tags })
-  .use(authService)
+  .use(accessTokenPlugin)
+  .model(
+    "CreatePostModel",
+    t.Omit(insertPostSchema, ["id", "createdAt", "updatedAt", "status"]),
+  )
+  .model("PostModel", selectPostSchema)
   .guard(
     {
-      async beforeHandle({ payload, set }) {
+      detail: {
+        security: accessTokenSecurity,
+      },
+      async beforeHandle({ payload }) {
         if (!payload) {
-          throw new AuthorizationError("Error: Hello");
+          throw new AuthorizationError("Invalid Token");
         }
       },
     },
@@ -50,7 +31,7 @@ export const postsRoutes = new Elysia({ prefix: "/posts", tags })
       app
         .get(
           "",
-          async ({ error, payload }) => {
+          async ({ payload }) => {
             console.log(payload, "handler");
             if (payload) {
               const userPosts = await postService.getUserPosts(payload.user.id);
@@ -66,13 +47,78 @@ export const postsRoutes = new Elysia({ prefix: "/posts", tags })
               401: ERRORS.UNAUTHORIZED,
             },
             detail: {
-              security: accessTokenSecurity,
               summary: "Get user Posts",
               description: "Get currently logged in users posts",
             },
           },
         )
-        .post("", async ({ body, payload }) => {}, {
-          body: insertPostSchema,
-        }),
+        .post(
+          "",
+          async ({ body, payload, set }) => {
+            const post = await postService.createPost(
+              body,
+              payload && "user" in payload ? payload.user.id : "",
+            );
+            console.log("created", post);
+
+            set.status = "Created";
+            return post;
+          },
+          {
+            response: {
+              201: selectPostSchema,
+              401: ERRORS.UNAUTHORIZED,
+            },
+            body: t.Omit(insertPostSchema, [
+              "id",
+              "userId",
+              "createdAt",
+              "updatedAt",
+            ]),
+            detail: {
+              summary: "Create Post",
+              description: "Creates a new post",
+            },
+          },
+        )
+        .patch(
+          "/:id",
+          async ({ params: { id }, body, set, payload }) => {
+            if (payload) {
+              const post = await postService.isPostOwner(id, payload.user.id);
+              if (post.length === 0) {
+                throw new NotFoundError(
+                  "Post not found or you don't have permission to edit it",
+                );
+              }
+            }
+
+            const updatedPost = await postService.updatePost(id, body);
+
+            return updatedPost;
+          },
+          {
+            params: t.Object({
+              id: t.String({ format: "uuid" }),
+            }),
+            body: t.Partial(
+              t.Omit(insertPostSchema, [
+                "userId",
+                "id",
+                "createdAt",
+                "updatedAt",
+                "userId",
+              ]),
+            ),
+            detail: {
+              summary: "Edit Post",
+              description: "Edits a Post",
+            },
+            response: {
+              201: selectPostSchema,
+              401: ERRORS.UNAUTHORIZED,
+              404: ERRORS.NOT_FOUND,
+            },
+          },
+        ),
   );
