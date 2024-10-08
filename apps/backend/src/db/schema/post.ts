@@ -21,7 +21,7 @@ export const post = pgTable("post", {
     .notNull()
     .references(() => user.id),
   title: varchar("title", { length: 255 }).notNull(),
-  status: statusEnum("status").default("published").notNull(),
+  status: statusEnum("status").notNull(),
   isPublic: boolean("is_public").default(true).notNull(),
   content: json("content").notNull(),
   categoryId: uuid("category_id")
@@ -43,7 +43,11 @@ export const postRelations = relations(post, ({ one, many }) => ({
   }),
 }));
 
-export const insertPostSchema = createInsertSchema(post);
+export const insertPostSchema = createInsertSchema(post, {
+  content: t.Object({}),
+  status: t.Enum({ status: "published" }),
+});
+
 export const selectPostSchema = createSelectSchema(post, {
   content: t.Unknown(),
 });

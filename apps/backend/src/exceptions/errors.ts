@@ -17,3 +17,9 @@ export class AuthorizationError extends Error {
     this.name = "AUTHORIZATION_ERROR";
   }
 }
+export class NotFoundError extends Error {
+  constructor(public message: string) {
+    super(message);
+    this.name = "NOT_FOUND";
+  }
+}
