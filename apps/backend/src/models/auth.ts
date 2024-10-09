@@ -21,6 +21,8 @@ export const LoginResponseModel = t.Object({
   }),
 });
 
+export type LoginresponseType = typeof LoginResponseModel.static;
+
 export const PayloadModel = t.Object({
   user: t.Object({
     stxAddressMainnet: t.String({ minLength: 1, require }),

@@ -30,7 +30,7 @@ export const authRoutes = new Elysia({ prefix: "/auth", tags })
         // Sign up
         .post(
           "/sign-up",
-          async ({ body: { stxAddressMainnet, password }, set, error }) => {
+          async ({ body: { password, stxAddressMainnet }, set, error }) => {
             const existingUser =
               await authService.isUserExist(stxAddressMainnet);
 
@@ -47,7 +47,7 @@ export const authRoutes = new Elysia({ prefix: "/auth", tags })
               .insert(userTable)
               .values({
                 stxAddressMainnet,
-                password_hash: hashedPasswd,
+                passwordHash: hashedPasswd,
               })
               .returning();
             // const { password_hash, ...userWithoutPassword } = newUser;
@@ -57,7 +57,7 @@ export const authRoutes = new Elysia({ prefix: "/auth", tags })
           },
           {
             response: {
-              201: t.Omit(selectUserSchema, ["password_hash", "updatedAt"]),
+              201: t.Omit(selectUserSchema, ["passwordHash", "updatedAt"]),
               409: ERRORS.CONFLICT,
             },
             detail: {
@@ -88,7 +88,7 @@ export const authRoutes = new Elysia({ prefix: "/auth", tags })
 
             const isMatch = await Bun.password.verify(
               password,
-              existingUser.password_hash,
+              existingUser.passwordHash,
             );
 
             if (!isMatch) {
