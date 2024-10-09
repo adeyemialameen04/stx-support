@@ -1,5 +1,4 @@
 "use server";
-
 import { API_URL } from "@/lib/constants";
 import { actionClient } from "@/lib/safe-action";
 import { saveUserTokens } from "@/lib/session";
@@ -40,6 +39,7 @@ export const signUp = actionClient
           refreshToken: data.refreshToken,
           refreshTokenExpiry: data.refreshTokenExpiryTimestamp,
           accessTokenExpiry: data.accessTokenExpiryTimestamp,
+          uuid: data.user?.id,
         };
         saveUserTokens(tokens);
 

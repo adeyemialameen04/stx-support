@@ -14,6 +14,7 @@ export type Tokens = {
   refreshToken: string;
   accessTokenExpiry: number;
   refreshTokenExpiry: number;
+  uuid: string;
 };
 
 export const getCurrentUser = async () => {
@@ -70,6 +71,14 @@ export function saveUserTokens(tokens: Tokens) {
   });
   cookieStore.set("refreshToken", tokens.refreshToken, {
     httpOnly: true,
+    secure: process.env.NODE_ENV !== "development",
+    sameSite: "strict",
+    maxAge: tokens.refreshTokenExpiry - Math.floor(Date.now() / 1000),
+    path: "/",
+  });
+
+  cookieStore.set("uuid", tokens.uuid, {
+    httpOnly: false,
     secure: process.env.NODE_ENV !== "development",
     sameSite: "strict",
     maxAge: tokens.refreshTokenExpiry - Math.floor(Date.now() / 1000),

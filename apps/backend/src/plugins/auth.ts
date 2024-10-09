@@ -62,7 +62,7 @@ export const refreshTokenPlugin = new Elysia({ name: "plugin.refresh" })
   .use(
     jwt({
       name: "refreshJwt",
-      secret: env.SECRET_KEY,
+      secret: env.REFRESH_SECRET_KEY,
       exp: "15m",
       schema: PayloadModel,
     }),
