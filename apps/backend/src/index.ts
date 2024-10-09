@@ -1,15 +1,8 @@
-import { Elysia, error, t } from "elysia";
+import { Elysia } from "elysia";
 import { authRoutes } from "./auth/routes";
 import serverTiming from "@elysiajs/server-timing";
 import logixlysia from "logixlysia";
 import { postsRoutes } from "./posts/routes";
-import {
-  AuthenticationError,
-  AuthorizationError,
-  InvariantError,
-  NotFoundError,
-} from "./exceptions/errors";
-import { ERRORS } from "./models/error-models";
 import { docs } from "./plugins/docs";
 import { errors } from "./plugins/errors";
 import { usersRoutes } from "./users/routes";
@@ -27,7 +20,6 @@ app
     }),
   )
   .use(docs)
-
   .use(errors)
   .use(authRoutes)
   .use(usersRoutes)
