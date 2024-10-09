@@ -16,6 +16,7 @@ export default async function isValidJWT(token: string) {
     const typedPayload = payload as JWTPayload & PayloadType;
 
     if (typedPayload.user.id) {
+      console.log(typedPayload);
       return true;
     }
   } catch (err) {
