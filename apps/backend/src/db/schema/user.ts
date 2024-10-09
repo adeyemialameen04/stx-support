@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   pgTable,
   text,
@@ -29,7 +29,8 @@ export const user = pgTable(
       .defaultNow(),
     updatedAt: timestamp("updated_at", { mode: "string" })
       .notNull()
-      .defaultNow(),
+      .defaultNow()
+      .$onUpdate(() => sql`now()`),
   },
   (table) => {
     return {

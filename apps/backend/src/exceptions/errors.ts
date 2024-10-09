@@ -4,6 +4,12 @@ export class AuthenticationError extends Error {
   }
 }
 
+export class PublicError extends Error {
+  constructor(message: string) {
+    super(message);
+  }
+}
+
 export class InvariantError extends Error {
   constructor(public message: string) {
     super(message);
