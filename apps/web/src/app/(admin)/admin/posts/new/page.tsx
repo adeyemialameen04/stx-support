@@ -14,7 +14,7 @@ import NewPost from "@/_components/admin/posts/new-post";
 export default function PostPage() {
   return (
     <ContentLayout title="Publish - Posts - New">
-      <main className="max-w-[950px] mx-auto">
+      <main className="max-w-[700px]">
         <Breadcrumb className="mb-6">
           <BreadcrumbList>
             <BreadcrumbItem>

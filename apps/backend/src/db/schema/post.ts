@@ -3,6 +3,7 @@ import {
   json,
   pgEnum,
   pgTable,
+  text,
   timestamp,
   uuid,
   varchar,
@@ -23,7 +24,7 @@ export const post = pgTable("post", {
   title: varchar("title", { length: 255 }).notNull(),
   status: statusEnum("status").notNull(),
   isPublic: boolean("is_public").default(true).notNull(),
-  content: json("content").notNull(),
+  content: text("content").notNull(),
   categoryId: uuid("category_id")
     .references(() => categoryTable.id)
     .notNull(),
@@ -44,7 +45,6 @@ export const postRelations = relations(post, ({ one, many }) => ({
 }));
 
 export const insertPostSchema = createInsertSchema(post, {
-  content: t.Object({}),
   status: t.Enum({
     published: "published",
     draft: "draft",
