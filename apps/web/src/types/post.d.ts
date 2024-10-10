@@ -1,3 +1,5 @@
+import { selectCategorySchema } from "@repo/schemas/index";
+
 export interface PostSchema {
   date: string;
   time: string;
@@ -7,3 +9,4 @@ export interface PostSchema {
   like: number;
   comment: number;
 }
+export type Category = typeof selectCategorySchema.static;
