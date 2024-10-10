@@ -8,21 +8,9 @@ import { categoryTable } from "../../db/schema";
 import { eq } from "drizzle-orm";
 import postgres from "postgres";
 import { ERRORS } from "../../models/error-models";
-import {
-  InternalServerError,
-  InvariantError,
-  NotFoundError,
-} from "../../exceptions/errors";
+import { NotFoundError } from "../../exceptions/errors";
 
-const omit = (more?: string[]) => {
-  if (more) {
-    return [...more, "id", "createdAt", "updatedAt"];
-  }
-  return ["id", "createdAt", "updatedAt"];
-};
-const lol = ["id", "createdAt", "updatedAt"];
-
-const tags = ["Categories"];
+const tags = ["Categories", "Posts"];
 export const categoryRoutes = new Elysia({
   name: "api.category",
   prefix: "/category",
