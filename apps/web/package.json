@@ -9,17 +9,21 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
     "@repo/errors": "*",
     "@repo/schemas": "*",
     "@repo/tailwind": "*",
     "@repo/ui": "*",
     "@stacks/connect-react": "^22.4.2",
     "jose": "^5.9.3",
+    "lucide-react": "^0.451.0",
     "next": "14.2.6",
     "next-safe-action": "^7.9.3",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-hook-form": "^7.53.0",
     "sonner": "^1.5.0",
+    "zod": "^3.23.8",
     "zsa": "^0.6.0",
     "zustand": "^5.0.0-rc.2"
   },

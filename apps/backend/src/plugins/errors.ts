@@ -2,6 +2,7 @@ import Elysia, { NotFoundError, t } from "elysia";
 import {
   AuthenticationError,
   AuthorizationError,
+  InternalServerError,
   InvariantError,
 } from "../exceptions/errors";
 import { ERRORS } from "../models/error-models";
@@ -20,6 +21,7 @@ export const errors = (app: Elysia) =>
     .error("AUTHORIZATION_ERROR", AuthorizationError)
     .error("INVARIANT_ERROR", InvariantError)
     .error("NOT_FOUND", NotFoundError)
+    .error("INTERNAL_SERVER_ERROR", InternalServerError)
     .onError(({ code, error, set }) => {
       switch (code) {
         case "AUTHORIZATION_ERROR":
@@ -47,9 +49,9 @@ export const errors = (app: Elysia) =>
         case "INTERNAL_SERVER_ERROR":
           set.status = 500;
           return {
-            status: "error",
-            detail: "Something went wrong!",
+            status: 500,
             error: error.name,
+            detail: error.message,
           };
       }
     });

@@ -6,6 +6,9 @@ import { postsRoutes } from "./posts/routes";
 import { docs } from "./plugins/docs";
 import { errors } from "./plugins/errors";
 import { usersRoutes } from "./users/routes";
+import { categoryRoutes } from "./posts/categories/routes";
+import { settings } from "./config/settings";
+import { api } from "./api";
 
 const app = new Elysia();
 app
@@ -21,8 +24,6 @@ app
   )
   .use(docs)
   .use(errors)
-  .use(authRoutes)
-  .use(usersRoutes)
-  .use(postsRoutes)
+  .use(api)
 
   .listen(3000);

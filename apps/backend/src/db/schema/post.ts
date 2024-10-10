@@ -3,12 +3,13 @@ import {
   json,
   pgEnum,
   pgTable,
+  text,
   timestamp,
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
 import { user } from "./user";
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import { categoryTable, userTable } from ".";
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
 import { t } from "elysia";
@@ -23,12 +24,15 @@ export const post = pgTable("post", {
   title: varchar("title", { length: 255 }).notNull(),
   status: statusEnum("status").notNull(),
   isPublic: boolean("is_public").default(true).notNull(),
-  content: json("content").notNull(),
+  content: text("content").notNull(),
   categoryId: uuid("category_id")
     .references(() => categoryTable.id)
     .notNull(),
   createdAt: timestamp("created_at", { mode: "string" }).notNull().defaultNow(),
-  updatedAt: timestamp("updated_at", { mode: "string" }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { mode: "string" })
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => sql`now()`),
 });
 
 export const postRelations = relations(post, ({ one, many }) => ({
@@ -44,7 +48,6 @@ export const postRelations = relations(post, ({ one, many }) => ({
 }));
 
 export const insertPostSchema = createInsertSchema(post, {
-  content: t.Object({}),
   status: t.Enum({
     published: "published",
     draft: "draft",
