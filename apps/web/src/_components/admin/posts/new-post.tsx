@@ -25,6 +25,7 @@ import {
   SelectValue,
 } from "@repo/ui/components/ui/select";
 import { Globe, Heart } from "lucide-react";
+import { Category } from "@/types/post";
 
 export const formSchema = z.object({
   content: z
@@ -38,12 +39,13 @@ export const formSchema = z.object({
     })
     .min(1, "Title is required")
     .max(256, "Title can't be more than 256 characters"),
+  category: z.string({ required_error: "Category is required" }),
   visibility: z.string(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-const NewPost: React.FC = () => {
+const NewPost = ({ categories }: { categories: Category[] }) => {
   const editorRef = useRef<Editor | null>(null);
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -51,6 +53,7 @@ const NewPost: React.FC = () => {
       content: "",
       title: "",
       visibility: "",
+      category: "",
     },
   });
 
@@ -170,6 +173,37 @@ const NewPost: React.FC = () => {
             </FormItem>
           )}
         />
+        <FormField
+          name="category"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Category</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a Category" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectGroup>
+                    {categories.map((category) => (
+                      <SelectItem
+                        key={category.id}
+                        value={category.id as string}
+                        className="capitalize"
+                      >
+                        {category.name}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <Button type="submit" size="lg" className="w-full">
           Submit
         </Button>

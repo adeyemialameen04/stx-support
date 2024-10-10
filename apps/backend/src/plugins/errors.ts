@@ -1,9 +1,11 @@
-import Elysia, { NotFoundError, t } from "elysia";
+import Elysia, { t } from "elysia";
 import {
   AuthenticationError,
   AuthorizationError,
+  ConflictError,
   InternalServerError,
   InvariantError,
+  NotFoundError,
 } from "../exceptions/errors";
 import { ERRORS } from "../models/error-models";
 
@@ -22,6 +24,7 @@ export const errors = (app: Elysia) =>
     .error("INVARIANT_ERROR", InvariantError)
     .error("NOT_FOUND", NotFoundError)
     .error("INTERNAL_SERVER_ERROR", InternalServerError)
+    .error("CONFLICT_ERROR", ConflictError)
     .onError(({ code, error, set }) => {
       switch (code) {
         case "AUTHORIZATION_ERROR":
@@ -31,17 +34,24 @@ export const errors = (app: Elysia) =>
             error: error.name,
             detail: error.message,
           };
+        case "CONFLICT_ERROR":
+          set.status = 409;
+          return {
+            status: 409,
+            error: error.name,
+            detail: error.message,
+          };
         case "INVARIANT_ERROR":
           set.status = 400;
           return {
-            status: 401,
+            status: 400,
             error: error.name,
             detail: error.message,
           };
         case "NOT_FOUND":
           set.status = 404;
           return {
-            status: 401,
+            status: 404,
             error: error.name,
             detail: error.message,
           };

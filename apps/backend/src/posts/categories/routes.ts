@@ -8,7 +8,11 @@ import { categoryTable } from "../../db/schema";
 import { eq } from "drizzle-orm";
 import postgres from "postgres";
 import { ERRORS } from "../../models/error-models";
-import { InternalServerError, NotFoundError } from "../../exceptions/errors";
+import {
+  InternalServerError,
+  InvariantError,
+  NotFoundError,
+} from "../../exceptions/errors";
 
 const omit = (more?: string[]) => {
   if (more) {
@@ -66,37 +70,19 @@ export const categoryRoutes = new Elysia({
   .delete(
     "/:id",
     async ({ params: { id }, set }) => {
-      try {
-        const [category] = await db
-          .delete(categoryTable)
-          .where(eq(categoryTable.id, id))
-          .returning();
+      const [category] = await db
+        .delete(categoryTable)
+        .where(eq(categoryTable.id, id))
+        .returning();
 
-        if (category) {
-          console.log("Why?");
-          return {
-            message: "Category Deleted Successfully",
-            data: category,
-          };
-        } else {
-          set.status = "Not Found";
-          return {
-            status: 404,
-            detail: "Category does not exist",
-            error: "NOT_FOUND",
-          };
-        }
-      } catch (err) {
-        // if (err.name === "NOT_FOUND") {
-        //   throw new NotFoundError("Category does not exist");
-        // }
-        console.log(err);
-        if (err instanceof postgres.PostgresError) {
-          console.log("I knew it");
-          console.log(err);
-        }
-
-        throw new InternalServerError(`Something unexpected happened`);
+      if (category) {
+        return {
+          message: "Category Deleted Successfully",
+          data: category,
+        };
+      } else {
+        set.status = "Not Found";
+        throw new NotFoundError("Category does not exist");
       }
     },
     {
@@ -106,7 +92,6 @@ export const categoryRoutes = new Elysia({
           data: selectCategorySchema,
         }),
         404: ERRORS.NOT_FOUND,
-        500: ERRORS.INTERNAL_SERVER_ERROR,
       },
       params: t.Object({
         id: t.String({ format: "uuid" }),
