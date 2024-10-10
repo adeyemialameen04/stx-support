@@ -24,9 +24,16 @@ export const INVARIANT = t.Object({
   error: t.String({ default: "INVARIANT_ERROR" }),
 });
 
+export const INTERNAL_SERVER_ERROR = t.Object({
+  status: t.Number({ default: 401 }),
+  detail: t.String(),
+  error: t.String({ default: "INTERNAL_SERVER_ERROR" }),
+});
+
 export const ERRORS = {
   CONFLICT,
   NOT_FOUND,
   UNAUTHORIZED,
   INVARIANT,
+  INTERNAL_SERVER_ERROR,
 };

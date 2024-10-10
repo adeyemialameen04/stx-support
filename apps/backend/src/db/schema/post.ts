@@ -9,7 +9,7 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 import { user } from "./user";
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import { categoryTable, userTable } from ".";
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
 import { t } from "elysia";
@@ -29,7 +29,10 @@ export const post = pgTable("post", {
     .references(() => categoryTable.id)
     .notNull(),
   createdAt: timestamp("created_at", { mode: "string" }).notNull().defaultNow(),
-  updatedAt: timestamp("updated_at", { mode: "string" }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { mode: "string" })
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => sql`now()`),
 });
 
 export const postRelations = relations(post, ({ one, many }) => ({

@@ -29,3 +29,10 @@ export class NotFoundError extends Error {
     this.name = "NOT_FOUND";
   }
 }
+
+export class InternalServerError extends Error {
+  constructor(public message: string) {
+    super(message);
+    this.name = "INTERNAL_SERVER_ERRROR";
+  }
+}
