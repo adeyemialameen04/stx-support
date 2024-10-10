@@ -6,7 +6,7 @@ import { typeboxAdapter } from "next-safe-action/adapters/typebox";
 import { zodAdapter } from "next-safe-action/adapters/zod";
 
 export const actionClient = createSafeActionClient({
-  validationAdapter: zodAdapter(),
+  validationAdapter: typeboxAdapter(),
 });
 
 function shapeErrors({ err }: any) {
