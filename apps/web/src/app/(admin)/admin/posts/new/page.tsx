@@ -16,7 +16,7 @@ import { Category } from "@/types/post";
 
 const getCategories = async () => {
   try {
-    const url = `${API_URL}/category`;
+    const url = `${API_URL}/category/all`;
     const res = await fetch(url);
 
     return await res.json();

@@ -10,6 +10,13 @@ export class PublicError extends Error {
   }
 }
 
+export class ConflictError extends Error {
+  constructor(public message: string) {
+    super(message);
+    this.name = "CONFLICT_ERROR";
+  }
+}
+
 export class InvariantError extends Error {
   constructor(public message: string) {
     super(message);

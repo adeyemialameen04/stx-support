@@ -182,7 +182,7 @@ const NewPost = ({ categories }: { categories: Category[] }) => {
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Visibility" />
+                    <SelectValue placeholder="Select a Category" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
