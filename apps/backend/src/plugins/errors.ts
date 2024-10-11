@@ -26,6 +26,7 @@ export const errors = (app: Elysia) =>
     .error("INTERNAL_SERVER_ERROR", InternalServerError)
     .error("CONFLICT_ERROR", ConflictError)
     .onError(({ code, error, set }) => {
+      console.log(error);
       switch (code) {
         case "AUTHORIZATION_ERROR":
           set.status = 401;

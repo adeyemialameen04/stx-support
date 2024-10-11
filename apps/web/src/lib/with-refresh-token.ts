@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { jwtDecode } from "./auth";
+import isValidJWT, { jwtDecode } from "./auth";
 import { API_URL } from "./constants";
 
 const DEFAULT_OFFSET_SECONDS = 15; // refresh the token 15 seconds before it expires
@@ -66,9 +66,17 @@ export const withRefreshToken = getMiddleware({
   fetchTokenPair: async (req) => {
     console.log("Fetching new token pair");
     const refreshToken = req.cookies.get("refreshToken")?.value;
+
     if (!refreshToken) {
-      throw new Error("Refresh token not found");
+      throw new Error("Refresh token not valid");
+      // console.error("Refresh token not found", req.url);
+      // return NextResponse.redirect(new URL("/auth", req.url));
     }
+
+    if (!isValidJWT(refreshToken as string)) {
+      throw new Error("Refresh token not valid");
+    }
+
     const response = await fetch(`${API_URL}/auth/refresh`, {
       method: "GET",
       headers: {
@@ -95,18 +103,20 @@ export const withRefreshToken = getMiddleware({
   },
   onError: (req, res, error) => {
     console.error("Error in refresh token process:", error);
-    res.cookies.set({
-      name: "accessToken",
-      value: "",
-      maxAge: 0,
-      path: "/",
-    });
-    res.cookies.set({
-      name: "refreshToken",
-      value: "",
-      maxAge: 0,
-      path: "/",
-    });
-    return NextResponse.redirect(new URL("/auth", req.url));
+    // res.cookies.set({
+    //   name: "accessToken",
+    //   value: "",
+    //   maxAge: 0,
+    //   path: "/",
+    // });
+    // res.cookies.set({
+    //   name: "refreshToken",
+    //   value: "",
+    //   maxAge: 0,
+    //   path: "/",
+    // });
+    if (error) {
+      return NextResponse.redirect(new URL("/auth", req.url));
+    }
   },
 });

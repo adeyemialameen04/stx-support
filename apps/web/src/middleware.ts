@@ -9,12 +9,12 @@ async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
   const creds = getUserCredentials();
 
-  if (protectedRoutes.includes(pathname)) {
-    if (!creds || !(await isValidJWT(creds?.refreshToken as string))) {
-      console.log("Unauthorized access attempt");
-      return NextResponse.redirect(new URL("/auth", req.url));
-    }
-  }
+  // if (protectedRoutes.includes(pathname)) {
+  //   if (!creds || !(await isValidJWT(creds?.refreshToken as string))) {
+  //     console.log("Unauthorized access attempt");
+  //     return NextResponse.redirect(new URL("/auth", req.url));
+  //   }
+  // }
 
   return NextResponse.next();
 }

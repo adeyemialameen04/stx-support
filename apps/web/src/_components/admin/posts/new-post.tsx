@@ -26,6 +26,7 @@ import {
 } from "@repo/ui/components/ui/select";
 import { Globe, Heart } from "lucide-react";
 import { Category } from "@/types/post";
+import { createPost } from "@/actions/posts";
 
 export const formSchema = z.object({
   content: z
@@ -67,10 +68,18 @@ const NewPost = ({ categories }: { categories: Category[] }) => {
     [form],
   );
 
-  const onSubmit = (values: FormValues) => {
+  const onSubmit = async (values: FormValues) => {
     console.log("==Getting values from form==");
     console.log(values);
     console.log("Success: Values retrieved from form");
+
+    const res = await createPost({
+      status: "published",
+      title: values.title,
+      content: values.content,
+      isPublic: true,
+      categoryId: values.category,
+    });
 
     // setTimeout(() => {
     //   console.log("==Clearing form==");
