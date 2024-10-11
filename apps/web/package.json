@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@elysiajs/eden": "^1.1.3",
     "@hookform/resolvers": "^3.9.0",
     "@repo/errors": "*",
     "@repo/schemas": "*",

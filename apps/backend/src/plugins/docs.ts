@@ -1,9 +1,11 @@
 import swagger from "@elysiajs/swagger";
 import Elysia from "elysia";
 
-const tags = [
+const tags: { name: string; description: string }[] = [
   { name: "Auth", description: "Authentication endpoints" },
   { name: "Posts", description: "Posts endpoints" },
+  { name: "Users", description: "Users endpoints" },
+  { name: "Categories", description: "Categories endpoints" },
 ];
 
 export const docs = (app: Elysia) =>
@@ -12,6 +14,29 @@ export const docs = (app: Elysia) =>
       swagger({
         exclude: ["/doc", "/doc/json"],
         path: "/docs",
+        scalarConfig: {
+          darkMode: true,
+          theme: "saturn",
+          layout: "classic",
+          forceDarkModeState: "dark",
+          metaData: {
+            ogTitle: "Stx-Support Documentation",
+            ogImage: "https://example.com/image.png",
+            twitterCard: "summary_large_image",
+          },
+          defaultHttpClient: {
+            targetKey: "javascript",
+            clientKey: "fetch",
+          },
+          // authentication: {
+          //   preferredSecurityScheme: "AccessTokenBearer",
+          //   bearer: {
+          //     token: "super-secret-token",
+          //   },
+          // },
+          defaultOpenAllTags: true,
+          tagsSorter: "alpha",
+        },
         provider: "scalar",
         documentation: {
           components: {

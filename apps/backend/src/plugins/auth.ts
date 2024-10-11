@@ -42,6 +42,7 @@ export const accessTokenPlugin = new Elysia({ name: "plugin.access" })
   })
   .derive({ as: "scoped" }, async ({ bearer, accessJwt }) => {
     if (!bearer) {
+      console.log("here? lol");
       return { payload: null };
     }
 
@@ -52,6 +53,7 @@ export const accessTokenPlugin = new Elysia({ name: "plugin.access" })
       );
     }
 
+    console.log(token, "here???????? meoa");
     return {
       payload: token,
     };
@@ -63,7 +65,7 @@ export const refreshTokenPlugin = new Elysia({ name: "plugin.refresh" })
     jwt({
       name: "refreshJwt",
       secret: env.REFRESH_SECRET_KEY,
-      exp: "15m",
+      exp: "7d",
       schema: PayloadModel,
     }),
   )
@@ -72,17 +74,27 @@ export const refreshTokenPlugin = new Elysia({ name: "plugin.refresh" })
   })
   .derive({ as: "scoped" }, async ({ bearer, refreshJwt }) => {
     if (!bearer) {
+      console.log("here? wow");
       return { payload: null };
     }
 
-    const token = await refreshJwt.verify(bearer);
-    if (token && !token.refresh) {
-      throw new AuthorizationError(
-        "Invalid token type. Refresh token required.",
-      );
+    try {
+      const token = await refreshJwt.verify(bearer);
+      if (token && !token.refresh) {
+        throw new AuthorizationError(
+          "Invalid token type. Refresh token required.",
+        );
+      }
+
+      console.log(token, "here???????? arrrr");
+      return {
+        payload: token,
+      };
+    } catch (err) {
+      console.error(err, "gotcha");
     }
 
     return {
-      payload: token,
+      payload: null,
     };
   });

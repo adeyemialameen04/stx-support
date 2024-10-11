@@ -211,6 +211,7 @@ export const authRoutes = new Elysia({ prefix: "/auth", tags })
         },
         {
           async beforeHandle({ payload }) {
+            console.log(payload, "Actually null lol");
             if (!payload) {
               throw new AuthorizationError("Invalid Token");
             }
