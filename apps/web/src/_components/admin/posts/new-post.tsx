@@ -29,6 +29,7 @@ import ActionButton from "@/_components/action-button";
 import { useFormAction } from "@/_components/use-hook";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { revalidateTagAction } from "@/actions/revalidate";
 
 export const formSchema = z.object({
   content: z
@@ -85,6 +86,7 @@ const NewPost = ({ categories }: { categories: Category[] }) => {
       isPublic: true,
       categoryId: values.category,
     });
+    await revalidateTagAction("new-post");
 
     setIsLoading(false);
     toast.success("Post created successfully", {

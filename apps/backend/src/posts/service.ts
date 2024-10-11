@@ -1,6 +1,6 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, desc, sql } from "drizzle-orm";
 import { db } from "../db";
-import { postTable } from "../db/schema";
+import { postTable, userTable } from "../db/schema";
 import { CreatePostModel } from "../models/posts";
 import postgres from "postgres";
 import { InvariantError } from "../exceptions/errors";
@@ -9,7 +9,13 @@ type Post = typeof CreatePostModel.static;
 
 export const postService = {
   getUserPosts: async (id: string) => {
-    const posts = db.select().from(postTable).where(eq(postTable.userId, id));
+    const posts = await db
+      .select()
+      .from(postTable)
+      .where(eq(postTable.userId, id))
+      .orderBy(
+        desc(sql`GREATEST(${postTable.createdAt}, ${postTable.updatedAt})`),
+      );
 
     return posts;
   },

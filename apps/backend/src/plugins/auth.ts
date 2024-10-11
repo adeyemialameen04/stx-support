@@ -53,7 +53,6 @@ export const accessTokenPlugin = new Elysia({ name: "plugin.access" })
       );
     }
 
-    console.log(token, "here???????? meoa");
     return {
       payload: token,
     };
@@ -74,7 +73,6 @@ export const refreshTokenPlugin = new Elysia({ name: "plugin.refresh" })
   })
   .derive({ as: "scoped" }, async ({ bearer, refreshJwt }) => {
     if (!bearer) {
-      console.log("here? wow");
       return { payload: null };
     }
 
