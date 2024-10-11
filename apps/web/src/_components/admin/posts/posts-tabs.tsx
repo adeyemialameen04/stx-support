@@ -18,12 +18,15 @@ export const PostsTabs = async () => {
           key={index}
           className="flex flex-col gap-4 pt-8"
         >
-          {posts &&
+          {posts && posts.length > 0 ? (
             posts.map((post: SelectPostSchema) => (
               <Suspense key={post.id} fallback={<PostSkeleton />}>
                 <PostCard post={post} />
               </Suspense>
-            ))}
+            ))
+          ) : (
+            <div>You have not created any posts yet</div>
+          )}
         </TabsContent>
       ))}
     </>

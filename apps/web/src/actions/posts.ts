@@ -1,12 +1,13 @@
 "use server";
 
-import { actionClient, authenticatedAction } from "@/lib/safe-action";
+import { actionClient } from "@/lib/safe-action";
 import { assertUserAuthenticated } from "@/lib/session";
 import { CreatePostModel } from "../../../../packages/schemas/src";
 import { AuthorizationError } from "@repo/errors/index";
-import { API_URL } from "@/lib/constants";
 import makeFetch from "@/lib/fetch";
-import { category } from "backend/src/db/schema/category";
+import { toast } from "sonner";
+import { revalidateTagAction } from "./revalidate";
+import { revalidateTag } from "next/cache";
 
 export const createPost = actionClient
   .schema(CreatePostModel)
@@ -18,9 +19,6 @@ export const createPost = actionClient
       throw new AuthorizationError("You are not authorized to view this page");
     }
 
-    // const res = await fetch(`${API_URL}/posts`, {
-    //   method: "POST",
-    // });
     makeFetch(true, "/posts", user.accessToken as string, {
       method: "POST",
       body: JSON.stringify({
@@ -38,6 +36,27 @@ export const createPost = actionClient
         console.log(err);
         return { status: 500, message: "Error" };
       });
-
-    // return { success: "Posted" };
   });
+
+export const deletePost = async (id: string) => {
+  const user = await assertUserAuthenticated();
+
+  if (!user) {
+    throw new AuthorizationError("You are not authorized to view this page");
+  }
+
+  makeFetch(true, `/posts/${id}`, user.accessToken as string, {
+    method: "DELETE",
+    next: {
+      tags: ["delete-post"],
+    },
+  })()
+    .then(async (res) => {
+      revalidateTag("posts");
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+
+  console.log("git here");
+};

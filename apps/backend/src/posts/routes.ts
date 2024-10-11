@@ -33,7 +33,6 @@ export const postsRoutes = new Elysia({
         .get(
           "",
           async ({ payload }) => {
-            console.log(payload, "handler");
             if (payload) {
               const userPosts = await postService.getUserPosts(payload.user.id);
 
@@ -135,7 +134,7 @@ export const postsRoutes = new Elysia({
                       "Post not found or you don't have permission to edit it",
                     );
                   }
-                  const deletedPost = await postService.deletePost(id);
+                  const [deletedPost] = await postService.deletePost(id);
                   return deletedPost;
                 },
                 {

@@ -1,6 +1,5 @@
 import { SelectPostSchema } from "@/queries/posts";
 import parse from "html-react-parser";
-import { PostSchema } from "@/types/post";
 import { Button } from "@repo/ui/components/ui/button";
 import {
   Card,
@@ -22,17 +21,16 @@ import { Separator } from "@repo/ui/components/ui/separator";
 import { Edit, Ellipsis, Eye, Globe, Pin, Trash } from "lucide-react";
 import Link from "next/link";
 import dayjs from "dayjs";
+import { deletePost } from "@/actions/posts";
+import DeletePost from "./delete-post";
 
 export default function PostCard({ post }: { post: SelectPostSchema }) {
-  const date = dayjs(post.createdAt);
-  const time = date.format("hh:mm A");
+  const formattedDate = dayjs(post.createdAt).format("MMM D, YYYY [at] hh:mmA");
 
   return (
     <Card>
       <CardHeader className="flex justify-between items-center flex-row">
-        <CardDescription>
-          Posted at {date.year()} at {time}
-        </CardDescription>
+        <CardDescription>Posted {formattedDate}</CardDescription>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button size={"icon"} variant={"ghost"}>
@@ -46,7 +44,7 @@ export default function PostCard({ post }: { post: SelectPostSchema }) {
                 variant={"ghost"}
                 asChild
               >
-                <Link href={"/view"}>
+                <Link href={`/admin/posts/view/${post.id}`}>
                   <Eye className="mr-2 h-4 w-4" /> View post
                 </Link>
               </Button>
@@ -58,7 +56,7 @@ export default function PostCard({ post }: { post: SelectPostSchema }) {
                 variant={"ghost"}
                 asChild
               >
-                <Link href={"/edit"}>
+                <Link href={`/admin/posts/edit/${post.id}`}>
                   <Edit className="mr-2 h-4 w-4" /> Edit
                 </Link>
               </Button>
@@ -71,12 +69,7 @@ export default function PostCard({ post }: { post: SelectPostSchema }) {
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Button
-                className="p-0 w-full justify-start text-destructive"
-                variant={"ghost"}
-              >
-                <Trash className="mr-2 h-4 w-4" /> Delete
-              </Button>
+              <DeletePost id={post.id} />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

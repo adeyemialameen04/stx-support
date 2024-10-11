@@ -10,6 +10,11 @@ export const getUserPosts = async (
       true,
       "/posts",
       accessToken,
+      {
+        next: {
+          tags: ["new-post", "delete-post", "posts"],
+        },
+      },
     )();
     if (Array.isArray(res)) {
       return res;
