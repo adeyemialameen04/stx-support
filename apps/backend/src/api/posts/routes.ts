@@ -7,6 +7,9 @@ import { accessTokenPlugin } from "@/plugins/auth";
 import { accessTokenSecurity } from "@/utils/helpers";
 import { selectPostSchema, insertPostSchema } from "@/db/schema/post";
 import { IdModel } from "@/models/common";
+import { selectUserSchema } from "@/db/schema/user";
+import { selectCommentSchema } from "@/db/schema/comment";
+import { selectCategorySchema } from "@/db/schema/category";
 
 const tags = ["Posts"];
 
@@ -150,4 +153,32 @@ export const postsRoutes = new Elysia({
                 },
               ),
         ),
+  )
+  .get(
+    "/:id",
+    async ({ params: { id }, set }) => {
+      const post = await postService.getPost(id);
+      if (!post) {
+        throw new NotFoundError("Post not found");
+      }
+
+      set.status = "OK";
+      return post;
+    },
+    {
+      response: {
+        200: t.Object({
+          ...selectPostSchema.properties,
+          author: selectUserSchema,
+          comments: t.Array(selectCommentSchema),
+          category: selectCategorySchema,
+        }),
+        400: ERRORS.NOT_FOUND,
+      },
+      params: IdModel,
+      detail: {
+        summary: "Get Post",
+        description: "Get Post by ID",
+      },
+    },
   );

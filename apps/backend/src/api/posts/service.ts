@@ -1,5 +1,6 @@
 import { db } from "@/db";
-import { postTable } from "@/db/schema";
+import { postTable, userTable } from "@/db/schema";
+import { comment } from "@/db/schema/comment";
 import { InvariantError } from "@/exceptions/errors";
 import { CreatePostModel } from "@/models/posts";
 import { and, eq, desc, sql } from "drizzle-orm";
@@ -40,6 +41,19 @@ export const postService = {
         }
       }
     }
+  },
+
+  getPost: async (id: string) => {
+    const post = await db.query.postTable.findFirst({
+      where: eq(postTable.id, id),
+      with: {
+        author: true,
+        comments: true,
+        category: true,
+      },
+    });
+
+    return post;
   },
 
   checkPostExist: async (id: string) => {
