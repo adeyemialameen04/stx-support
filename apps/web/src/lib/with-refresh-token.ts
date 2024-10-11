@@ -35,6 +35,7 @@ export function getMiddleware({
       } catch (error) {
         console.error("Error in token refresh:", error);
         if (onError) {
+          console.error("Gotcha lol");
           const res = NextResponse.next();
           onError(req, res, error);
           return res;
