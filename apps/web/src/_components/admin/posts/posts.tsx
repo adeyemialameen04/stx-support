@@ -1,9 +1,21 @@
-import { Card, CardFooter, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs";
+import {
+  Card,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@repo/ui/components/ui/card";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@repo/ui/components/ui/tabs";
 import { posts } from "@/data/mock/posts";
 import { ChartColumn, Headphones, Image, NotepadText } from "lucide-react";
 import Link from "next/link";
 import PostCard from "./post-card";
+import { Suspense } from "react";
+import { PostsTabs } from "./posts-tabs";
 
 const routes = [
   {
@@ -67,17 +79,20 @@ export default function Posts() {
             </TabsTrigger>
           ))}
         </TabsList>
-        {posts_tabs.map((tab, index) => (
-          <TabsContent
-            value={tab.toLowerCase()}
-            key={index}
-            className="flex flex-col gap-4 pt-8"
-          >
-            {posts.map((post, index) => (
-              <PostCard post={post} key={index} />
-            ))}
-          </TabsContent>
-        ))}
+        <PostsTabs />
+        {/* {posts_tabs.map((tab, index) => ( */}
+        {/*   <TabsContent */}
+        {/*     value={tab.toLowerCase()} */}
+        {/*     key={index} */}
+        {/*     className="flex flex-col gap-4 pt-8" */}
+        {/*   > */}
+        {/*     {posts.map((post, index) => ( */}
+        {/*       <Suspense key={index}> */}
+        {/*         <PostCard post={post} key={index} /> */}
+        {/*       </Suspense> */}
+        {/*     ))} */}
+        {/*   </TabsContent> */}
+        {/* ))} */}
       </Tabs>
     </div>
   );

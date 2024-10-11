@@ -16,6 +16,8 @@
     "@repo/tailwind": "*",
     "@repo/ui": "*",
     "@stacks/connect-react": "^22.4.2",
+    "dayjs": "^1.11.13",
+    "html-react-parser": "^5.1.18",
     "jose": "^5.9.3",
     "lucide-react": "^0.451.0",
     "next": "14.2.6",

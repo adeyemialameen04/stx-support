@@ -32,10 +32,12 @@ export const createPost = actionClient
     })()
       .then((res) => {
         console.log(res);
+        return { status: 200, message: "Success" };
       })
       .catch((err) => {
         console.log(err);
+        return { status: 500, message: "Error" };
       });
 
-    return { success: "Posted" };
+    // return { success: "Posted" };
   });

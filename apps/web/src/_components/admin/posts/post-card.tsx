@@ -1,3 +1,5 @@
+import { SelectPostSchema } from "@/queries/posts";
+import parse from "html-react-parser";
 import { PostSchema } from "@/types/post";
 import { Button } from "@repo/ui/components/ui/button";
 import {
@@ -15,16 +17,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@repo/ui/components/ui/dropdown-menu";
+import { Skeleton } from "@repo/ui/components/ui/skeleton";
 import { Separator } from "@repo/ui/components/ui/separator";
 import { Edit, Ellipsis, Eye, Globe, Pin, Trash } from "lucide-react";
 import Link from "next/link";
+import dayjs from "dayjs";
 
-export default function PostCard({ post }: { post: PostSchema }) {
+export default function PostCard({ post }: { post: SelectPostSchema }) {
+  const date = dayjs(post.createdAt);
+  const time = date.format("hh:mm A");
+
   return (
     <Card>
       <CardHeader className="flex justify-between items-center flex-row">
         <CardDescription>
-          Posted at {post.date} at {post.time}
+          Posted at {date.year()} at {time}
         </CardDescription>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -76,7 +83,7 @@ export default function PostCard({ post }: { post: PostSchema }) {
       </CardHeader>
       <CardContent>
         <CardTitle className="mb-3 text-2xl">{post.title}</CardTitle>
-        <CardDescription>{post.desc}</CardDescription>
+        <CardDescription>{parse(post.content as string)}</CardDescription>
         <Separator className="mt-4" />
       </CardContent>
       <CardFooter className="flex justify-between text-muted-foreground">
@@ -85,13 +92,45 @@ export default function PostCard({ post }: { post: PostSchema }) {
         </p>
         <div className="flex gap-4 sm:gap-8">
           <p className="flex items-center gap-2 font-light text-sm">
-            {post.like} Like
+            {/* {post.like} Like */}
           </p>
           <p className="flex items-center gap-2 font-light text-sm">
-            {post.comment} Comment
+            {/* {post.comment} Comment */}
           </p>
         </div>
       </CardFooter>
     </Card>
   );
 }
+
+export const PostSkeleton = () => {
+  return (
+    <Skeleton className="flex flex-col">
+      <CardHeader className="flex justify-between items-center flex-row">
+        <Skeleton className="h-5 w-32" />
+        <Button size={"icon"} variant={"ghost"} disabled>
+          <Ellipsis />
+        </Button>
+      </CardHeader>
+      <CardContent className="">
+        <Skeleton className="h-8 w-52 mb-3" />
+        <Skeleton className="h-6 w-40" />
+        <Separator className="mt-4" />
+      </CardContent>
+      <CardFooter className="flex justify-between text-muted-foreground">
+        <p className="flex items-center">
+          <Globe className="mr-2 h-4 w-4" />{" "}
+          <Skeleton className="size-4 rounded-full" />
+        </p>
+        <div className="flex gap-4 sm:gap-8">
+          <p className="flex items-center gap-2 font-light text-sm">
+            <Skeleton className="size-4 rounded-full" /> Like
+          </p>
+          <p className="flex items-center gap-2 font-light text-sm">
+            <Skeleton className="size-4 rounded-full" /> Comment
+          </p>
+        </div>
+      </CardFooter>
+    </Skeleton>
+  );
+};

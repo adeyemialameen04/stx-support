@@ -2,7 +2,6 @@
 import { Editor } from "@tiptap/core";
 import { MinimalTiptapEditor } from "@/_components/minimal-tiptap";
 import { cn } from "@/lib/utils";
-import { Button } from "@repo/ui/components/ui/button";
 import {
   Form,
   FormField,
@@ -11,10 +10,9 @@ import {
   FormControl,
   FormMessage,
 } from "@repo/ui/components/ui/form";
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { Input } from "@repo/ui/components/ui/input";
 import {
   Select,
@@ -27,6 +25,10 @@ import {
 import { Globe, Heart } from "lucide-react";
 import { Category } from "@/types/post";
 import { createPost } from "@/actions/posts";
+import ActionButton from "@/_components/action-button";
+import { useFormAction } from "@/_components/use-hook";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export const formSchema = z.object({
   content: z
@@ -47,13 +49,15 @@ export const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const NewPost = ({ categories }: { categories: Category[] }) => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const editorRef = useRef<Editor | null>(null);
-  const form = useForm<FormValues>({
+  const form = useFormAction<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      content: "",
-      title: "",
-      visibility: "",
+      content: "Hello im Me",
+      title: "Hi",
+      visibility: "supporters",
       category: "",
     },
   });
@@ -72,6 +76,7 @@ const NewPost = ({ categories }: { categories: Category[] }) => {
     console.log("==Getting values from form==");
     console.log(values);
     console.log("Success: Values retrieved from form");
+    setIsLoading(true);
 
     const res = await createPost({
       status: "published",
@@ -80,6 +85,28 @@ const NewPost = ({ categories }: { categories: Category[] }) => {
       isPublic: true,
       categoryId: values.category,
     });
+
+    setIsLoading(false);
+    toast.success("Post created successfully", {
+      richColors: true,
+    });
+    // if (res?.data?.status === 200) {
+    //   toast.success("Post created successfully", {
+    //     richColors: true,
+    //   });
+    // }
+    //
+
+    console.log("==Clearing form==");
+    form.reset();
+
+    editorRef.current?.commands.clearContent();
+
+    console.log("==Resetting editor==");
+    editorRef.current?.commands.setContent("");
+    console.log("Success: Editor reset");
+
+    router.push("/admin/posts");
 
     // setTimeout(() => {
     //   console.log("==Clearing form==");
@@ -108,7 +135,17 @@ const NewPost = ({ categories }: { categories: Category[] }) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
+      <form
+        // action={createPost({
+        //   categoryId: form.getValues("category"),
+        //   isPublic: true,
+        //   status: "published",
+        //   content: form.getValues("content"),
+        //   title: form.getValues("title"),
+        // })}
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-full space-y-6"
+      >
         <FormField
           name="title"
           control={form.control}
@@ -139,7 +176,6 @@ const NewPost = ({ categories }: { categories: Category[] }) => {
                   output="html"
                   placeholder="Type your description here..."
                   onCreate={handleCreate}
-                  autofocus={true}
                   immediatelyRender={true}
                   editable={true}
                   injectCSS={true}
@@ -212,10 +248,7 @@ const NewPost = ({ categories }: { categories: Category[] }) => {
             </FormItem>
           )}
         />
-
-        <Button type="submit" size="lg" className="w-full">
-          Submit
-        </Button>
+        <ActionButton isLoading={isLoading}>Submit</ActionButton>
       </form>
     </Form>
   );
