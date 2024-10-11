@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1728270760195,
-      "tag": "0000_redundant_grey_gargoyle",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1728514568198,
-      "tag": "0001_flat_overlord",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1728516174604,
-      "tag": "0002_motionless_ironclad",
+      "when": 1728673711781,
+      "tag": "0000_pale_leech",
       "breakpoints": true
     }
   ]

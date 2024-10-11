@@ -1,11 +1,10 @@
-import PostCard from "@/_components/admin/posts/post-card";
 import ImageChange from "@/_components/profile/image-change";
 import Support from "@/_components/profile/support";
 import { Button } from "@repo/ui/components/ui/button";
 import { Card, CardContent, CardHeader } from "@repo/ui/components/ui/card";
 import { Input } from "@repo/ui/components/ui/input";
-import { posts } from "@/data/mock/posts";
 import { user_info } from "@/data/mock/user";
+import { PostsList } from "./posts-list";
 
 export default async function UserPage() {
   return (
@@ -14,9 +13,7 @@ export default async function UserPage() {
       <div className="px-4 font-circular-medium max-w-[950px] mx-auto mt-20 grid grid-cols-1 md:grid-cols-2 gap-4">
         <Support user={user_info} />
         <div className="flex flex-col gap-3">
-          {posts.map((item, index) => (
-            <PostCard post={item} key={index} />
-          ))}
+          <PostsList />
         </div>
         <Card>
           <CardHeader className="flex">

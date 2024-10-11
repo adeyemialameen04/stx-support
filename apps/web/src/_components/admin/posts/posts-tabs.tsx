@@ -1,13 +1,7 @@
 import { TabsContent } from "@repo/ui/components/ui/tabs";
-import { Suspense } from "react";
-import PostCard, { PostSkeleton } from "./post-card";
-import { getUserPosts, SelectPostSchema } from "@/queries/posts";
-import { cookies } from "next/headers";
+import { PostsList } from "@/app/[username]/posts-list";
 
-export const PostsTabs = async () => {
-  const accessToken = cookies().get("accessToken");
-  const posts =
-    accessToken?.value && (await getUserPosts(accessToken?.value as string));
+export const PostsTabs = () => {
   const posts_tabs = ["Published", "Drafted", "Scheduled"];
 
   return (
@@ -18,15 +12,7 @@ export const PostsTabs = async () => {
           key={index}
           className="flex flex-col gap-4 pt-8"
         >
-          {posts && posts.length > 0 ? (
-            posts.map((post: SelectPostSchema) => (
-              <Suspense key={post.id} fallback={<PostSkeleton />}>
-                <PostCard post={post} />
-              </Suspense>
-            ))
-          ) : (
-            <div>You have not created any posts yet</div>
-          )}
+          <PostsList />
         </TabsContent>
       ))}
     </>

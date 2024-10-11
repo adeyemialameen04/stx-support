@@ -1,6 +1,5 @@
 import {
   boolean,
-  json,
   pgEnum,
   pgTable,
   text,
@@ -10,7 +9,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { user } from "./user";
 import { relations, sql } from "drizzle-orm";
-import { categoryTable, userTable } from ".";
+import { categoryTable, commentTable, userTable } from ".";
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
 import { t } from "elysia";
 
@@ -36,11 +35,11 @@ export const post = pgTable("post", {
 });
 
 export const postRelations = relations(post, ({ one, many }) => ({
-  user: one(userTable, {
+  author: one(userTable, {
     fields: [post.userId],
     references: [userTable.id],
   }),
-  // comments: many(commentTable),
+  comments: many(commentTable),
   category: one(categoryTable, {
     fields: [post.categoryId],
     references: [categoryTable.id],
