@@ -1,9 +1,9 @@
+import { db } from "@/db";
+import { postTable } from "@/db/schema";
+import { InvariantError } from "@/exceptions/errors";
+import { CreatePostModel } from "@/models/posts";
 import { and, eq, desc, sql } from "drizzle-orm";
-import { db } from "../db";
-import { postTable, userTable } from "../db/schema";
-import { CreatePostModel } from "../models/posts";
 import postgres from "postgres";
-import { InvariantError } from "../exceptions/errors";
 
 type Post = typeof CreatePostModel.static;
 

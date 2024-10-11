@@ -1,11 +1,12 @@
-import Elysia, { t } from "elysia";
-import { insertPostSchema, selectPostSchema } from "../db/schema/post";
+import Elysia, { NotFoundError, t } from "elysia";
 import { postService } from "./service";
-import { accessTokenSecurity } from "../utils/helpers";
-import { AuthorizationError, NotFoundError } from "../exceptions/errors";
-import { ERRORS } from "../models/error-models";
-import { accessTokenPlugin } from "../plugins/auth";
-import { CreatePostModel } from "../models/posts";
+import { AuthorizationError } from "@/exceptions/errors";
+import { ERRORS } from "@/models/error-models";
+import { CreatePostModel } from "@/models/posts";
+import { accessTokenPlugin } from "@/plugins/auth";
+import { accessTokenSecurity } from "@/utils/helpers";
+import { selectPostSchema, insertPostSchema } from "@/db/schema/post";
+import { IdModel } from "@/models/common";
 
 const tags = ["Posts"];
 
@@ -78,9 +79,7 @@ export const postsRoutes = new Elysia({
         )
         .guard(
           {
-            params: t.Object({
-              id: t.String({ format: "uuid" }),
-            }),
+            params: IdModel,
           },
           (app) =>
             app

@@ -1,14 +1,13 @@
 import Elysia, { t } from "elysia";
-import {
-  insertCategorySchema,
-  selectCategorySchema,
-} from "../../db/schema/category";
-import { db } from "../../db";
-import { categoryTable } from "../../db/schema";
 import { eq } from "drizzle-orm";
-import postgres from "postgres";
-import { ERRORS } from "../../models/error-models";
-import { NotFoundError } from "../../exceptions/errors";
+import { categoryTable } from "@/db/schema";
+import {
+  selectCategorySchema,
+  insertCategorySchema,
+} from "@/db/schema/category";
+import { ERRORS } from "@/models/error-models";
+import { db } from "@/db";
+import { NotFoundError } from "@/exceptions/errors";
 
 const tags = ["Categories", "Posts"];
 export const categoryRoutes = new Elysia({

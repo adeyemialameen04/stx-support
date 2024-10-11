@@ -1,6 +1,6 @@
+import { db } from "@/db";
+import { userTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { db } from "../db";
-import { userTable } from "../db/schema";
 
 export const authService = {
   isUserExist: async (stxAddressMainnet: string) => {

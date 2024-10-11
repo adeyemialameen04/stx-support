@@ -54,6 +54,4 @@ export const insertPostSchema = createInsertSchema(post, {
   }),
 });
 
-export const selectPostSchema = createSelectSchema(post, {
-  content: t.Unknown(),
-});
+export const selectPostSchema = createSelectSchema(post);
