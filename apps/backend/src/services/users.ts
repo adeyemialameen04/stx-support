@@ -37,4 +37,12 @@ export const usersService = {
 
     return post;
   },
+
+  getUser: async (id: string) => {
+    const user = await db.query.userTable.findFirst({
+      where: eq(userTable.id, id),
+    });
+
+    return user;
+  },
 };
