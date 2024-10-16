@@ -3,7 +3,7 @@ import serverTiming from "@elysiajs/server-timing";
 import logixlysia from "logixlysia";
 import { docs } from "./plugins/docs";
 import { errors } from "./plugins/errors";
-import { api } from "./api";
+import { api } from "./routes";
 
 const app = new Elysia();
 app

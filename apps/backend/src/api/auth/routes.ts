@@ -1,19 +1,19 @@
 import Elysia, { t } from "elysia";
-import { db } from "../db";
-import { userTable } from "../db/schema";
-import { selectUserSchema } from "../db/schema/user";
-import { accessTokenSecurity, refreshTokenSecurity } from "../utils/helpers";
 import bearer from "@elysiajs/bearer";
 import { v4 as uuidv4 } from "uuid";
-import { ERRORS } from "../models/error-models";
-import { AuthModel, LoginResponseModel, PayloadModel } from "../models/auth";
 import { authService } from "./service";
+import { db } from "@/db";
+import { userTable } from "@/db/schema";
+import { selectUserSchema } from "@/db/schema/user";
+import { AuthModel, LoginResponseModel } from "@/models/auth";
+import { ERRORS } from "@/models/error-models";
+import { accessTokenSecurity, refreshTokenSecurity } from "@/utils/helpers";
+import { AuthorizationError } from "@/exceptions/errors";
 import {
-  accessTokenPlugin,
   jwtPlugin,
+  accessTokenPlugin,
   refreshTokenPlugin,
-} from "../plugins/auth";
-import { AuthorizationError } from "../exceptions/errors";
+} from "@/plugins/auth";
 
 const tags = ["Auth"];
 export const authRoutes = new Elysia({ prefix: "/auth", tags })

@@ -1,6 +1,8 @@
 import { relations, sql } from "drizzle-orm";
 import { pgTable, timestamp, uuid, text } from "drizzle-orm/pg-core";
 import { postTable, userTable } from ".";
+import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
+import { t } from "elysia";
 
 export const comment = pgTable("comment", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -16,6 +18,11 @@ export const comment = pgTable("comment", {
     .notNull()
     .defaultNow()
     .$onUpdate(() => sql`now()`),
+});
+
+export const insertCommentSchema = createInsertSchema(comment);
+export const selectCommentSchema = createSelectSchema(comment, {
+  id: t.String({ format: "uuid" }),
 });
 
 export const commentRelations = relations(comment, ({ one }) => ({

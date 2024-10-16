@@ -17,7 +17,7 @@ export const docs = (app: Elysia) =>
         scalarConfig: {
           darkMode: true,
           theme: "saturn",
-          layout: "classic",
+          // layout: "classic",
           forceDarkModeState: "dark",
           metaData: {
             ogTitle: "Stx-Support Documentation",

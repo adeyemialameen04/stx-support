@@ -1,16 +1,16 @@
+import { selectUserSchema } from "@/db/schema/user";
+import { AuthorizationError } from "@/exceptions/errors";
+import { ERRORS } from "@/models/error-models";
+import { UpdateUserModel } from "@/models/users";
+import { accessTokenPlugin } from "@/plugins/auth";
+import { usersService } from "@/services/users";
+import { accessTokenSecurity } from "@/utils/helpers";
 import Elysia from "elysia";
-import { accessTokenPlugin } from "../plugins/auth";
-import { AuthorizationError } from "../exceptions/errors";
-import { accessTokenSecurity } from "../utils/helpers";
-import { usersService } from "./service";
-import { selectUserSchema } from "../db/schema/user";
-import { ERRORS } from "../models/error-models";
-import { UpdateUserModel } from "../models/users";
 
 const tags = ["Users"];
 export const usersRoutes = new Elysia({
   prefix: "/users",
-  name: "api.users",
+  name: "api.users.index",
   tags,
 })
   .use(accessTokenPlugin)

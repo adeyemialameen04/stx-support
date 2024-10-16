@@ -19,7 +19,7 @@ export const jwtPlugin = new Elysia({ name: "jwt/plugin" })
     jwt({
       name: "refreshJwt",
       secret: env.SECRET_KEY,
-      exp: "15m",
+      exp: "7d",
       schema: PayloadModel,
     }),
   )

@@ -1,11 +1,12 @@
-import Elysia, { t } from "elysia";
-import { insertPostSchema, selectPostSchema } from "../db/schema/post";
+import Elysia, { NotFoundError, t } from "elysia";
 import { postService } from "./service";
-import { accessTokenSecurity } from "../utils/helpers";
-import { AuthorizationError, NotFoundError } from "../exceptions/errors";
-import { ERRORS } from "../models/error-models";
-import { accessTokenPlugin } from "../plugins/auth";
-import { CreatePostModel } from "../models/posts";
+import { AuthorizationError, InternalServerError } from "@/exceptions/errors";
+import { ERRORS } from "@/models/error-models";
+import { CreatePostModel, SinglePost } from "@/models/posts";
+import { accessTokenPlugin } from "@/plugins/auth";
+import { accessTokenSecurity } from "@/utils/helpers";
+import { selectPostSchema, insertPostSchema } from "@/db/schema/post";
+import { IdModel } from "@/models/common";
 
 const tags = ["Posts"];
 
@@ -17,6 +18,7 @@ export const postsRoutes = new Elysia({
   .use(accessTokenPlugin)
   .model("CreatePostModel", CreatePostModel)
   .model("PostModel", selectPostSchema)
+  .model("SinglePost", SinglePost)
   .guard(
     {
       detail: {
@@ -78,9 +80,7 @@ export const postsRoutes = new Elysia({
         )
         .guard(
           {
-            params: t.Object({
-              id: t.String({ format: "uuid" }),
-            }),
+            params: IdModel,
           },
           (app) =>
             app
@@ -98,6 +98,10 @@ export const postsRoutes = new Elysia({
                   }
 
                   const updatedPost = await postService.updatePost(id, body);
+                  if (!updatedPost) {
+                    throw new InternalServerError("Failed to update post");
+                  }
+
                   return updatedPost;
                 },
                 {
@@ -111,7 +115,8 @@ export const postsRoutes = new Elysia({
                     ]),
                   ),
                   response: {
-                    201: selectPostSchema,
+                    500: ERRORS.INTERNAL_SERVER_ERROR,
+                    200: selectPostSchema,
                     401: ERRORS.UNAUTHORIZED,
                     404: ERRORS.NOT_FOUND,
                     400: ERRORS.INVARIANT,
@@ -143,12 +148,36 @@ export const postsRoutes = new Elysia({
                     description: "Deleted a Post",
                   },
                   response: {
-                    204: selectPostSchema,
+                    // 204: selectPostSchema,
                     401: ERRORS.UNAUTHORIZED,
                     404: ERRORS.NOT_FOUND,
-                    400: ERRORS.INVARIANT,
+                    // 400: ERRORS.INVARIANT,
                   },
                 },
               ),
         ),
+  )
+  .get(
+    "/:id",
+    async ({ params: { id }, set }) => {
+      const post = await postService.getPost(id);
+      if (!post) {
+        throw new NotFoundError("Post not found");
+      }
+
+      set.status = "OK";
+      return post;
+    },
+    {
+      response: {
+        200: "SinglePost",
+        404: ERRORS.NOT_FOUND,
+        500: ERRORS.INTERNAL_SERVER_ERROR,
+      },
+      params: IdModel,
+      detail: {
+        summary: "Get Post",
+        description: "Get Post by ID",
+      },
+    },
   );

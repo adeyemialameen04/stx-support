@@ -1,9 +1,10 @@
+import { db } from "@/db";
+import { postTable, userTable } from "@/db/schema";
+import { comment } from "@/db/schema/comment";
+import { InvariantError } from "@/exceptions/errors";
+import { CreatePostModel } from "@/models/posts";
 import { and, eq, desc, sql } from "drizzle-orm";
-import { db } from "../db";
-import { postTable, userTable } from "../db/schema";
-import { CreatePostModel } from "../models/posts";
 import postgres from "postgres";
-import { InvariantError } from "../exceptions/errors";
 
 type Post = typeof CreatePostModel.static;
 
@@ -40,6 +41,73 @@ export const postService = {
         }
       }
     }
+  },
+
+  getPost: async (id: string) => {
+    const post = await db.query.postTable.findFirst({
+      where: eq(postTable.id, id),
+      columns: { userId: false, categoryId: false },
+      with: {
+        author: {
+          with: {
+            profile: {
+              columns: {
+                createdAt: false,
+                updatedAt: false,
+                id: false,
+                userId: false,
+              },
+            },
+          },
+          columns: {
+            stxAddressTestnet: false,
+            stxAddressMainnet: false,
+            btcAddressTestnet: false,
+            btcAddressMainnet: false,
+            passwordHash: false,
+            updatedAt: false,
+            createdAt: false,
+          },
+        },
+        comments: {
+          with: {
+            author: {
+              with: {
+                profile: {
+                  columns: {
+                    createdAt: false,
+                    updatedAt: false,
+                    id: false,
+                    userId: false,
+                  },
+                },
+              },
+              columns: {
+                stxAddressTestnet: false,
+                stxAddressMainnet: false,
+                btcAddressTestnet: false,
+                btcAddressMainnet: false,
+                passwordHash: false,
+                updatedAt: false,
+                createdAt: false,
+              },
+            },
+          },
+          columns: {
+            userId: false,
+            postId: false,
+          },
+        },
+        category: {
+          columns: {
+            createdAt: false,
+            updatedAt: false,
+          },
+        },
+      },
+    });
+
+    return post;
   },
 
   checkPostExist: async (id: string) => {
