@@ -20,6 +20,7 @@
     "drizzle-typebox": "^0.1.1",
     "drizzle-zod": "^0.5.1",
     "elysia": "^1.1.18",
+    "elysia-compression": "^0.0.7",
     "logixlysia": "^3.7.0",
     "postgres": "^3.4.4",
     "uuid": "^10.0.0",

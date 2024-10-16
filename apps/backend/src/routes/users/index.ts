@@ -1,5 +1,5 @@
 import { selectUserSchema } from "@/db/schema/user";
-import { AuthorizationError } from "@/exceptions/errors";
+import { AuthorizationError, NotFoundError } from "@/exceptions/errors";
 import { ERRORS } from "@/models/error-models";
 import { UpdateUserModel } from "@/models/users";
 import { accessTokenPlugin } from "@/plugins/auth";
@@ -38,15 +38,16 @@ export const usersRoutes = new Elysia({
 
             if (updatedUser) {
               return updatedUser;
+            } else {
+              throw new NotFoundError("User not found");
             }
-
-            throw new AuthorizationError("");
           },
           {
             body: "UpdateUserModel",
             response: {
               200: selectUserSchema,
               401: ERRORS.UNAUTHORIZED,
+              404: ERRORS.NOT_FOUND,
             },
             detail: {
               summary: "Update User",
@@ -54,5 +55,28 @@ export const usersRoutes = new Elysia({
             },
           },
         )
-        .get("/me", async ({ payload }) => {}, {}),
+        .get(
+          "/me",
+          async ({ payload }) => {
+            const user = await usersService.getUser(
+              payload && "user" in payload ? payload.user.id : "",
+            );
+            if (!user) {
+              throw new NotFoundError("user not found");
+            }
+
+            return user;
+          },
+          {
+            response: {
+              200: selectUserSchema,
+              401: ERRORS.UNAUTHORIZED,
+              404: ERRORS.NOT_FOUND,
+            },
+            detail: {
+              summary: "Get user",
+              description: "Get currently logged in user data",
+            },
+          },
+        ),
   );
