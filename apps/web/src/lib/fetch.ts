@@ -3,7 +3,7 @@ import { API_URL } from "./constants";
 export default function makeFetch<T>(
   auth: boolean,
   path: string,
-  accessToken: string,
+  accessToken: string | null,
   init: RequestInit = {},
 ): () => Promise<T | { message: string; statusCode: number }> {
   return async function () {
