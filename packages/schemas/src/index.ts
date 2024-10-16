@@ -2,7 +2,7 @@
 import { insertPostSchema, selectPostSchema } from "backend/src/db/schema/post";
 import { selectCategorySchema } from "backend/src/db/schema/category";
 import { AuthModel, PayloadModel } from "backend/src/models/auth";
-import { CreatePostModel } from "backend/src/models/posts";
+import { CreatePostModel, SinglePost } from "backend/src/models/posts";
 import type { App } from "backend/src/app";
 
 export {
@@ -13,4 +13,5 @@ export {
   AuthModel as authSchema,
   PayloadModel as payloadType,
   CreatePostModel,
+  SinglePost,
 };
