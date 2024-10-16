@@ -4,7 +4,11 @@ import { CreateCommentModel } from "@/models/posts";
 import { accessTokenPlugin } from "@/plugins/auth";
 import Elysia, { t } from "elysia";
 import { commentService } from "./service";
-import { AuthorizationError, NotFoundError } from "@/exceptions/errors";
+import {
+  AuthorizationError,
+  InternalServerError,
+  NotFoundError,
+} from "@/exceptions/errors";
 import { accessTokenSecurity } from "@/utils/helpers";
 import { IdModel } from "@/models/common";
 
@@ -66,13 +70,20 @@ export const commentRoutes = new Elysia({
                   );
 
                   if (comment.length === 0) {
-                    throw new NotFoundError(
+                    throw new AuthorizationError(
                       "Comment not found or you don't have permission to edit it",
                     );
                   }
 
                   const [deletedComment] =
                     await commentService.deleteComment(id);
+
+                  if (!deletedComment) {
+                    throw new NotFoundError(
+                      "Comment not found or you don't have permission to edit it",
+                    );
+                  }
+
                   return deletedComment;
                 },
                 {
@@ -89,7 +100,27 @@ export const commentRoutes = new Elysia({
               )
               .patch(
                 "/:id",
-                async ({ params: { id }, set, payload, body }) => {},
+                async ({ params: { id }, set, payload, body }) => {
+                  const comment = await commentService.isCommentOwner(
+                    id,
+                    payload && "user" in payload ? payload.user.id : "",
+                  );
+
+                  if (comment.length === 0) {
+                    throw new AuthorizationError(
+                      "Comment not found or you don't have permission to edit it",
+                    );
+                  }
+
+                  const updatedComment = await commentService.updateComment(
+                    id,
+                    body,
+                  );
+                  if (!updatedComment)
+                    throw new InternalServerError("Failed to update post");
+
+                  return updatedComment;
+                },
                 {
                   body: t.Partial(CreateCommentModel),
                   detail: {
@@ -97,6 +128,7 @@ export const commentRoutes = new Elysia({
                     description: "Updates a comment",
                   },
                   response: {
+                    500: ERRORS.INTERNAL_SERVER_ERROR,
                     200: selectCommentSchema,
                     401: ERRORS.UNAUTHORIZED,
                     404: ERRORS.NOT_FOUND,

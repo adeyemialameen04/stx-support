@@ -7,7 +7,6 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-import { user } from "./user";
 import { relations, sql } from "drizzle-orm";
 import { categoryTable, commentTable, userTable } from ".";
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
@@ -19,7 +18,7 @@ export const post = pgTable("post", {
   id: uuid("id").primaryKey().defaultRandom().notNull(),
   userId: uuid("user_id")
     .notNull()
-    .references(() => user.id),
+    .references(() => userTable.id),
   title: varchar("title", { length: 255 }).notNull(),
   status: statusEnum("status").notNull(),
   isPublic: boolean("is_public").default(true).notNull(),
