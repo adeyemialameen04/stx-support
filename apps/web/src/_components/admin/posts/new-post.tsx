@@ -250,7 +250,9 @@ const NewPost = ({ categories }: { categories: Category[] }) => {
             </FormItem>
           )}
         />
-        <ActionButton isLoading={isLoading}>Submit</ActionButton>
+        <ActionButton isLoading={form.formState.isSubmitting}>
+          Submit
+        </ActionButton>
       </form>
     </Form>
   );

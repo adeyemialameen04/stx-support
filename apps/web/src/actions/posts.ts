@@ -1,10 +1,10 @@
 "use server";
 import { actionClient } from "@/lib/safe-action";
 import { assertUserAuthenticated } from "@/lib/session";
-import { CreatePostModel } from "../../../../packages/schemas/src";
-import { AuthorizationError } from "@repo/errors/index";
 import makeFetch from "@/lib/fetch";
 import { revalidateTag } from "next/cache";
+import { AuthorizationError } from "~/backend/src/exceptions/errors";
+import { CreatePostModel } from "@repo/schemas/index";
 
 export const createPost = actionClient
   .schema(CreatePostModel)

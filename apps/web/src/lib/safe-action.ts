@@ -3,7 +3,6 @@ import { createServerActionProcedure } from "zsa";
 import { assertUserAuthenticated } from "./session";
 import { createSafeActionClient } from "next-safe-action";
 import { typeboxAdapter } from "next-safe-action/adapters/typebox";
-import { zodAdapter } from "next-safe-action/adapters/zod";
 
 export const actionClient = createSafeActionClient({
   validationAdapter: typeboxAdapter(),

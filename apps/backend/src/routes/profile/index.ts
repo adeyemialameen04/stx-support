@@ -2,19 +2,20 @@ import Elysia, { NotFoundError } from "elysia";
 import { selectUserSchema } from "~/db/schema/user";
 import { AuthorizationError } from "~/exceptions/errors";
 import { ERRORS } from "~/models/error-models";
-import { UpdateUserModel } from "~/models/users";
+import { UpdateProfile } from "~/models/users";
 import { accessTokenPlugin } from "~/plugins/auth";
+import { profileService } from "~/services/profile";
 import { usersService } from "~/services/users";
 import { accessTokenSecurity } from "~/utils/helpers";
 
 const tags = ["Users"];
-export const usersRoutes = new Elysia({
-  prefix: "/users",
-  name: "api.users.index",
+export const profileRoutes = new Elysia({
+  prefix: "/me",
+  name: "api.profile.index",
   tags,
 })
   .use(accessTokenPlugin)
-  .model("UpdateUserModel", UpdateUserModel)
+  .model("UpdateUserProfile", UpdateProfile)
   .guard(
     {
       detail: {
@@ -29,9 +30,9 @@ export const usersRoutes = new Elysia({
     (app) =>
       app
         .patch(
-          "/me",
+          "",
           async ({ payload, body }) => {
-            const updatedUser = await usersService.updateUser(
+            const updatedUser = await profileService.updateUserProfile(
               payload && "user" in payload ? payload.user.id : "",
               body,
             );
@@ -43,11 +44,11 @@ export const usersRoutes = new Elysia({
             }
           },
           {
-            body: "UpdateUserModel",
+            body: UpdateProfile,
             response: {
               200: selectUserSchema,
               401: ERRORS.UNAUTHORIZED,
-              404: ERRORS.NOT_FOUND,
+              // 404: ERRORS.NOT_FOUND,
             },
             detail: {
               summary: "Update User",
@@ -56,7 +57,7 @@ export const usersRoutes = new Elysia({
           },
         )
         .get(
-          "/me",
+          "",
           async ({ payload }) => {
             const user = await usersService.getUser(
               payload && "user" in payload ? payload.user.id : "",

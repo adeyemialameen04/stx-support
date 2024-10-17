@@ -1,12 +1,14 @@
 "use server";
-import { API_URL } from "@/lib/constants";
-import { actionClient } from "@/lib/safe-action";
-import { saveUserTokens } from "@/lib/session";
-import { authSchema } from "@repo/schemas/index";
-import { LoginResponseModel } from "backend/src/models/auth";
+// import { authSchema } from "@repo/schemas/index";
+// import { LoginResponseModel } from "backend/src/models/auth";
+import { actionClient } from "../lib/safe-action";
+import { saveUserTokens } from "../lib/session";
+import { API_URL } from "../lib/constants";
+import { LoginResponseModel } from "~/backend/src/models/auth";
+import { AuthModel } from "~/backend/src/models/auth";
 
 export const signUp = actionClient
-  .schema(authSchema)
+  .schema(AuthModel)
   .action(async ({ parsedInput: { stxAddressMainnet, password } }) => {
     try {
       type LoginResponseType = typeof LoginResponseModel.static;

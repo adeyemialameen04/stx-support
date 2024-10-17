@@ -1,8 +1,8 @@
-import { db } from "@/db";
-import { postTable, userTable } from "@/db/schema";
-import { comment } from "@/db/schema/comment";
-import { InvariantError } from "@/exceptions/errors";
-import { CreatePostModel } from "@/models/posts";
+import { db } from "~/db";
+import { postTable, userTable } from "~/db/schema";
+import { comment } from "~/db/schema/comment";
+import { InvariantError } from "~/exceptions/errors";
+import { CreatePostModel } from "~/models/posts";
 import { and, eq, desc, sql } from "drizzle-orm";
 import postgres from "postgres";
 

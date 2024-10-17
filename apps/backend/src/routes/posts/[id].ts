@@ -1,12 +1,12 @@
-import Elysia, { NotFoundError, t } from "elysia";
-import { AuthorizationError, InternalServerError } from "@/exceptions/errors";
-import { ERRORS } from "@/models/error-models";
-import { SinglePost } from "@/models/posts";
-import { accessTokenPlugin } from "@/plugins/auth";
-import { accessTokenSecurity } from "@/utils/helpers";
-import { selectPostSchema, insertPostSchema } from "@/db/schema/post";
-import { IdModel } from "@/models/common";
-import { postService } from "@/services/posts";
+import Elysia, { InternalServerError, NotFoundError, t } from "elysia";
+import { selectPostSchema, insertPostSchema } from "~/db/schema/post";
+import { AuthorizationError } from "~/exceptions/errors";
+import { IdModel } from "~/models/common";
+import { ERRORS } from "~/models/error-models";
+import { SinglePost } from "~/models/posts";
+import { accessTokenPlugin } from "~/plugins/auth";
+import { postService } from "~/services/posts";
+import { accessTokenSecurity } from "~/utils/helpers";
 
 const tags = ["Posts"];
 
