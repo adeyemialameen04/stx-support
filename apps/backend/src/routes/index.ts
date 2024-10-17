@@ -1,4 +1,3 @@
-import { settings } from "@/config/settings";
 import Elysia from "elysia";
 import { postsRoutes } from "./posts";
 import { postsDynamicRoutes } from "./posts/[id]";
@@ -8,6 +7,7 @@ import { categoryRoutes } from "./categories";
 import { categoryRoutesDynamic } from "./categories/[id]";
 import { usersRoutes } from "./users";
 import { authRoutes } from "./auth/routes";
+import { settings } from "~/config/settings";
 
 export const api = new Elysia({ prefix: settings.API_V1_PREFIX, name: "api" });
 api

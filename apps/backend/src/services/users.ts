@@ -1,8 +1,8 @@
 import postgres from "postgres";
 import { eq } from "drizzle-orm";
-import { db } from "@/db";
-import { userTable } from "@/db/schema";
-import { InvariantError } from "@/exceptions/errors";
+import { db } from "~/db";
+import { userTable } from "~/db/schema";
+import { InvariantError } from "~/exceptions/errors";
 
 export const usersService = {
   updateUser: async (

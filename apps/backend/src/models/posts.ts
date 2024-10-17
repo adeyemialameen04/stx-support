@@ -1,8 +1,8 @@
 import { t } from "elysia";
-import { insertPostSchema, selectPostSchema } from "../db/schema/post";
-import { insertCommentSchema, selectCommentSchema } from "../db/schema/comment";
-import { selectCategorySchema } from "@/db/schema/category";
-import { selectProfileSchema } from "@/db/schema/profile";
+import { selectCategorySchema } from "~/db/schema/category";
+import { insertCommentSchema, selectCommentSchema } from "~/db/schema/comment";
+import { insertPostSchema, selectPostSchema } from "~/db/schema/post";
+import { selectProfileSchema } from "~/db/schema/profile";
 
 export const CreatePostModel = t.Omit(insertPostSchema, [
   "id",

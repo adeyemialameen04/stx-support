@@ -14,6 +14,7 @@
     "@repo/errors": "*",
     "@repo/schemas": "*",
     "@repo/tailwind": "*",
+    "@repo/libs": "*",
     "@repo/ui": "*",
     "@stacks/connect-react": "^22.4.2",
     "dayjs": "^1.11.13",

@@ -1,10 +1,10 @@
 import Elysia, { t } from "elysia";
-import { categoryTable } from "@/db/schema";
+import { categoryTable } from "~/db/schema";
 import {
   selectCategorySchema,
   insertCategorySchema,
-} from "@/db/schema/category";
-import { db } from "@/db";
+} from "~/db/schema/category";
+import { db } from "~/db";
 
 const tags = ["Categories", "Posts"];
 export const categoryRoutes = new Elysia({

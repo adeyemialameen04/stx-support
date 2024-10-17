@@ -1,11 +1,11 @@
 import Elysia, { t } from "elysia";
-import { AuthorizationError } from "@/exceptions/errors";
-import { ERRORS } from "@/models/error-models";
-import { CreatePostModel } from "@/models/posts";
-import { accessTokenPlugin } from "@/plugins/auth";
-import { accessTokenSecurity } from "@/utils/helpers";
-import { selectPostSchema } from "@/db/schema/post";
-import { postService } from "@/services/posts";
+import { AuthorizationError } from "~/exceptions/errors";
+import { ERRORS } from "~/models/error-models";
+import { CreatePostModel } from "~/models/posts";
+import { accessTokenPlugin } from "~/plugins/auth";
+import { accessTokenSecurity } from "~/utils/helpers";
+import { selectPostSchema } from "~/db/schema/post";
+import { postService } from "~/services/posts";
 
 const tags = ["Posts"];
 

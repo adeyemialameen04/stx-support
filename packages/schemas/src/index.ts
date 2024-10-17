@@ -1,12 +1,9 @@
-// backend/src/db/schema
-import { insertPostSchema, selectPostSchema } from "backend/src/db/schema/post";
-import { selectCategorySchema } from "backend/src/db/schema/category";
 import { AuthModel, PayloadModel } from "backend/src/models/auth";
 import { CreatePostModel, SinglePost } from "backend/src/models/posts";
-import type { App } from "backend/src/app";
+import { selectCategorySchema } from "backend/src/db/schema/category";
+import { insertPostSchema, selectPostSchema } from "backend/src/db/schema/post";
 
 export {
-  App,
   insertPostSchema,
   selectPostSchema,
   selectCategorySchema,
