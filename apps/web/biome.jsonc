@@ -1,0 +1,23 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+	"overrides": [
+		{
+			"include": ["./"],
+			"ignore": ["./.next/", "./node_modules/"],
+			"linter": {
+				"rules": {
+					"suspicious": {
+						"recommended": true
+					},
+					"nursery": {
+						"noImgElement": "warn",
+						"noHeadElement": "error"
+					},
+					"correctness": {
+						"useJsxKeyInIterable": "warn"
+					}
+				}
+			}
+		}
+	]
+}
