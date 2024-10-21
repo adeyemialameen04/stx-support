@@ -1,37 +1,64 @@
+import { PublicError } from "@repo/errors/index";
 import { API_URL } from "./constants";
 
+type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+interface NextJsOptions {
+	revalidate?: number | false;
+	tags?: string[];
+}
+
+interface FetchOptions extends Omit<RequestInit, "method" | "body"> {
+	method?: HttpMethod;
+	body?: Record<string, unknown>;
+	next?: NextJsOptions;
+}
+
 export default function makeFetch<T>(
-  auth: boolean,
-  path: string,
-  accessToken: string | null,
-  init: RequestInit = {},
-): () => Promise<T | { message: string; statusCode: number }> {
-  return async function () {
-    try {
-      // Check if the method is POST or PATCH to add Content-Type
-      const shouldAddContentType = ["POST", "PATCH"].includes(
-        init.method || "",
-      );
+	path: string,
+	accessToken: string | null,
+	options: FetchOptions = {},
+): () => Promise<T> {
+	return async () => {
+		const { method = "GET", body, next, ...restOptions } = options;
 
-      const headers = {
-        ...(auth ? { Authorization: `Bearer ${accessToken}` } : {}),
-        ...(shouldAddContentType ? { "Content-Type": "application/json" } : {}),
-        ...init.headers, // Allow overriding headers
-      };
+		// Determine if we should add Content-Type
+		const shouldAddContentType =
+			["POST", "PUT", "PATCH"].includes(method) && body;
 
-      const res = await fetch(`${API_URL}${path}`, {
-        ...init,
-        headers,
-      });
+		const headers = new Headers(restOptions.headers);
 
-      if (!res.ok) {
-        throw new Error(`Request failed with status ${res.status}`);
-      }
+		if (accessToken) {
+			headers.set("Authorization", `Bearer ${accessToken}`);
+		}
 
-      return await res.json();
-    } catch (error) {
-      console.error("Error making fetch request:", error);
-      return { message: "Failed to make request", statusCode: 500 };
-    }
-  };
+		if (shouldAddContentType) {
+			headers.set("Content-Type", "application/json");
+		}
+
+		const fetchOptions: RequestInit & { next?: NextJsOptions } = {
+			...restOptions,
+			method,
+			headers,
+			body: body ? JSON.stringify(body) : undefined,
+		};
+
+		// Add Next.js specific options if provided
+		if (next) {
+			fetchOptions.next = next;
+		}
+
+		const res = await fetch(`${API_URL}${path}`, fetchOptions);
+
+		if (!res.ok) {
+			// const errorBody = await res.text();
+			throw new PublicError("Req failed");
+			// throw new APIError(res.status, `Request failed: ${errorBody}`);
+		}
+
+		const contentType = res.headers.get("content-type");
+		if (contentType?.includes("application/json")) {
+			return (await res.json()) as T;
+		}
+		return (await res.text()) as unknown as T;
+	};
 }

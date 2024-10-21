@@ -20,7 +20,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
 					<BreadcrumbList>
 						<BreadcrumbItem>
 							<BreadcrumbLink asChild>
-								<Link href="/">Home</Link>
+								<Link href="/">{post.author.profile?.name || "Home"}</Link>
 							</BreadcrumbLink>
 						</BreadcrumbItem>
 						<BreadcrumbSeparator />
@@ -29,11 +29,11 @@ export default async function PostPage({ params }: { params: { id: string } }) {
 						</BreadcrumbItem>
 						<BreadcrumbSeparator />
 						<BreadcrumbItem>
-							<BreadcrumbPage>Post Id</BreadcrumbPage>
+							<BreadcrumbPage>{post.title}</BreadcrumbPage>
 						</BreadcrumbItem>
 					</BreadcrumbList>
 				</Breadcrumb>
-				<h3 className="mb-3 text-2xl font-medium">Create a new post</h3>
+				<h3 className="mb-3 text-2xl font-medium">{post.title}</h3>
 			</main>
 		</ContentLayout>
 	);
