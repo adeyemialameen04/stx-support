@@ -19,7 +19,7 @@ export function SheetMenu() {
         </Button>
       </SheetTrigger>
       <SheetContent
-        className="sm:w-72 px-3 h-full flex bg-white flex-col border-r-0"
+        className="flex flex-col px-3 h-full bg-white border-r-0 sm:w-72"
         side="left"
       >
         <SheetHeader>
@@ -29,8 +29,8 @@ export function SheetMenu() {
             asChild
           >
             <Link href="/dashboard" className="self-start">
-              {/* <PanelsTopLeft className="w-6 h-6 mr-1" color="#fff" /> */}
-              {/* <h1 className="font-bold text-lg">XKart</h1> */}
+              {/* <PanelsTopLeft className="mr-1 w-6 h-6" color="#fff" /> */}
+              {/* <h1 className="text-lg font-bold">XKart</h1> */}
               <Image
                 width={130}
                 height={40}

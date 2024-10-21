@@ -24,8 +24,8 @@ export interface MinimalTiptapProps
 }
 
 const Toolbar = ({ editor }: { editor: Editor }) => (
-  <div className="shrink-0 overflow-x-auto border-b border-border p-2">
-    <div className="flex w-max items-center gap-px">
+  <div className="overflow-x-auto p-2 border-b shrink-0 border-border">
+    <div className="flex gap-px items-center w-max">
       <SectionOne editor={editor} activeLevels={[1, 2, 3, 4, 5, 6]} />
 
       <Separator orientation="vertical" className="mx-2 h-7" />

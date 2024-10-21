@@ -52,7 +52,7 @@ export default async function PostPage() {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <h3 className="text-2xl font-medium mb-3">Create a new post</h3>
+        <h3 className="mb-3 text-2xl font-medium">Create a new post</h3>
         <NewPost categories={categories} />
       </main>
     </ContentLayout>

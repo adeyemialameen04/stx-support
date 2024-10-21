@@ -87,7 +87,7 @@ const MemoizedColorButton = React.memo<{
     <Tooltip>
       <TooltipTrigger asChild>
         <ToggleGroupItem
-          className="relative size-7 rounded-md p-0"
+          className="relative p-0 rounded-md size-7"
           value={color.cssVar}
           aria-label={label}
           style={{ backgroundColor: color.cssVar }}

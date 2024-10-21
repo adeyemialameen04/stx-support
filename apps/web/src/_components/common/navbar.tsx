@@ -33,7 +33,7 @@ const routes = [
 
 export default function Navbar() {
   return (
-    <nav className="py-3 px-4 flex justify-between items-center">
+    <nav className="flex justify-between items-center py-3 px-4">
       <span></span>
       <div className="flex gap-4 items-center">
         <Button variant={"link"} asChild>
@@ -53,7 +53,7 @@ export default function Navbar() {
           {routes.map((item, index) => (
             <DropdownMenuItem asChild key={index}>
               <Button
-                className="p-0 w-full justify-start"
+                className="justify-start p-0 w-full"
                 variant={"ghost"}
                 asChild
               >

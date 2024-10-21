@@ -19,11 +19,11 @@ export default function DeletePost({ id }: { id: string }) {
       }}
     >
       <Button
-        className="px-2 w-full justify-start text-destructive"
+        className="justify-start px-2 w-full text-destructive"
         variant={"ghost"}
         type="submit"
       >
-        <Trash className="mr-2 h-4 w-4" /> Delete
+        <Trash className="mr-2 w-4 h-4" /> Delete
       </Button>
     </form>
   );

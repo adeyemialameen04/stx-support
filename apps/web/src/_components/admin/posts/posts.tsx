@@ -46,14 +46,14 @@ export default function Posts() {
   // const active
   return (
     <div className="flex flex-col gap-8">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-4">
         {routes.map((item, index) => (
           <Link
             href={`/admin${item.href}`}
             key={index}
-            className="hover:scale-[1.08] transition-transform duration-300"
+            className="transition-transform duration-300 hover:scale-[1.08]"
           >
-            <Card className="justify-center items-center flex flex-col">
+            <Card className="flex flex-col justify-center items-center">
               <CardHeader>{<item.icon />}</CardHeader>
               <CardFooter>
                 <CardTitle>{item.title}</CardTitle>
@@ -63,7 +63,7 @@ export default function Posts() {
         ))}
       </div>
       <Tabs defaultValue="published">
-        <TabsList className="flex gap-4 md:gap-7 w-full bg-transparent border-b py-6 rounded-none justify-start">
+        <TabsList className="flex gap-4 justify-start py-6 w-full bg-transparent rounded-none border-b md:gap-7">
           {posts_tabs.map((tab, index) => (
             <TabsTrigger
               key={index}

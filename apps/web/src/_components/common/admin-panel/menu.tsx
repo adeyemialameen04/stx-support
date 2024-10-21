@@ -25,20 +25,20 @@ export function Menu({ isOpen }: MenuProps) {
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block pr-2">
-      <nav className="mt-8 h-full w-full overflow-y-hidden">
+      <nav className="overflow-y-hidden mt-8 w-full h-full">
         <ul className="flex pb-2 lg:pb-0 flex-col  min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-40px-32px)] items-start space-y-1 px-2">
           {menuList.map(({ groupLabel, menus }, index) => (
             <li className={cn("w-full", groupLabel ? "pt-5" : "")} key={index}>
               {(isOpen && groupLabel) || isOpen === undefined ? (
-                <p className="text-sm font-medium px-4 pb-2 max-w-[248px] truncate">
+                <p className="px-4 pb-2 text-sm font-medium max-w-[248px] truncate">
                   {groupLabel}
                 </p>
               ) : !isOpen && isOpen !== undefined && groupLabel ? (
                 <TooltipProvider>
                   <Tooltip delayDuration={100}>
                     <TooltipTrigger className="w-full">
-                      <div className="w-full flex justify-center items-center">
-                        <Ellipsis className="h-5 w-5" />
+                      <div className="flex justify-center items-center w-full">
+                        <Ellipsis className="w-5 h-5" />
                       </div>
                     </TooltipTrigger>
                     <TooltipContent side="right">
@@ -106,7 +106,7 @@ export function Menu({ isOpen }: MenuProps) {
               )}
             </li>
           ))}
-          <li className="w-full grow flex items-end">
+          <li className="flex items-end w-full grow">
             <TooltipProvider disableHoverableContent>
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>

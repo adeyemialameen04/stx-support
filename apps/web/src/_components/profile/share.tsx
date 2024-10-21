@@ -43,9 +43,9 @@ export default function SharePage({
 }) {
   return (
     <Credenza>
-      <CredenzaTrigger asChild className="absolute bottom-[-40px] right-4 z-40">
+      <CredenzaTrigger asChild className="absolute right-4 z-40 bottom-[-40px]">
         <Button variant={"ghost"} size={"icon"}>
-          <Upload className="text-muted-foreground h-5 w-5" />
+          <Upload className="w-5 h-5 text-muted-foreground" />
         </Button>
       </CredenzaTrigger>
 
@@ -58,12 +58,12 @@ export default function SharePage({
         <div className="grid grid-cols-2 gap-4">
           {socials.map((item, index) => (
             <Button variant={"outline"} key={index} className="py-6">
-              {<item.icon className="mr-3 h-5 w-5" />} {item.title}
+              {<item.icon className="mr-3 w-5 h-5" />} {item.title}
             </Button>
           ))}
         </div>
         <Separator className="mt-3" />
-        <div className="flex-col flex gap-4">
+        <div className="flex flex-col gap-4">
           <p className="text-lg font-semibold text-center">Share page link</p>
           <div className="flex gap-1 items-center">
             <Input
@@ -86,7 +86,7 @@ export default function SharePage({
               <span className="font-semibold">Tip:</span> Add this link to your
               social bios.
             </p>
-            <div className="flex gap-4 justify-between max-w-[200px] mx-auto mt-3">
+            <div className="flex gap-4 justify-between mx-auto mt-3 max-w-[200px]">
               {socials.map((item, index) => (
                 <Button variant={"ghost"} size={"icon"} key={index}>
                   {<item.icon />}

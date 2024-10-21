@@ -10,7 +10,7 @@ export default async function UserPage() {
   return (
     <main>
       <ImageChange />
-      <div className="px-4 font-circular-medium max-w-[950px] mx-auto mt-20 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 px-4 mx-auto mt-20 md:grid-cols-2 font-circular-medium max-w-[950px]">
         <Support user={user_info} />
         <div className="flex flex-col gap-3">
           <PostsList />
@@ -25,7 +25,7 @@ export default async function UserPage() {
               className="rounded-md"
             />
             <Input placeholder="Enter your email" className="rounded-md" />
-            <Button className="rounded-full py-5">Follow</Button>
+            <Button className="py-5 rounded-full">Follow</Button>
           </CardContent>
         </Card>
       </div>

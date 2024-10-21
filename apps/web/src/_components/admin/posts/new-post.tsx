@@ -146,7 +146,7 @@ const NewPost = ({ categories }: { categories: Category[] }) => {
         //   title: form.getValues("title"),
         // })}
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full space-y-6"
+        className="space-y-6 w-full"
       >
         <FormField
           name="title"
@@ -204,13 +204,13 @@ const NewPost = ({ categories }: { categories: Category[] }) => {
                   <SelectGroup>
                     <SelectItem value="public">
                       <div className="flex items-center">
-                        <Globe className="mr-2 h-4 w-4" />
+                        <Globe className="mr-2 w-4 h-4" />
                         Public
                       </div>
                     </SelectItem>
                     <SelectItem value="supporters">
                       <div className="flex items-center">
-                        <Heart className="mr-2 h-4 w-4" />
+                        <Heart className="mr-2 w-4 h-4" />
                         Supporters
                       </div>
                     </SelectItem>

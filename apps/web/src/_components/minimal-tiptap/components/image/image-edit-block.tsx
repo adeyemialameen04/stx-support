@@ -65,7 +65,7 @@ const ImageEditBlock = ({
               className="grow"
               onChange={(e) => setLink(e.target.value)}
             />
-            <Button type="submit" className="ml-2 inline-block">
+            <Button type="submit" className="inline-block ml-2">
               Submit
             </Button>
           </div>
