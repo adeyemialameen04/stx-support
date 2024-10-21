@@ -1,7 +1,9 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "lib": ["ESNext"],
+    "lib": [
+      "ESNext"
+    ],
     "target": "ESNext",
     "skipLibCheck": true,
     "resolveJsonModule": true,
@@ -9,23 +11,16 @@
     "forceConsistentCasingInFileNames": true,
     "strictNullChecks": true,
     "outDir": "./dist",
-
-    /* Strictness */
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noFallthroughCasesInSwitch": true,
-
     "moduleDetection": "force",
     "allowJs": true,
-
-    // Bundler mode
     "moduleResolution": "bundler",
     "module": "ESNext",
     "noEmit": true,
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
-
-    // Some stricter flags
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
