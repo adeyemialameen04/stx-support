@@ -4,8 +4,7 @@
 import { actionClient } from "../lib/safe-action";
 import { saveUserTokens } from "../lib/session";
 import { API_URL } from "../lib/constants";
-import type { LoginResponseModel } from "~/backend/src/models/auth";
-import { AuthModel } from "~/backend/src/models/auth";
+import { AuthModel, type LoginResponseModel } from "@repo/schemas/auth";
 
 export const signUp = actionClient
 	.schema(AuthModel)

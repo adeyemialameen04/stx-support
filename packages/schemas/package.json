@@ -10,6 +10,7 @@
     "backend": "*"
   },
   "exports": {
-    "./index": "./src/index.ts"
+    "./posts": "./src/posts.ts",
+    "./auth": "./src/auth.ts"
   }
 }
