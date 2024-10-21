@@ -20,6 +20,7 @@
     "packages/*"
   ],
   "dependencies": {
-    "@types/bun": "^1.1.11"
+    "@types/bun": "^1.1.11",
+    "vercel": "^37.11.0"
   }
 }

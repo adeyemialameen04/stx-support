@@ -7,10 +7,15 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "~/backend/*": ["../backend/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "~/backend/*": [
+        "../backend/*"
+      ]
     },
-    "strict": true
+    "strict": true,
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",
@@ -19,5 +24,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
