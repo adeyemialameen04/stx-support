@@ -20,7 +20,7 @@ interface Earnings {
 export default function Supporters({ earnings }: { earnings: Earnings }) {
   return (
     <Tabs defaultValue="supporters">
-      <TabsList className="flex gap-4 md:gap-7 w-full bg-transparent border-b py-6 rounded-none justify-start">
+      <TabsList className="flex gap-4 justify-start py-6 w-full bg-transparent rounded-none border-b md:gap-7">
         <TabsTrigger
           value="supporters"
           className={`
@@ -46,7 +46,7 @@ export default function Supporters({ earnings }: { earnings: Earnings }) {
       </TabsList>
       <TabsContent value="supporters" className="pt-5">
         <Card>
-          <CardHeader className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <CardHeader className="grid grid-cols-1 gap-2 sm:grid-cols-3">
             <Card className="shadow-sm bg-[rgb(34,34,34)]/[.05]">
               <CardHeader>
                 <CardTitle className="text-2xl">
@@ -54,8 +54,8 @@ export default function Supporters({ earnings }: { earnings: Earnings }) {
                 </CardTitle>
               </CardHeader>
               <CardFooter>
-                <CardDescription className="font-light flex items-center">
-                  <Heart className="mr-2 h-4 w-4" />
+                <CardDescription className="flex items-center font-light">
+                  <Heart className="mr-2 w-4 h-4" />
                   {earnings.supporters > 1 ? "Supporter" : "Supporters"}
                 </CardDescription>
               </CardFooter>
@@ -67,8 +67,8 @@ export default function Supporters({ earnings }: { earnings: Earnings }) {
                 </CardTitle>
               </CardHeader>
               <CardFooter>
-                <CardDescription className="font-light flex items-center">
-                  <BadgeDollarSign className="mr-2 h-4 w-4" />
+                <CardDescription className="flex items-center font-light">
+                  <BadgeDollarSign className="mr-2 w-4 h-4" />
                   Last 30 days
                 </CardDescription>
               </CardFooter>
@@ -80,8 +80,8 @@ export default function Supporters({ earnings }: { earnings: Earnings }) {
                 </CardTitle>
               </CardHeader>
               <CardFooter>
-                <CardDescription className="font-light flex items-center">
-                  <CircleDollarSign className="mr-2 h-4 w-4" />
+                <CardDescription className="flex items-center font-light">
+                  <CircleDollarSign className="mr-2 w-4 h-4" />
                   All-time
                 </CardDescription>
               </CardFooter>
@@ -89,8 +89,8 @@ export default function Supporters({ earnings }: { earnings: Earnings }) {
           </CardHeader>
           <CardContent>
             <Card className="p-8">
-              <CardContent className="rounded-md flex flex-col justify-center items-center w-full">
-                <CardHeader className="rounded-full p-4 bg-accent">
+              <CardContent className="flex flex-col justify-center items-center w-full rounded-md">
+                <CardHeader className="p-4 rounded-full bg-accent">
                   <Heart />
                 </CardHeader>
                 <CardDescription className="text-lg">

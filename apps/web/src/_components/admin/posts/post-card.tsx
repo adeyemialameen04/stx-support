@@ -29,7 +29,7 @@ export default function PostCard({ post }: { post: SelectPostSchema }) {
 
   return (
     <Card>
-      <CardHeader className="flex justify-between items-center flex-row">
+      <CardHeader className="flex flex-row justify-between items-center">
         <CardDescription>Posted {formattedDate}</CardDescription>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -40,31 +40,31 @@ export default function PostCard({ post }: { post: SelectPostSchema }) {
           <DropdownMenuContent className="w-48" side="bottom">
             <DropdownMenuItem asChild>
               <Button
-                className="p-0 w-full justify-start"
+                className="justify-start p-0 w-full"
                 variant={"ghost"}
                 asChild
               >
                 <Link href={`/admin/posts/view/${post.id}`}>
-                  <Eye className="mr-2 h-4 w-4" /> View post
+                  <Eye className="mr-2 w-4 h-4" /> View post
                 </Link>
               </Button>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
               <Button
-                className="p-0 w-full justify-start"
+                className="justify-start p-0 w-full"
                 variant={"ghost"}
                 asChild
               >
                 <Link href={`/admin/posts/edit/${post.id}`}>
-                  <Edit className="mr-2 h-4 w-4" /> Edit
+                  <Edit className="mr-2 w-4 h-4" /> Edit
                 </Link>
               </Button>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Button className="p-0 w-full justify-start" variant={"ghost"}>
-                <Pin className="mr-2 h-4 w-4" /> Pin this post
+              <Button className="justify-start p-0 w-full" variant={"ghost"}>
+                <Pin className="mr-2 w-4 h-4" /> Pin this post
               </Button>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -81,13 +81,13 @@ export default function PostCard({ post }: { post: SelectPostSchema }) {
       </CardContent>
       <CardFooter className="flex justify-between text-muted-foreground">
         <p className="flex items-center">
-          <Globe className="mr-2 h-4 w-4" /> Public
+          <Globe className="mr-2 w-4 h-4" /> Public
         </p>
         <div className="flex gap-4 sm:gap-8">
-          <p className="flex items-center gap-2 font-light text-sm">
+          <p className="flex gap-2 items-center text-sm font-light">
             {/* {post.like} Like */}
           </p>
-          <p className="flex items-center gap-2 font-light text-sm">
+          <p className="flex gap-2 items-center text-sm font-light">
             {/* {post.comment} Comment */}
           </p>
         </div>
@@ -99,28 +99,28 @@ export default function PostCard({ post }: { post: SelectPostSchema }) {
 export const PostSkeleton = () => {
   return (
     <Skeleton className="flex flex-col">
-      <CardHeader className="flex justify-between items-center flex-row">
-        <Skeleton className="h-5 w-32" />
+      <CardHeader className="flex flex-row justify-between items-center">
+        <Skeleton className="w-32 h-5" />
         <Button size={"icon"} variant={"ghost"} disabled>
           <Ellipsis />
         </Button>
       </CardHeader>
       <CardContent className="">
-        <Skeleton className="h-8 w-52 mb-3" />
-        <Skeleton className="h-6 w-40" />
+        <Skeleton className="mb-3 w-52 h-8" />
+        <Skeleton className="w-40 h-6" />
         <Separator className="mt-4" />
       </CardContent>
       <CardFooter className="flex justify-between text-muted-foreground">
         <p className="flex items-center">
-          <Globe className="mr-2 h-4 w-4" />{" "}
-          <Skeleton className="size-4 rounded-full" />
+          <Globe className="mr-2 w-4 h-4" />{" "}
+          <Skeleton className="rounded-full size-4" />
         </p>
         <div className="flex gap-4 sm:gap-8">
-          <p className="flex items-center gap-2 font-light text-sm">
-            <Skeleton className="size-4 rounded-full" /> Like
+          <p className="flex gap-2 items-center text-sm font-light">
+            <Skeleton className="rounded-full size-4" /> Like
           </p>
-          <p className="flex items-center gap-2 font-light text-sm">
-            <Skeleton className="size-4 rounded-full" /> Comment
+          <p className="flex gap-2 items-center text-sm font-light">
+            <Skeleton className="rounded-full size-4" /> Comment
           </p>
         </div>
       </CardFooter>

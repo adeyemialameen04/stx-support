@@ -9,7 +9,7 @@ export const client = postgres(env.DATABASE_URL, {
   onnotice: env.DB_SEEDING ? () => {} : undefined,
 });
 export const db = drizzle(client, {
-  logger: false,
+  logger: true,
   schema,
 });
 

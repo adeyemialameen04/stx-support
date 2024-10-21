@@ -119,7 +119,7 @@ const SupportForm = ({ selected }: { selected: number }) => {
           control={form.control}
           name="private"
           render={({ field }) => (
-            <FormItem className="flex items-center gap-2">
+            <FormItem className="flex gap-2 items-center">
               <FormControl>
                 <Checkbox
                   checked={field.value}
@@ -130,7 +130,7 @@ const SupportForm = ({ selected }: { selected: number }) => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="rounded-full py-5">
+        <Button type="submit" className="py-5 rounded-full">
           Support {selected}STX
         </Button>
       </form>

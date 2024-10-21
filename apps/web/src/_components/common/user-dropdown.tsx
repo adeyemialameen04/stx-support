@@ -24,7 +24,7 @@ const UserDropdown = () => {
           {links.map((item, index) => (
             <DropdownMenuItem key={index} asChild>
               <Link href={item.href}>
-                {<item.icon className="mr-2 h-4 w-4" />}
+                {<item.icon className="mr-2 w-4 h-4" />}
                 <span>{item.text}</span>
               </Link>
             </DropdownMenuItem>

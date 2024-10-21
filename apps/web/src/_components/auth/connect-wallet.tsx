@@ -76,7 +76,7 @@ export default ConnectWallet;
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="h-dvh w-full flex flex-col items-center justify-center gap-16">
+    <div className="flex flex-col gap-16 justify-center items-center w-full h-dvh">
       <div className="flex items-center justify-center flex-col gap-4 !w-full">
         {children}
       </div>

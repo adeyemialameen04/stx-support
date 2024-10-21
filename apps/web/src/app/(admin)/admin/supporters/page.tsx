@@ -18,7 +18,7 @@ export default function SupportersPage() {
   };
   return (
     <ContentLayout title="Supporters">
-      <main className="max-w-[950px] mx-auto">
+      <main className="mx-auto max-w-[950px]">
         <Breadcrumb className="mb-6">
           <BreadcrumbList>
             <BreadcrumbItem>

@@ -31,7 +31,7 @@ export default function SupportersSettings() {
 
   return (
     <TabsContent value="settings" className="py-5">
-      {/* <h3 className="text-xl font-semibold mb-4"></h3> */}
+      {/* <h3 className="mb-4 text-xl font-semibold"></h3> */}
       <Form {...form}>
         <form className="" onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
@@ -39,7 +39,7 @@ export default function SupportersSettings() {
             name="layout"
             render={({ field }) => (
               <FormItem className="">
-                <FormLabel className="text-xl font-semibold mb-4">
+                <FormLabel className="mb-4 text-xl font-semibold">
                   Choose a layout
                 </FormLabel>
                 <FormControl>
@@ -51,16 +51,16 @@ export default function SupportersSettings() {
                     <FormItem className="">
                       <Card className="flex flex-col bg-[rgb(34,34,34)]/[.04] p-4">
                         <CardHeader className="p-0">
-                          <div className="flex items-center gap-2">
+                          <div className="flex gap-2 items-center">
                             <FormControl>
                               <RadioGroupItem value="standard" />
                             </FormControl>
-                            <FormLabel className="font-normal text-xl">
+                            <FormLabel className="text-xl font-normal">
                               Standard View
                             </FormLabel>
                           </div>
                         </CardHeader>
-                        <CardContent className="bg-white p-6 rounded-md mt-6 max-w-[280px] mx-auto border shadow-sm">
+                        <CardContent className="p-6 mx-auto mt-6 bg-white rounded-md border shadow-sm max-w-[280px]">
                           <CardTitle className="mb-2">
                             Buy Al-Ameen Adeyemi a Beer
                           </CardTitle>
@@ -73,7 +73,7 @@ export default function SupportersSettings() {
                         </CardContent>
                       </Card>
                     </FormItem>
-                    {/* <FormItem className="flex items-center space-x-3 space-y-0"> */}
+                    {/* <FormItem className="flex items-center space-y-0 space-x-3"> */}
                     {/*   <FormControl> */}
                     {/*     <RadioGroupItem value="suggested" /> */}
                     {/*   </FormControl> */}

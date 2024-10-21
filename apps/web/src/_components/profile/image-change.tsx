@@ -54,9 +54,9 @@ export default function ImageChange() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full flex flex-col gap-4"
+        className="flex flex-col gap-4 w-full"
       >
-        <div className="relative h-48 md:h-72 rounded-b-lg">
+        <div className="relative h-48 rounded-b-lg md:h-72">
           <SharePage username="ME" name="Al-Ameen Adeyemi" />
           <FormField
             control={form.control}
@@ -64,7 +64,7 @@ export default function ImageChange() {
             render={({ field }) => (
               <FormItem className={cn(imagePreview && "hidden")}>
                 <FormControl>
-                  <div className="flex items-center gap-2">
+                  <div className="flex gap-2 items-center">
                     <Input
                       type="file"
                       accept="image/*"
@@ -95,7 +95,7 @@ export default function ImageChange() {
             )}
           />
           {imagePreview && (
-            <div className="absolute top-6 right-6 z-20 text-muted-foreground flex">
+            <div className="flex absolute top-6 right-6 z-20 text-muted-foreground">
               <Button variant={"secondary"} type="submit">
                 Save Changes
               </Button>
@@ -121,7 +121,7 @@ export default function ImageChange() {
           <Image
             src={imagePreview ?? "/profile-pic.png"}
             layout="fill"
-            className="w-full object-cover"
+            className="object-cover w-full"
             alt="cover"
           />
           <div className="absolute flex items-center flex-col bottom-[-30px] left-[50%] right-[50%]">

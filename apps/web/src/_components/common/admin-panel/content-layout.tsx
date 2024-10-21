@@ -11,7 +11,7 @@ export function ContentLayout({ title, children, bg }: ContentLayoutProps) {
     <div className={bg}>
       <Navbar title={title} />
       {/* Here */}
-      <div className=" pt-8 pb-8 px-4 sm:px-8">{children}</div>
+      <div className="px-4 pt-8 pb-8 sm:px-8">{children}</div>
     </div>
   );
 }

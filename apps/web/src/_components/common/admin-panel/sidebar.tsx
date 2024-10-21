@@ -26,7 +26,7 @@ export function Sidebar() {
           isOpen={sidebar?.isOpen}
           setIsOpen={sidebar?.setIsOpen}
         />
-        <div className="relative h-full flex flex-col px-3 py-4 overflow-y-auto shadow-md dark:shadow-zinc-800">
+        <div className="flex overflow-y-auto relative flex-col py-4 px-3 h-full shadow-md dark:shadow-zinc-800">
           <Button
             className={cn(
               "transition-transform ease-in-out duration-300 mb-1",
@@ -35,8 +35,8 @@ export function Sidebar() {
             variant="link"
             asChild
           >
-            <Link href="/dashboard" className="flex items-center gap-2">
-              <PanelsTopLeft className="w-6 h-6 mr-1" />
+            <Link href="/dashboard" className="flex gap-2 items-center">
+              <PanelsTopLeft className="mr-1 w-6 h-6" />
               <h1
                 className={cn(
                   "font-bold text-lg whitespace-nowrap transition-[transform,opacity,display] ease-in-out duration-300",

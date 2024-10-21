@@ -14,7 +14,7 @@ import Dashboard from "@/_components/admin/dashboard";
 export default function AdminPage() {
   return (
     <ContentLayout title="Dashboard">
-      <main className="max-w-[950px] mx-auto">
+      <main className="mx-auto max-w-[950px]">
         <Breadcrumb className="mb-6">
           <BreadcrumbList>
             <BreadcrumbItem>
