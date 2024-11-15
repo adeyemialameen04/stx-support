@@ -2,11 +2,11 @@
   "name": "backend",
   "version": "1.0.50",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun run --watch src/app.ts",
     "gen": "bun drizzle-kit generate",
     "mig": "cross-env DB_MIGRATING=true bun src/db/migrate.ts",
-    "studio": "bunx drizzle-kit studio"
+    "studio": "bunx drizzle-kit studio",
+    "lint": "biome lint"
   },
   "dependencies": {
     "@elysiajs/bearer": "^1.1.2",
@@ -21,6 +21,8 @@
     "drizzle-typebox": "^0.1.1",
     "drizzle-zod": "^0.5.1",
     "elysia": "^1.1.22",
+    "elysia-autoload": "^1.4.0",
+    "elysia-autoroutes": "^0.5.0",
     "elysia-compress": "^1.2.1",
     "elysia-helmet": "^2.0.0",
     "logixlysia": "^3.7.0",
@@ -30,8 +32,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "bun-types": "^1.0.2"
+    "@types/bun": "^1.1.11"
   },
   "module": "src/app.ts"
 }

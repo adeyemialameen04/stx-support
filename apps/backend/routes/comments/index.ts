@@ -1,14 +1,13 @@
 import Elysia from "elysia";
-import { AuthorizationError } from "../../exceptions/errors";
-import { commentService } from "../../services/comments";
-import { accessTokenSecurity } from "../../utils/helpers";
-import { selectCommentSchema } from "../../db/schema/comment";
-import { ERRORS } from "../../models/error-models";
-import { CreateCommentModel } from "../../models/posts";
-import { accessTokenPlugin } from "../../plugins/auth";
-
+import { selectCommentSchema } from "../../src/db/schema/comment";
+import { AuthorizationError } from "../../src/exceptions/errors";
+import { ERRORS } from "../../src/models/error-models";
+import { CreateCommentModel } from "../../src/models/posts";
+import { accessTokenPlugin } from "../../src/plugins/auth";
+import { commentService } from "../../src/services/comments";
+import { accessTokenSecurity } from "../../src/utils/helpers";
 const tags = ["Comments"];
-export const commentRoutes = new Elysia({
+const commentRoutes = new Elysia({
 	prefix: "/comment",
 	name: "api.comments.index",
 	tags,
@@ -50,3 +49,4 @@ export const commentRoutes = new Elysia({
 				},
 			),
 	);
+export default commentRoutes;

@@ -6,28 +6,43 @@ const tags: { name: string; description: string }[] = [
 	{ name: "Posts", description: "Posts endpoints" },
 	{ name: "Users", description: "Users endpoints" },
 	{ name: "Categories", description: "Categories endpoints" },
+	{ name: "Health", description: "Health Endpoints" },
 ];
+
+const hiddenClients = {
+	shell: true,
+	swift: true,
+	java: true,
+	node: true,
+	php: true,
+	powershell: true,
+	python: true,
+	r: true,
+	ruby: true,
+	csharp: true,
+	kotlin: true,
+	objc: true,
+	ocaml: true,
+	clojure: true,
+};
 
 export const docs = (app: Elysia) =>
 	app
 		.use(
 			swagger({
 				exclude: ["/doc", "/doc/json"],
+				excludeTags: ["default"],
 				path: "/docs",
 				scalarConfig: {
 					darkMode: true,
-					theme: "saturn",
+					theme: "purple",
 					// layout: "classic",
-					forceDarkModeState: "dark",
-					metaData: {
-						ogTitle: "Stx-Support Documentation",
-						ogImage: "https://example.com/image.png",
-						twitterCard: "summary_large_image",
-					},
 					defaultHttpClient: {
 						targetKey: "javascript",
 						clientKey: "fetch",
 					},
+					hiddenClients,
+					hideDownloadButton: true,
 					// authentication: {
 					//   preferredSecurityScheme: "AccessTokenBearer",
 					//   bearer: {

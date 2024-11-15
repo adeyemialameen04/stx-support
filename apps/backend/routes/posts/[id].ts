@@ -1,15 +1,16 @@
 import Elysia, { InternalServerError, NotFoundError, t } from "elysia";
-import { selectPostSchema, insertPostSchema } from "../../db/schema/post";
-import { AuthorizationError } from "../../exceptions/errors";
-import { IdModel } from "../../models/common";
-import { ERRORS } from "../../models/error-models";
-import { SinglePost } from "../../models/posts";
-import { accessTokenPlugin } from "../../plugins/auth";
-import { postService } from "../../services/posts";
-import { accessTokenSecurity } from "../../utils/helpers";
+import { AuthorizationError } from "../../src/exceptions/errors";
+import { IdModel } from "../../src/models/common";
+import { ERRORS } from "../../src/models/error-models";
+import { SinglePost } from "../../src/models/posts";
+import { accessTokenPlugin } from "../../src/plugins/auth";
+import { postService } from "../../src/services/posts";
+import { accessTokenSecurity } from "../../src/utils/helpers";
+import { selectPostSchema, insertPostSchema } from "../../src/db/schema/post";
+
 const tags = ["Posts"];
 
-export const postsDynamicRoutes = new Elysia({
+const postsDynamicRoutes = new Elysia({
 	prefix: "/posts",
 	tags,
 	name: "api.posts.dynamic",
@@ -132,3 +133,4 @@ export const postsDynamicRoutes = new Elysia({
 			},
 		},
 	);
+export default postsDynamicRoutes;

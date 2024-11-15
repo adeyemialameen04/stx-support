@@ -1,26 +1,23 @@
 import serverTiming from "@elysiajs/server-timing";
-import type Elysia from "elysia";
+import Elysia from "elysia";
 import logixlysia from "logixlysia";
-import { docs } from "./docs";
 import { errors } from "./errors";
-import compression from "elysia-compress";
-import { api } from "../routes";
+// import { compression } from "elysia-compression";
+import { docs } from "./docs";
 
-export const plugins = (app: Elysia) =>
-	app
-		.use(compression())
-		.use(serverTiming())
-		.use(compression())
-		.use(
-			logixlysia({
-				config: {
-					showStartupMessage: true,
-					startupMessageFormat: "simple",
-					customLogFormat: "{level} {duration} {method} {pathname} {status}",
-				},
-			}),
-		)
-		.use(docs)
-		.use(errors)
-		.use(api)
-		.listen(3000);
+export const plugins = new Elysia({ name: "plugins" })
+	.use(serverTiming())
+	.use(
+		logixlysia({
+			config: {
+				showStartupMessage: true,
+				startupMessageFormat: "simple",
+				customLogFormat: "{level} {duration} {method} {pathname} {status}",
+			},
+		}),
+	)
+	.use(errors)
+	.as("global")
+	// .use(compression())
+	// .as("global")
+	.use(docs);

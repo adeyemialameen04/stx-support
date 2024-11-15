@@ -11,9 +11,4 @@ export const UpdateUserModel = t.Omit(insertUserSchema, [
 	"updatedAt",
 ]);
 
-export const UpdateProfile = t.Omit(insertProfileSchema, [
-	"id",
-	"userId",
-	"createdAt",
-	"updatedAt",
-]);
+export const UpdateProfile = insertProfileSchema;

@@ -11,12 +11,13 @@
 	},
 	"devDependencies": {
 		"@repo/typescript-config": "*",
+		"@types/bun": "^1.1.11",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
 		"backend": "*",
 		"elysia": "^1.1.22",
-		"react": "18.3.1",
 		"eslint": "^8",
+		"react": "18.3.1",
 		"typescript": "^5"
 	},
 	"exports": {

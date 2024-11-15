@@ -9,5 +9,8 @@
   "exports": {
     "./config": "./tailwind.config.js",
     "./postcss.config.mjs": "./postcss.config.mjs"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.1.11"
   }
 }

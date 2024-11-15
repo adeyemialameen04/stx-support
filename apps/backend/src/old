@@ -1,0 +1,69 @@
+
+import Elysia from "elysia";
+import { postsRoutes } from "./posts";
+import { postsDynamicRoutes } from "./posts/[id]";
+import { commentRoutes } from "./comments";
+import { commentRoutesDynamic } from "./comments/[id]";
+import { categoryRoutes } from "./categories";
+import { categoryRoutesDynamic } from "./categories/[id]";
+import { usersRoutes } from "./users";
+import { authRoutes } from "./auth/routes";
+import { profileRoutes } from "./profile";
+import { env } from "bun";
+import { settings } from "src/config/settings";
+import type { ElysiaApp } from "src/app";
+
+export default (app: ElysiaApp) =>
+	app
+		.get("/health", () => {}, {
+			detail: {
+				summary: "Check Health",
+				description: "Checks the health",
+				tags: ["Health"],
+			},
+		})
+		.get(
+			"/health/env",
+			() => {
+				return env.NODE_ENV === "development" && env;
+			},
+			{
+				detail: {
+					summary: "Check Env",
+					description: "Checks if env have been set correctly",
+					tags: ["Health"],
+				},
+			},
+		);
+
+// const api = new Elysia({ prefix: settings.API_V1_PREFIX, name: "api" });
+// api
+// 	.get("/health", () => {}, {
+// 		detail: {
+// 			summary: "Check Health",
+// 			description: "Checks the health",
+// 			tags: ["Health"],
+// 		},
+// 	})
+// 	.get(
+// 		"/health/env",
+// 		() => {
+// 			return env.NODE_ENV === "development" && env;
+// 		},
+// 		{
+// 			detail: {
+// 				summary: "Check Env",
+// 				description: "Checks if env have been set correctly",
+// 				tags: ["Health"],
+// 			},
+// 		},
+// 	);
+// .use(postsRoutes)
+// .use(postsDynamicRoutes)
+// .use(commentRoutes)
+// .use(commentRoutesDynamic)
+// .use(categoryRoutes)
+// .use(categoryRoutesDynamic)
+// .use(usersRoutes)
+// .use(authRoutes)
+// .use(profileRoutes);

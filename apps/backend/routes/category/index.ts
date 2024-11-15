@@ -1,15 +1,14 @@
 import Elysia, { t } from "elysia";
-import { db } from "../../db";
-import { categoryTable } from "../../db/schema";
+import { db } from "../../src/db";
+import { categoryTable } from "../../src/db/schema";
 import {
 	selectCategorySchema,
 	insertCategorySchema,
-} from "../../db/schema/category";
+} from "../../src/db/schema/category";
 
 const tags = ["Categories", "Posts"];
-export const categoryRoutes = new Elysia({
-	name: "api.category.index",
-	prefix: "/category",
+export default new Elysia({
+	// name: "api.category.index",
 	tags,
 })
 	.model("CategoryModel", selectCategorySchema)
@@ -31,23 +30,6 @@ export const categoryRoutes = new Elysia({
 			detail: {
 				summary: "Create category",
 				description: "Creates a category",
-			},
-		},
-	)
-	.get(
-		"/all",
-		async () => {
-			const categories = await db.select().from(categoryTable);
-
-			return categories;
-		},
-		{
-			response: {
-				200: t.Array(selectCategorySchema),
-			},
-			detail: {
-				summary: "Get all Categories",
-				description: "Gets all Categories",
 			},
 		},
 	);

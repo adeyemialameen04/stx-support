@@ -1,20 +1,21 @@
-import Elysia from "elysia";
-import { selectUserSchema } from "../../db/schema/user";
-import { AuthorizationError, NotFoundError } from "../../exceptions/errors";
-import { ERRORS } from "../../models/error-models";
-import { UpdateUserModel } from "../../models/users";
-import { accessTokenPlugin } from "../../plugins/auth";
-import { usersService } from "../../services/users";
-import { accessTokenSecurity } from "../../utils/helpers";
+import Elysia, { NotFoundError } from "elysia";
+import { selectUserSchema } from "../../src/db/schema/user";
+import { AuthorizationError } from "../../src/exceptions/errors";
+import { ERRORS } from "../../src/models/error-models";
+import { UpdateProfile } from "../../src/models/users";
+import { accessTokenPlugin } from "../../src/plugins/auth";
+import { profileService } from "../../src/services/profile";
+import { usersService } from "../../src/services/users";
+import { accessTokenSecurity } from "../../src/utils/helpers";
 
-const tags = ["Users"];
-export const usersRoutes = new Elysia({
-	prefix: "/users",
-	name: "api.users.index",
+const tags = ["Profile"];
+const profileRoutes = new Elysia({
+	prefix: "/me",
+	name: "api.profile.index",
 	tags,
 })
 	.use(accessTokenPlugin)
-	.model("UpdateUserModel", UpdateUserModel)
+	.model("UpdateUserProfile", UpdateProfile)
 	.guard(
 		{
 			detail: {
@@ -29,9 +30,9 @@ export const usersRoutes = new Elysia({
 		(app) =>
 			app
 				.patch(
-					"/me",
+					"",
 					async ({ payload, body }) => {
-						const updatedUser = await usersService.updateUser(
+						const updatedUser = await profileService.updateUserProfile(
 							payload && "user" in payload ? payload.user.id : "",
 							body,
 						);
@@ -42,11 +43,11 @@ export const usersRoutes = new Elysia({
 						throw new NotFoundError("User not found");
 					},
 					{
-						body: "UpdateUserModel",
+						body: "UpdateUserProfile",
 						response: {
 							200: selectUserSchema,
 							401: ERRORS.UNAUTHORIZED,
-							404: ERRORS.NOT_FOUND,
+							// 404: ERRORS.NOT_FOUND,
 						},
 						detail: {
 							summary: "Update User",
@@ -55,7 +56,7 @@ export const usersRoutes = new Elysia({
 					},
 				)
 				.get(
-					"/me",
+					"",
 					async ({ payload }) => {
 						const user = await usersService.getUser(
 							payload && "user" in payload ? payload.user.id : "",
@@ -79,3 +80,4 @@ export const usersRoutes = new Elysia({
 					},
 				),
 	);
+export default profileRoutes;

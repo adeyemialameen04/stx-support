@@ -1,22 +1,25 @@
 import Elysia, { t } from "elysia";
 import bearer from "@elysiajs/bearer";
 import { v4 as uuidv4 } from "uuid";
-import { db } from "../../db";
-import { userTable } from "../../db/schema";
-import { selectUserSchema } from "../../db/schema/user";
-import { AuthorizationError } from "../../exceptions/errors";
-import { AuthModel, LoginResponseModel } from "../../models/auth";
-import { ERRORS } from "../../models/error-models";
+import { db } from "../../src/db";
+import { userTable } from "../../src/db/schema";
+import { selectUserSchema } from "../../src/db/schema/user";
+import { AuthorizationError } from "../../src/exceptions/errors";
+import { AuthModel, LoginResponseModel } from "../../src/models/auth";
+import { ERRORS } from "../../src/models/error-models";
 import {
 	jwtPlugin,
 	accessTokenPlugin,
 	refreshTokenPlugin,
-} from "../../plugins/auth";
-import { authService } from "../../services/auth";
-import { accessTokenSecurity, refreshTokenSecurity } from "../../utils/helpers";
+} from "../../src/plugins/auth";
+import { authService } from "../../src/services/auth";
+import {
+	accessTokenSecurity,
+	refreshTokenSecurity,
+} from "../../src/utils/helpers";
 
 const tags = ["Auth"];
-export const authRoutes = new Elysia({
+const authRoutes = new Elysia({
 	prefix: "/auth",
 	tags,
 	name: "api.auth.index",
@@ -236,3 +239,4 @@ export const authRoutes = new Elysia({
 				},
 			),
 	);
+export default authRoutes;
