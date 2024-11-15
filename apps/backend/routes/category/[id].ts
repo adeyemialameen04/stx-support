@@ -1,12 +1,12 @@
 import Elysia, { NotFoundError, t } from "elysia";
 import { eq } from "drizzle-orm";
-import { db } from "../../db";
-import { categoryTable } from "../../db/schema";
-import { selectCategorySchema } from "../../db/schema/category";
-import { ERRORS } from "../../models/error-models";
+import { db } from "../../src/db";
+import { categoryTable } from "../../src/db/schema";
+import { selectCategorySchema } from "../../src/db/schema/category";
+import { ERRORS } from "../../src/models/error-models";
 
 const tags = ["Categories"];
-export const categoryRoutesDynamic = new Elysia({
+const categoryRoutesDynamic = new Elysia({
 	name: "api.category.dynamic",
 	prefix: "/category",
 	tags,
@@ -44,3 +44,4 @@ export const categoryRoutesDynamic = new Elysia({
 		},
 	},
 );
+export default categoryRoutesDynamic;

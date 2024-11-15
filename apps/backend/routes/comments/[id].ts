@@ -1,19 +1,15 @@
-import Elysia, { t } from "elysia";
-import { selectCommentSchema } from "../../db/schema/comment";
-import {
-	AuthorizationError,
-	InternalServerError,
-	NotFoundError,
-} from "../../exceptions/errors";
-import { IdModel } from "../../models/common";
-import { ERRORS } from "../../models/error-models";
-import { CreateCommentModel } from "../../models/posts";
-import { accessTokenPlugin } from "../../plugins/auth";
-import { commentService } from "../../services/comments";
-import { accessTokenSecurity } from "../../utils/helpers";
+import Elysia, { InternalServerError, NotFoundError, t } from "elysia";
+import { selectCommentSchema } from "../../src/db/schema/comment";
+import { AuthorizationError } from "../../src/exceptions/errors";
+import { IdModel } from "../../src/models/common";
+import { ERRORS } from "../../src/models/error-models";
+import { CreateCommentModel } from "../../src/models/posts";
+import { accessTokenPlugin } from "../../src/plugins/auth";
+import { commentService } from "../../src/services/comments";
+import { accessTokenSecurity } from "../../src/utils/helpers";
 
 const tags = ["Comments"];
-export const commentRoutesDynamic = new Elysia({
+const commentRoutesDynamic = new Elysia({
 	prefix: "/comment",
 	name: "api.comments.dynamic",
 	tags,
@@ -113,3 +109,4 @@ export const commentRoutesDynamic = new Elysia({
 						),
 			),
 	);
+export default commentRoutesDynamic;

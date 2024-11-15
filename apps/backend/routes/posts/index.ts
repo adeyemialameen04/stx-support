@@ -1,15 +1,15 @@
 import Elysia, { t } from "elysia";
-import { selectPostSchema } from "../../db/schema/post";
-import { AuthorizationError } from "../../exceptions/errors";
-import { ERRORS } from "../../models/error-models";
-import { CreatePostModel } from "../../models/posts";
-import { accessTokenPlugin } from "../../plugins/auth";
-import { postService } from "../../services/posts";
-import { accessTokenSecurity } from "../../utils/helpers";
+import { selectPostSchema } from "../../src/db/schema/post";
+import { AuthorizationError } from "../../src/exceptions/errors";
+import { ERRORS } from "../../src/models/error-models";
+import { CreatePostModel } from "../../src/models/posts";
+import { accessTokenPlugin } from "../../src/plugins/auth";
+import { postService } from "../../src/services/posts";
+import { accessTokenSecurity } from "../../src/utils/helpers";
 
 const tags = ["Posts"];
 
-export const postsRoutes = new Elysia({
+const postsRoutes = new Elysia({
 	prefix: "/posts",
 	tags,
 	name: "api.posts.index",
@@ -77,3 +77,4 @@ export const postsRoutes = new Elysia({
 					},
 				),
 	);
+export default postsRoutes;

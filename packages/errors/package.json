@@ -11,5 +11,8 @@
   },
   "exports": {
     "./index": "./src/index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.1.11"
   }
 }
