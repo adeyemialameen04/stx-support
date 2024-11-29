@@ -1,4 +1,3 @@
-import { PublicError } from "@repo/errors/index";
 import { API_URL } from "./constants";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
@@ -21,7 +20,6 @@ export default function makeFetch<T>(
 	return async () => {
 		const { method = "GET", body, next, ...restOptions } = options;
 
-		// Determine if we should add Content-Type
 		const shouldAddContentType =
 			["POST", "PUT", "PATCH"].includes(method) && body;
 
@@ -42,19 +40,11 @@ export default function makeFetch<T>(
 			body: body ? JSON.stringify(body) : undefined,
 		};
 
-		// Add Next.js specific options if provided
 		if (next) {
 			fetchOptions.next = next;
 		}
 
-		console.log(API_URL);
-		const res = await fetch(`${API_URL}/${path}`, fetchOptions);
-
-		if (!res.ok) {
-			// const errorBody = await res.text();
-			throw new PublicError("Req failed");
-			// throw new APIError(res.status, `Request failed: ${errorBody}`);
-		}
+		const res = await fetch(`${API_URL}${path}`, fetchOptions);
 
 		const contentType = res.headers.get("content-type");
 		if (contentType?.includes("application/json")) {

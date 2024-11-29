@@ -9,8 +9,7 @@ import { accessTokenSecurity } from "../../src/utils/helpers";
 
 const tags = ["Posts"];
 
-const postsRoutes = new Elysia({
-	prefix: "/posts",
+export default new Elysia({
 	tags,
 	name: "api.posts.index",
 })
@@ -77,4 +76,3 @@ const postsRoutes = new Elysia({
 					},
 				),
 	);
-export default postsRoutes;

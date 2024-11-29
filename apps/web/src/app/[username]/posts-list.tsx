@@ -1,4 +1,4 @@
-import { getUserPosts, SelectPostSchema } from "@/queries/posts";
+import { getUserPosts, type SelectPostSchema } from "@/queries/posts";
 import { cookies } from "next/headers";
 import { Suspense } from "react";
 import PostCard, {

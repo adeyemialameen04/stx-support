@@ -15,9 +15,11 @@
 		"@repo/schemas": "*",
 		"@repo/tailwind": "*",
 		"@repo/ui": "*",
+		"@stacks/connect": "7.7.1",
+		"@stacks/transactions": "6.16.1",
+		"next": "15.0.3",
 		"react": "19.0.0-rc-66855b96-20241106",
-		"react-dom": "19.0.0-rc-66855b96-20241106",
-		"next": "15.0.3"
+		"react-dom": "19.0.0-rc-66855b96-20241106"
 	},
 	"devDependencies": {
 		"@repo/typescript-config": "*",
