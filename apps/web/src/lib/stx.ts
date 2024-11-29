@@ -9,7 +9,7 @@ export const sendSTXTransaction = async (
 	let transactionId: string | undefined;
 
 	const transactionDetails: STXTransferOptions = {
-		network: new StacksMainnet(),
+		network: new StacksTestnet(),
 		recipient: recipientAddress,
 		amount: `${amount}000000`,
 		memo: memo,
