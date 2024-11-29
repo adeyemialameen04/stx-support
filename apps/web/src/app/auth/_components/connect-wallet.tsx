@@ -1,6 +1,6 @@
 "use client";
-import type React from "react";
-import { useEffect, useState } from "react";
+
+import React, { useEffect, useRef, useCallback } from "react";
 import { AppConfig, showConnect, UserSession } from "@stacks/connect";
 import { Wallet2 } from "lucide-react";
 import { Button } from "@repo/ui/components/ui/button";
@@ -28,29 +28,30 @@ function disconnect() {
 }
 
 const ConnectWallet = () => {
-	const [mounted, setMounted] = useState(false);
-	const [userData, setUserData] = useState<any>(null);
+	const mountedRef = useRef(false);
+	const [userData, setUserData] = React.useState<any>(null);
 
-	useEffect(() => {
-		setMounted(true);
-
-		const handleUserSession = async () => {
-			if (userSession.isUserSignedIn()) {
-				const data = userSession.loadUserData();
-				console.log(data);
-				setUserData(data);
-				const res = await completeAuth({
-					stxAddressMainnet: data.profile.stxAddress.mainnet,
-					password: data.decentralizedID as string,
-				});
-				console.log(res?.serverError);
-			}
-		};
-
-		handleUserSession();
+	const handleUserSession = useCallback(async () => {
+		if (userSession.isUserSignedIn()) {
+			const data = userSession.loadUserData();
+			console.log(data);
+			setUserData(data);
+			const res = await completeAuth({
+				stxAddressMainnet: data.profile.stxAddress.mainnet,
+				password: data.decentralizedID as string,
+			});
+			console.log(res?.serverError);
+		}
 	}, []);
 
-	if (mounted && userSession.isUserSignedIn() && userData) {
+	useEffect(() => {
+		if (!mountedRef.current) {
+			mountedRef.current = true;
+			handleUserSession();
+		}
+	}, [handleUserSession]);
+
+	if (mountedRef.current && userSession.isUserSignedIn() && userData) {
 		return (
 			<Wrapper>
 				<Button className="Connect" onClick={disconnect}>
