@@ -10,6 +10,7 @@ export const AuthModel = t.Object({
 });
 
 export const LoginResponseModel = t.Object({
+	status: t.Number(),
 	message: t.String({ default: "Login successful" }),
 	accessToken: t.String(),
 	refreshToken: t.String(),
