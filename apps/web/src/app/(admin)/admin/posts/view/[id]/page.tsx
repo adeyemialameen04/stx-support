@@ -10,7 +10,10 @@ import {
 } from "@repo/ui/components/ui/breadcrumb";
 import { ContentLayout } from "@/_components/common/admin-panel/content-layout";
 
-export default async function PostPage({ params }: { params: { id: string } }) {
+export default async function PostPage(props: {
+	params: Promise<{ id: string }>;
+}) {
+	const params = await props.params;
 	const post = await getPost(params.id);
 	console.log(post);
 	return (

@@ -1,5 +1,5 @@
 import { AuthenticationError } from "@repo/errors/index";
-import { cookies } from "next/headers";
+import { cookies, type UnsafeUnwrappedCookies } from "next/headers";
 
 type UserCredentials = {
   accessToken: string | undefined;
@@ -18,7 +18,7 @@ export type Tokens = {
 };
 
 export const getCurrentUser = async () => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const accessToken = cookieStore.get("accessToken");
 
   if (!accessToken?.value) {
@@ -29,7 +29,7 @@ export const getCurrentUser = async () => {
 };
 
 export function getUserCredentials(): UserCredentials | null {
-  const cookieStore = cookies();
+  const cookieStore = (cookies() as unknown as UnsafeUnwrappedCookies);
   const accessToken = cookieStore.get("accessToken")?.value;
   const refreshToken = cookieStore.get("refreshToken")?.value;
   const accessTokenExpiry = parseInt(
@@ -61,7 +61,7 @@ export const assertUserAuthenticated = async () => {
 };
 
 export function saveUserTokens(tokens: Tokens) {
-  const cookieStore = cookies();
+  const cookieStore = (cookies() as unknown as UnsafeUnwrappedCookies);
   cookieStore.set("accessToken", tokens.accessToken as string, {
     httpOnly: true,
     secure: process.env.NODE_ENV !== "development",

@@ -1,4 +1,5 @@
 import { env } from "bun";
+import type { ElysiaApp } from "../src/app";
 
 export default (app: ElysiaApp) =>
 	app

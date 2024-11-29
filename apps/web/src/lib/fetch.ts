@@ -47,7 +47,8 @@ export default function makeFetch<T>(
 			fetchOptions.next = next;
 		}
 
-		const res = await fetch(`${API_URL}${path}`, fetchOptions);
+		console.log(API_URL);
+		const res = await fetch(`${API_URL}/${path}`, fetchOptions);
 
 		if (!res.ok) {
 			// const errorBody = await res.text();
