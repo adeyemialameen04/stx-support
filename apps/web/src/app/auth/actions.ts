@@ -83,7 +83,7 @@ export const completeAuth = actionClient
 
 				if (res.ok) {
 					console.log("Here", data);
-					saveUserTokens(tokens);
+					await saveUserTokens(tokens);
 					return { status: 200, detail: "Login successful" };
 				}
 			}
