@@ -9,7 +9,6 @@ import {
 } from "@repo/ui/components/ui/card";
 import { Separator } from "@repo/ui/components/ui/separator";
 import { Heart, Lock, NotepadText, Share, ShoppingBag } from "lucide-react";
-import { RoundedImage } from "../image";
 import { user_info } from "@/data/mock/user";
 import {
 	DropdownMenu,
@@ -17,6 +16,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@repo/ui/components/ui/dropdown-menu";
+import { RoundedImage } from "@/_components/image";
 
 const more_ways = [
 	{

@@ -1,4 +1,3 @@
-import Supporters from "@/_components/admin/supporters/supporters";
 import { ContentLayout } from "@/_components/common/admin-panel/content-layout";
 import {
 	Breadcrumb,
@@ -9,6 +8,7 @@ import {
 	BreadcrumbPage,
 } from "@repo/ui/components/ui/breadcrumb";
 import Link from "next/link";
+import Supporters from "./_components/supporters";
 
 export default function SupportersPage() {
 	const earnings = {

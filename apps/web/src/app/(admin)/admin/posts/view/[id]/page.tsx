@@ -10,11 +10,13 @@ import {
 } from "@repo/ui/components/ui/breadcrumb";
 import { ContentLayout } from "@/_components/common/admin-panel/content-layout";
 
-export default async function PostPage(props: { params: Promise<{ id: string }> }) {
-    const params = await props.params;
-    const post = await getPost(params.id);
-    console.log(post);
-    return (
+export default async function PostPage(props: {
+	params: Promise<{ id: string }>;
+}) {
+	const params = await props.params;
+	const post = await getPost(params.id);
+	console.log(post);
+	return (
 		<ContentLayout title="Publish - Posts - New">
 			<main className="max-w-[700px]">
 				<Breadcrumb className="mb-6">
