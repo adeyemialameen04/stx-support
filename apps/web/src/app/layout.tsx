@@ -3,7 +3,8 @@ import localFont from "next/font/local";
 import "@repo/ui/globals.css";
 import { Toaster } from "@repo/ui/components/ui/sonner";
 import { TooltipProvider } from "@repo/ui/components/ui/tooltip";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from "@/_components/theme-provider";
+import { ModeToggleGroup } from "@/_components/mode-toggle";
 
 const geistSans = localFont({
 	src: "./fonts/GeistVF.woff",
@@ -36,6 +37,7 @@ export default function RootLayout({
 		<html lang="en" suppressHydrationWarning>
 			<body
 				className={`${geistSans.variable} ${circularMedium.variable} ${geistMono.variable} antialiased`}
+				suppressHydrationWarning
 			>
 				<ThemeProvider
 					attribute="class"
@@ -45,6 +47,7 @@ export default function RootLayout({
 				>
 					<Toaster />
 					<TooltipProvider>{children}</TooltipProvider>
+					<ModeToggleGroup />
 				</ThemeProvider>
 			</body>
 		</html>
