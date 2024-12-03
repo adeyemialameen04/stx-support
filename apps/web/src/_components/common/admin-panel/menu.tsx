@@ -5,14 +5,14 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { getMenuList } from "@/lib/menu-list";
-import { Button } from "@repo/ui/components/ui/button";
-import { ScrollArea } from "@repo/ui/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
   TooltipProvider,
-} from "@repo/ui/components/ui/tooltip";
+} from "@/components/ui/tooltip";
 import { CollapseMenuButton } from "./collapse-menu-button";
 
 interface MenuProps {

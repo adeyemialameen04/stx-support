@@ -1,12 +1,12 @@
 import * as React from "react";
 import type { Editor } from "@tiptap/react";
 import type { VariantProps } from "class-variance-authority";
-import type { toggleVariants } from "@repo/ui/components/ui/toggle";
+import type { toggleVariants } from "@/components/ui/toggle";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@repo/ui/components/ui/popover";
+} from "@/components/ui/popover";
 import { Link2Icon } from "@radix-ui/react-icons";
 import { ToolbarButton } from "../toolbar-button";
 import { LinkEditBlock } from "./link-edit-block";

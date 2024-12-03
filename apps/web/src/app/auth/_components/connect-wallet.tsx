@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useCallback } from "react";
 import { AppConfig, showConnect, UserSession } from "@stacks/connect";
 import { Wallet2 } from "lucide-react";
-import { Button } from "@repo/ui/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { completeAuth } from "../actions";
 
 const appConfig = new AppConfig(["store_write", "publish_data"]);

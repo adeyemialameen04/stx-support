@@ -5,7 +5,7 @@ import {
   ExternalLinkIcon,
   LinkBreak2Icon,
 } from "@radix-ui/react-icons";
-import { Separator } from "@repo/ui/components/ui/separator";
+import { Separator } from "@/components/ui/separator";
 
 interface LinkPopoverBlockProps {
   url: string;

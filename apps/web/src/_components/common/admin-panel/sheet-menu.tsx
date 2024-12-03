@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { MenuIcon } from "lucide-react";
-import { Button } from "@repo/ui/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetHeader,
   SheetContent,
   SheetTrigger,
-} from "@repo/ui/components/ui/sheet";
+} from "@/components/ui/sheet";
 import Image from "next/image";
 import { Menu } from "./menu";
 

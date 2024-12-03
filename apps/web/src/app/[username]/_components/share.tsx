@@ -1,14 +1,14 @@
-import { Button } from "@repo/ui/components/ui/button";
-import { Button as EnhancedButton } from "@repo/ui/components/ui/enhanced-button";
+import { Button } from "@/components/ui/button";
+import { Button as EnhancedButton } from "@/components/ui/enhanced-button";
 import {
   Credenza,
   CredenzaContent,
   CredenzaHeader,
   CredenzaTitle,
   CredenzaTrigger,
-} from "@repo/ui/components/ui/credenza";
-import { Input } from "@repo/ui/components/ui/input";
-import { Separator } from "@repo/ui/components/ui/separator";
+} from "@/components/ui/credenza";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import { Copy, Facebook, Mail, QrCode, Twitter, Upload } from "lucide-react";
 
 const socials = [

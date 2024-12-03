@@ -2,7 +2,7 @@ import * as React from "react";
 import type { Editor } from "@tiptap/react";
 import type { FormatAction } from "../types";
 import type { VariantProps } from "class-variance-authority";
-import type { toggleVariants } from "@repo/ui/components/ui/toggle";
+import type { toggleVariants } from "@/components/ui/toggle";
 import { cn } from "@/lib/utils";
 import { CaretDownIcon } from "@radix-ui/react-icons";
 import { ToolbarButton } from "./toolbar-button";
@@ -13,7 +13,7 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
-} from "@repo/ui/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 
 interface ToolbarSectionProps extends VariantProps<typeof toggleVariants> {
   editor: Editor;

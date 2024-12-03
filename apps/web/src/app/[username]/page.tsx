@@ -1,6 +1,6 @@
-import { Button } from "@repo/ui/components/ui/button";
-import { Card, CardContent, CardHeader } from "@repo/ui/components/ui/card";
-import { Input } from "@repo/ui/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { user_info } from "@/data/mock/user";
 import { PostsList } from "./posts-list";
 import ImageChange from "./_components/image-change";

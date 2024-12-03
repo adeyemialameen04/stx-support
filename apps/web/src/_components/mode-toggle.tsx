@@ -1,20 +1,15 @@
 "use client";
-
-import * as React from "react";
 import { Laptop, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-
-import { Button } from "@repo/ui/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuTrigger,
 	DropdownMenuContent,
 	DropdownMenuItem,
-} from "@repo/ui/components/ui/dropdown-menu";
-import {
-	ToggleGroup,
-	ToggleGroupItem,
-} from "@repo/ui/components/ui/toggle-group";
+} from "@/components/ui/dropdown-menu";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { useState, useEffect } from "react";
 
 export function ModeToggleDropdown() {
 	const { setTheme } = useTheme();
@@ -45,9 +40,9 @@ export function ModeToggleDropdown() {
 
 export function ModeToggleGroup() {
 	const { setTheme, theme } = useTheme();
-	const [currentTheme, setCurrentTheme] = React.useState<string>("");
+	const [currentTheme, setCurrentTheme] = useState<string>("");
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (theme === "system") setCurrentTheme("system");
 		else if (theme === "dark") setCurrentTheme("dark");
 		else if (theme === "light") setCurrentTheme("light");
@@ -59,6 +54,7 @@ export function ModeToggleGroup() {
 			variant="outline"
 			className="scale-90 rounded-full border p-1 w-fit flex gap-3 absolute bottom-8 right-8"
 			value={currentTheme}
+			suppressHydrationWarning
 		>
 			<ToggleGroupItem
 				value="light"

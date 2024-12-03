@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "@repo/ui/globals.css";
-import { Toaster } from "@repo/ui/components/ui/sonner";
-import { TooltipProvider } from "@repo/ui/components/ui/tooltip";
+import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/_components/theme-provider";
 import { ModeToggleGroup } from "@/_components/mode-toggle";
 

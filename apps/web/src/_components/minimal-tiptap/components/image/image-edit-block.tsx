@@ -1,9 +1,9 @@
 import * as React from "react";
 import type { Editor } from "@tiptap/react";
 import { cn } from "@/lib/utils";
-import { Button } from "@repo/ui/components/ui/button";
-import { Input } from "@repo/ui/components/ui/input";
-import { Label } from "@repo/ui/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface ImageEditBlockProps extends React.HTMLAttributes<HTMLDivElement> {
   editor: Editor;
