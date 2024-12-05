@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { Suspense } from "react";
 import PostCard, {
 	PostSkeleton,
-} from "../(admin)/admin/posts/_components/post-card";
+} from "../admin/publish/posts/_components/post-card";
 
 export async function PostsList() {
 	const accessToken = (await cookies()).get("accessToken");

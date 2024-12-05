@@ -1,0 +1,1 @@
+ALTER TABLE "support-transaction" ADD COLUMN "tx_id" text NOT NULL;

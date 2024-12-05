@@ -11,7 +11,8 @@
   },
   "exports": {
     "./posts": "./src/posts.ts",
-    "./auth": "./src/auth.ts"
+    "./auth": "./src/auth.ts",
+    "./support": "./src/support.ts"
   },
   "devDependencies": {
     "@types/bun": "^1.1.11"

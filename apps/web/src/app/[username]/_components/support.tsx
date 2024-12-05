@@ -1,13 +1,8 @@
 "use client";
 
-import { Button } from "@repo/ui/components/ui/button";
-import {
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
-} from "@repo/ui/components/ui/card";
-import { Checkbox } from "@repo/ui/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
 	Form,
 	FormControl,
@@ -15,15 +10,22 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@repo/ui/components/ui/form";
-import { Input } from "@repo/ui/components/ui/input";
-import { Textarea } from "@repo/ui/components/ui/textarea";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import type { UserSchema } from "@/types/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { sendSTXTransaction } from "@/lib/stx";
-
+import makeFetch from "@/lib/fetch";
+import type { ApiResponse } from "@/types";
+import { selectSupportTransaction } from "@repo/schemas/support";
+import { toast } from "sonner";
+import { user_info } from "@/data/mock/user";
+import { useState } from "react";
+import SubmitButton from "@/_components/submit-btn";
+type SupportTransaction = typeof selectSupportTransaction.static;
 export default function Support({ user }: { user: UserSchema }) {
 	return (
 		<Card>
@@ -48,6 +50,7 @@ const formSchema = z.object({
 });
 
 const SupportForm = () => {
+	const [isLoading, setIsLoading] = useState(false);
 	const options = [1, 3, 5, 7];
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -61,12 +64,38 @@ const SupportForm = () => {
 	});
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		console.log(values);
-		await sendSTXTransaction(
-			values.amount.toString(),
-			"Testnet",
-			"STQ9B3SYFV0AFYY96QN5ZJBNGCRRZCCMFG51G1WJ",
-		);
+		setIsLoading(true);
+		try {
+			const txId = await sendSTXTransaction(
+				values.amount.toString(),
+				"Testnet",
+				"STQ9B3SYFV0AFYY96QN5ZJBNGCRRZCCMFG51G1WJ",
+			);
+			const res = await makeFetch<ApiResponse<SupportTransaction>>(
+				"/support",
+				null,
+				{
+					method: "POST",
+					body: {
+						name: values.social,
+						message: values.message,
+						amount: values.amount,
+						stxAddress: "lollll",
+						isPrivate: values.private,
+						txId,
+						donatedTo: "d9ec3706-caa9-42ba-a870-8960d2d73d49",
+					},
+				},
+			)();
+			if (res.status === "Created") {
+				toast.success(`You Supported ${user_info.name}`);
+			}
+			console.log(res);
+		} catch (err) {
+			console.error(err);
+		} finally {
+			setIsLoading(false);
+		}
 	}
 
 	return (
@@ -147,9 +176,13 @@ const SupportForm = () => {
 						</FormItem>
 					)}
 				/>
-				<Button type="submit" className="py-5 rounded-full">
+				<SubmitButton
+					isLoading={isLoading}
+					className="					py-5 rounded-full
+"
+				>
 					Support {form.watch("amount")}STX
-				</Button>
+				</SubmitButton>
 			</form>
 		</Form>
 	);

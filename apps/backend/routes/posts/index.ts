@@ -1,4 +1,4 @@
-import Elysia, { t } from "elysia";
+import Elysia, { StatusMap, t } from "elysia";
 import { selectPostSchema } from "../../src/db/schema/post";
 import { AuthorizationError } from "../../src/exceptions/errors";
 import { ERRORS } from "../../src/models/error-models";
@@ -6,6 +6,8 @@ import { CreatePostModel } from "../../src/models/posts";
 import { accessTokenPlugin } from "../../src/plugins/auth";
 import { postService } from "../../src/services/posts";
 import { accessTokenSecurity } from "../../src/utils/helpers";
+import { formatSuccessResponse } from "../../src/utils/format-response";
+import { SendCreated } from "../../src/utils/responses";
 
 const tags = ["Posts"];
 
@@ -35,14 +37,25 @@ export default new Elysia({
 						if (payload) {
 							const userPosts = await postService.getUserPosts(payload.user.id);
 
-							return userPosts;
+							if (userPosts.length === 0) {
+								return {
+									message: "User does not have any posts",
+									status: "Not Found",
+									errors: null,
+								};
+							}
+							return {
+								message: "Posts retrieved successfully",
+								data: userPosts,
+								status: "Created",
+							};
 						}
 
 						throw new AuthorizationError("Bearer token required");
 					},
 					{
 						response: {
-							200: t.Array(selectPostSchema),
+							200: formatSuccessResponse(t.Array(selectPostSchema)),
 							401: ERRORS.UNAUTHORIZED,
 						},
 						detail: {
@@ -60,15 +73,15 @@ export default new Elysia({
 						);
 
 						set.status = "Created";
-						return post;
+						return SendCreated(post, "Post");
 					},
 					{
 						response: {
-							201: selectPostSchema,
+							201: formatSuccessResponse(selectPostSchema),
 							401: ERRORS.UNAUTHORIZED,
 							400: ERRORS.INVARIANT,
 						},
-						body: "CreatePostModel",
+						body: CreatePostModel,
 						detail: {
 							summary: "Create Post",
 							description: "Creates a new post",

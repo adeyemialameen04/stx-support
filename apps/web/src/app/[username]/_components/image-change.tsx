@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@repo/ui/components/ui/button";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { z } from "zod";
@@ -11,9 +11,9 @@ import {
 	FormField,
 	FormItem,
 	FormMessage,
-} from "@repo/ui/components/ui/form";
-import { Input } from "@repo/ui/components/ui/input";
-import { Separator } from "@repo/ui/components/ui/separator";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import SharePage from "./share";
 import { FillImage } from "@/_components/image";

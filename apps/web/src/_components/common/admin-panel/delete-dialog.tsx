@@ -8,8 +8,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@repo/ui/components/ui/alert-dialog";
-import { Button } from "@repo/ui/components/ui/button";
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import { CircleAlert } from "lucide-react";
 
 export function DeleteDialog({
