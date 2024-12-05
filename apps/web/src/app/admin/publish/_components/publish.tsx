@@ -2,13 +2,13 @@ import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChartColumn, Headphones, Image, NotepadText } from "lucide-react";
 import Link from "next/link";
-import { PostsTabs } from "./posts-tabs";
+import { PostsTabs } from "../posts/_components/posts-tabs";
 
 const routes = [
 	{
 		icon: NotepadText,
 		title: "Post",
-		href: "/posts/new",
+		href: "/publish/posts/new",
 	},
 	{
 		icon: Image,
@@ -29,15 +29,14 @@ const routes = [
 
 const posts_tabs = ["Published", "Drafted", "Scheduled"];
 
-export default function Posts() {
-	// const active
+export default function Publish() {
 	return (
 		<div className="flex flex-col gap-8">
 			<div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-4">
-				{routes.map((item, index) => (
+				{routes.map((item) => (
 					<Link
 						href={`/admin${item.href}`}
-						key={index}
+						key={item.href}
 						className="transition-transform duration-300 hover:scale-[1.08]"
 					>
 						<Card className="flex flex-col justify-center items-center">
@@ -51,9 +50,9 @@ export default function Posts() {
 			</div>
 			<Tabs defaultValue="published">
 				<TabsList className="flex gap-4 justify-start py-6 w-full bg-transparent rounded-none border-b md:gap-7">
-					{posts_tabs.map((tab, index) => (
+					{posts_tabs.map((tab) => (
 						<TabsTrigger
-							key={index}
+							key={tab}
 							value={tab.toLowerCase()}
 							className={`
               !shadow-none !bg-transparent rounded-none 

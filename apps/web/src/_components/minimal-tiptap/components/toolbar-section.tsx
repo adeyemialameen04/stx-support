@@ -5,15 +5,15 @@ import type { VariantProps } from "class-variance-authority";
 import type { toggleVariants } from "@/components/ui/toggle";
 import { cn } from "@/lib/utils";
 import { CaretDownIcon } from "@radix-ui/react-icons";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { ToolbarButton } from "./toolbar-button";
 import { ShortcutKey } from "./shortcut-key";
 import { getShortcutKey } from "../utils";
-import {
-  DropdownMenuItem,
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-} from "@/components/ui/dropdown-menu";
 
 interface ToolbarSectionProps extends VariantProps<typeof toggleVariants> {
   editor: Editor;
@@ -55,6 +55,7 @@ export const ToolbarSection: React.FC<ToolbarSectionProps> = ({
       <ToolbarButton
         key={action.label}
         onClick={() => action.action(editor)}
+        className="text-[#737373] font-semibold text-xl"
         disabled={!action.canExecute(editor)}
         isActive={action.isActive(editor)}
         tooltip={`${action.label} ${action.shortcuts.map((s) => getShortcutKey(s).symbol).join(" ")}`}
@@ -92,7 +93,7 @@ export const ToolbarSection: React.FC<ToolbarSectionProps> = ({
   );
 
   return (
-    <>
+    <div className="">
       {mainActions.map(renderToolbarButton)}
       {dropdownActions.length > 0 && (
         <DropdownMenu>
@@ -113,7 +114,7 @@ export const ToolbarSection: React.FC<ToolbarSectionProps> = ({
           </DropdownMenuContent>
         </DropdownMenu>
       )}
-    </>
+    </div>
   );
 };
 

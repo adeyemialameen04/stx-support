@@ -1,7 +1,5 @@
 "use client";
-import type { Editor } from "@tiptap/core";
-import { MinimalTiptapEditor } from "@/_components/minimal-tiptap";
-import { cn } from "@/lib/utils";
+// import type { Editor } from "@tiptap/core";
 import {
 	Form,
 	FormField,
@@ -10,7 +8,7 @@ import {
 	FormControl,
 	FormMessage,
 } from "@/components/ui/form";
-import { useRef, useCallback, useState } from "react";
+import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
@@ -29,8 +27,6 @@ import { useFormAction } from "@/_components/use-hook";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { revalidateTagAction } from "@/app/actions";
-import { createPost } from "../../actions";
-import TiptapEditor from "@/components/ui/editor";
 
 export const formSchema = z.object({
 	content: z
@@ -53,7 +49,7 @@ type FormValues = z.infer<typeof formSchema>;
 const NewPost = ({ categories }: { categories: Category[] }) => {
 	const router = useRouter();
 	const [isLoading, setIsLoading] = useState(false);
-	const editorRef = useRef<Editor | null>(null);
+	// const editorRef = useRef<Editor | null>(null);
 	const form = useFormAction<FormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -64,29 +60,12 @@ const NewPost = ({ categories }: { categories: Category[] }) => {
 		},
 	});
 
-	const handleCreate = useCallback(
-		({ editor }: { editor: Editor }) => {
-			if (form.getValues("content") && editor.isEmpty) {
-				editor.commands.setContent(form.getValues("content"));
-			}
-			editorRef.current = editor;
-		},
-		[form],
-	);
-
 	const onSubmit = async (values: FormValues) => {
 		console.log("==Getting values from form==");
 		console.log(values);
 		console.log("Success: Values retrieved from form");
 		setIsLoading(true);
 
-		const res = await createPost({
-			status: "published",
-			title: values.title,
-			content: values.content,
-			isPublic: true,
-			categoryId: values.category,
-		});
 		await revalidateTagAction("new-post");
 
 		setIsLoading(false);
@@ -103,11 +82,11 @@ const NewPost = ({ categories }: { categories: Category[] }) => {
 		console.log("==Clearing form==");
 		form.reset();
 
-		editorRef.current?.commands.clearContent();
-
-		console.log("==Resetting editor==");
-		editorRef.current?.commands.setContent("");
-		console.log("Success: Editor reset");
+		// editorRef.current?.commands.clearContent();
+		//
+		// console.log("==Resetting editor==");
+		// editorRef.current?.commands.setContent("");
+		// console.log("Success: Editor reset");
 
 		router.push("/admin/posts");
 
@@ -161,35 +140,35 @@ const NewPost = ({ categories }: { categories: Category[] }) => {
 						</FormItem>
 					)}
 				/>
-				<FormField
-					control={form.control}
-					name="content"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel className="sr-only">Description</FormLabel>
-							<FormControl>
-								<MinimalTiptapEditor
-									{...field}
-									throttleDelay={0}
-									className={cn("w-full", {
-										"border-destructive focus-within:border-destructive":
-											form.formState.errors.content,
-									})}
-									editorContentClassName="some-class"
-									output="html"
-									placeholder="Type your description here..."
-									onCreate={handleCreate}
-									immediatelyRender={true}
-									editable={true}
-									injectCSS={true}
-									editorClassName="focus:outline-none p-5"
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<TiptapEditor />
+				{/* <FormField */}
+				{/* 	control={form.control} */}
+				{/* 	name="content" */}
+				{/* 	render={({ field }) => ( */}
+				{/* 		<FormItem> */}
+				{/* 			<FormLabel className="sr-only">Description</FormLabel> */}
+				{/* 			<FormControl> */}
+				{/* 				<MinimalTiptapEditor */}
+				{/* 					{...field} */}
+				{/* 					throttleDelay={0} */}
+				{/* 					className={cn("w-full", { */}
+				{/* 						"border-destructive focus-within:border-destructive": */}
+				{/* 							form.formState.errors.content, */}
+				{/* 					})} */}
+				{/* 					editorContentClassName="some-class" */}
+				{/* 					output="html" */}
+				{/* 					placeholder="Type your description here..." */}
+				{/* 					onCreate={handleCreate} */}
+				{/* 					immediatelyRender={true} */}
+				{/* 					editable={true} */}
+				{/* 					injectCSS={true} */}
+				{/* 					editorClassName="focus:outline-none p-5" */}
+				{/* 				/> */}
+				{/* 			</FormControl> */}
+				{/* 			<FormMessage /> */}
+				{/* 		</FormItem> */}
+				{/* 	)} */}
+				{/* /> */}
+				{/* <TiptapEditor /> */}
 				<FormField
 					name="visibility"
 					control={form.control}

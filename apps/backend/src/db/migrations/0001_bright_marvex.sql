@@ -1,0 +1,1 @@
+ALTER TABLE "support-transaction" ADD COLUMN "is_private" boolean DEFAULT false;

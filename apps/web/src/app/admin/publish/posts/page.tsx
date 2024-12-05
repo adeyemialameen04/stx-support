@@ -8,8 +8,7 @@ import {
 	BreadcrumbPage,
 	BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { ContentLayout } from "@/_components/common/admin-panel/content-layout";
-import Posts from "./_components/posts";
+import Publish from "../_components/publish";
 
 export default function PostPage() {
 	return (
@@ -28,7 +27,7 @@ export default function PostPage() {
 				</BreadcrumbList>
 			</Breadcrumb>
 			<h3 className="mb-3 text-2xl font-medium">Create a new post</h3>
-			<Posts />
+			<Publish />
 		</main>
 	);
 }

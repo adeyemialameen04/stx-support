@@ -1,12 +1,12 @@
 import * as React from "react";
 import type { TooltipContentProps } from "@radix-ui/react-tooltip";
-import { cn } from "@/lib/utils";
-import { Toggle } from "@/components/ui/toggle";
 import {
   Tooltip,
-  TooltipTrigger,
   TooltipContent,
+  TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Toggle } from "@/components/ui/toggle";
+import { cn } from "@/lib/utils";
 
 interface ToolbarButtonProps
   extends React.ComponentPropsWithoutRef<typeof Toggle> {
@@ -27,7 +27,7 @@ export const ToolbarButton = React.forwardRef<
       <Toggle
         size="sm"
         ref={ref}
-        className={cn("size-8 p-0", { "bg-accent": isActive }, className)}
+        className={cn("", { "bg-accent": isActive }, className)}
         {...props}
       >
         {children}

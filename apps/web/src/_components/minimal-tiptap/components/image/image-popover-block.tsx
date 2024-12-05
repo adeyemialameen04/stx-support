@@ -8,8 +8,8 @@ const ImagePopoverBlock = ({ onRemove }: { onRemove: (e: React.MouseEvent<HTMLBu
   }
 
   return (
-    <div className="flex overflow-hidden p-2 h-10 rounded shadow-lg bg-background">
-      <div className="inline-flex gap-1 items-center">
+    <div className="flex h-10 overflow-hidden rounded bg-background p-2 shadow-lg">
+      <div className="inline-flex items-center gap-1">
         <ToolbarButton tooltip="Remove" onClick={handleRemove}>
           <TrashIcon className="size-4" />
         </ToolbarButton>

@@ -1,6 +1,6 @@
-import AdminSidebat from "./_components/sidebar";
+import AdminSidebar from "./_components/sidebar";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
-	return <AdminSidebat>{children}</AdminSidebat>;
+	return <AdminSidebar>{children}</AdminSidebar>;
 };
 export default AdminLayout;

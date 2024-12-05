@@ -7,7 +7,7 @@ import { accessTokenPlugin } from "../../src/plugins/auth";
 import { commentService } from "../../src/services/comments";
 import { accessTokenSecurity } from "../../src/utils/helpers";
 const tags = ["Comments"];
-const commentRoutes = new Elysia({
+export default new Elysia({
 	prefix: "/comment",
 	name: "api.comments.index",
 	tags,
@@ -49,4 +49,3 @@ const commentRoutes = new Elysia({
 				},
 			),
 	);
-export default commentRoutes;

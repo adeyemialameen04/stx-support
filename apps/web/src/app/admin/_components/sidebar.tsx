@@ -12,7 +12,7 @@ import {
 	Images,
 	LogOut,
 	Mail,
-	Map as Mapp,
+	MapIcon as Mapp,
 	PieChart,
 	Sparkles,
 	SquareTerminal,
@@ -65,6 +65,8 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { Fragment } from "react";
+
 // This is sample data.
 const data = {
 	user: {
@@ -90,7 +92,7 @@ const data = {
 			],
 		},
 	],
-	projects: [
+	monetize: [
 		{
 			url: "/admin/supporters",
 			title: "Supporters",
@@ -149,9 +151,11 @@ const data = {
 	],
 };
 
-export default function AdminSidebat({
+export default function AdminSidebar({
 	children,
-}: { children: React.ReactNode }) {
+}: {
+	children: React.ReactNode;
+}) {
 	const pathname = usePathname();
 
 	return (
@@ -159,7 +163,9 @@ export default function AdminSidebat({
 			<Sidebar collapsible="icon">
 				<SidebarHeader>
 					<SidebarMenu>
-						<SidebarMenuItem>Hi</SidebarMenuItem>
+						<SidebarMenuItem className="text-center">
+							STXSupport
+						</SidebarMenuItem>
 					</SidebarMenu>
 				</SidebarHeader>
 				<SidebarContent>
@@ -205,18 +211,13 @@ export default function AdminSidebat({
 							))}
 						</SidebarMenu>
 					</SidebarGroup>
-					<SidebarGroup className="group-data-[collapsible=icon]:hidden">
+					<SidebarGroup>
 						<SidebarGroupLabel>Monetize</SidebarGroupLabel>
 						<SidebarMenu>
-							{data.projects.map((item) => (
-								<>
+							{data.monetize.map((item) => (
+								<Fragment key={item.title}>
 									{item?.items ? (
-										<Collapsible
-											key={item.title}
-											asChild
-											// defaultOpen={`${pathname.includes(item.basePath+item.)}`}
-											className="group/collapsible"
-										>
+										<Collapsible asChild className="group/collapsible">
 											<SidebarMenuItem>
 												<CollapsibleTrigger asChild>
 													<SidebarMenuButton tooltip={item.title}>
@@ -233,7 +234,7 @@ export default function AdminSidebat({
 																	asChild
 																	className={cn(
 																		pathname.includes(subItem.url) &&
-																			"bg-red-300",
+																			"bg-sidebar-accent",
 																	)}
 																>
 																	<Link href={`${item.basePath}${subItem.url}`}>
@@ -247,8 +248,8 @@ export default function AdminSidebat({
 											</SidebarMenuItem>
 										</Collapsible>
 									) : (
-										<SidebarMenuItem key={item.title}>
-											<SidebarMenuButton asChild>
+										<SidebarMenuItem>
+											<SidebarMenuButton asChild tooltip={item.title}>
 												<Link href={item.url}>
 													<item.icon />
 													<span>{item.title}</span>
@@ -256,7 +257,7 @@ export default function AdminSidebat({
 											</SidebarMenuButton>
 										</SidebarMenuItem>
 									)}
-								</>
+								</Fragment>
 							))}
 						</SidebarMenu>
 					</SidebarGroup>
@@ -265,7 +266,7 @@ export default function AdminSidebat({
 						<SidebarMenu>
 							{data.settings.map((item) => (
 								<SidebarMenuItem key={item.title}>
-									<SidebarMenuButton asChild>
+									<SidebarMenuButton asChild tooltip={item.title}>
 										<Link href={item.url}>
 											<item.icon />
 											<span>{item.title}</span>
@@ -384,7 +385,7 @@ export default function AdminSidebat({
 						</Breadcrumb>
 					</div>
 				</header>
-				<SidebarContent className="max-w-[1200px] mx-auto w-full">
+				<SidebarContent className="max-w-[1200px] mx-auto w-full px-4">
 					{children}
 				</SidebarContent>
 			</SidebarInset>

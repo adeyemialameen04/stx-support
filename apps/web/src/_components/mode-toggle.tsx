@@ -52,7 +52,7 @@ export function ModeToggleGroup() {
 		<ToggleGroup
 			type="single"
 			variant="outline"
-			className="scale-90 rounded-full border p-1 w-fit flex gap-3 absolute bottom-8 right-8"
+			className="scale-90 rounded-full border p-1 w-fit flex gap-3 fixed bottom-8 right-8"
 			value={currentTheme}
 			suppressHydrationWarning
 		>

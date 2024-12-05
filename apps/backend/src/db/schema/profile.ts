@@ -1,29 +1,22 @@
-import { relations, sql } from "drizzle-orm";
-import { varchar, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
-import { pgTable, uuid } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+import { varchar, text, uniqueIndex } from "drizzle-orm/pg-core";
+import { pgTable } from "drizzle-orm/pg-core";
 import { user } from "./user";
 import { userTable } from ".";
 import { createSelectSchema } from "drizzle-typebox";
+import { TIMESTAMP, USER_ID_REFERENCE, UUID } from "../utils";
 
 export const profile = pgTable(
 	"profile",
 	{
-		id: uuid("id").primaryKey().defaultRandom(),
-		username: varchar("username", { length: 255 }).unique(),
-		name: varchar("name", { length: 100 }),
-		profileImg: text("profile_img"),
-		coverImg: text("cover_img"),
-		about: text("about"),
-		userId: uuid("user_id")
-			.notNull()
-			.references(() => user.id),
-		createdAt: timestamp("created_at", { mode: "string" })
-			.notNull()
-			.defaultNow(),
-		updatedAt: timestamp("updated_at", { mode: "string" })
-			.notNull()
-			.defaultNow()
-			.$onUpdate(() => sql`now()`),
+		...UUID,
+		...USER_ID_REFERENCE,
+		...TIMESTAMP,
+		username: varchar({ length: 255 }).unique(),
+		name: varchar({ length: 100 }),
+		profileImg: text(),
+		coverImg: text(),
+		about: text(),
 	},
 	(table) => {
 		return {
@@ -35,17 +28,9 @@ export const profile = pgTable(
 export const settings = pgTable(
 	"settings",
 	{
-		id: uuid("id").primaryKey().defaultRandom(),
-		userId: uuid("user_id")
-			.notNull()
-			.references(() => user.id),
-		createdAt: timestamp("created_at", { mode: "string" })
-			.notNull()
-			.defaultNow(),
-		updatedAt: timestamp("updated_at", { mode: "string" })
-			.notNull()
-			.defaultNow()
-			.$onUpdate(() => sql`now()`),
+		...UUID,
+		...USER_ID_REFERENCE,
+		...TIMESTAMP,
 	},
 	(table) => {
 		return {

@@ -1,0 +1,1 @@
+ALTER TABLE "support-transaction" RENAME COLUMN "stx_addresss" TO "stx_address";

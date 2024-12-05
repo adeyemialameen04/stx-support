@@ -1,9 +1,9 @@
 import * as React from "react";
 import type { Editor } from "@tiptap/react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 interface ImageEditBlockProps extends React.HTMLAttributes<HTMLDivElement> {
   editor: Editor;
@@ -18,6 +18,9 @@ const ImageEditBlock = ({
 }: ImageEditBlockProps) => {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const [link, setLink] = React.useState<string>("");
+  const [title, setTitle] = React.useState<string>("");
+  const [alt, setAlt] = React.useState<string>("");
+  const [caption, setCaption] = React.useState<string>("");
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -26,7 +29,7 @@ const ImageEditBlock = ({
   };
 
   const handleLink = () => {
-    editor.chain().focus().setImage({ src: link }).run();
+    editor.chain().focus().setImage({ src: link, alt, title }).run();
     close();
   };
 
@@ -37,7 +40,7 @@ const ImageEditBlock = ({
     const reader = new FileReader();
     reader.onload = (e) => {
       const src = e.target?.result as string;
-      editor.chain().focus().setImage({ src }).run();
+      editor.chain().focus().setImage({ src, alt, title }).run();
     };
 
     reader.readAsDataURL(files[0]);
@@ -55,21 +58,48 @@ const ImageEditBlock = ({
     <form onSubmit={handleSubmit}>
       <div className={cn("space-y-6", className)} {...props}>
         <div className="space-y-1">
-          <Label>Attach an image link</Label>
+          <Label>Image URL</Label>
           <div className="flex">
             <Input
               type="url"
               required
-              placeholder="https://example.com"
+              placeholder="https://example.com/image.jpg"
               value={link}
               className="grow"
               onChange={(e) => setLink(e.target.value)}
             />
-            <Button type="submit" className="inline-block ml-2">
-              Submit
-            </Button>
           </div>
         </div>
+        <div className="space-y-1">
+          <Label>Title</Label>
+          <Input
+            type="text"
+            placeholder="Image title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
+        <div className="space-y-1">
+          <Label>Alt Text</Label>
+          <Input
+            type="text"
+            placeholder="Image alt text"
+            value={alt}
+            onChange={(e) => setAlt(e.target.value)}
+          />
+        </div>
+        <div className="space-y-1">
+          <Label>Caption</Label>
+          <Input
+            type="text"
+            placeholder="Image caption"
+            value={caption}
+            onChange={(e) => setCaption(e.target.value)}
+          />
+        </div>
+        <Button type="submit" className="w-full">
+          Insert Image
+        </Button>
         <Button className="w-full" onClick={handleClick}>
           Upload from your computer
         </Button>

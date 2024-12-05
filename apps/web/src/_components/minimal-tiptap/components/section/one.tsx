@@ -6,14 +6,14 @@ import type { VariantProps } from "class-variance-authority";
 import type { toggleVariants } from "@/components/ui/toggle";
 import { cn } from "@/lib/utils";
 import { CaretDownIcon, LetterCaseCapitalizeIcon } from "@radix-ui/react-icons";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { ToolbarButton } from "../toolbar-button";
 import { ShortcutKey } from "../shortcut-key";
-import {
-  DropdownMenuItem,
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-} from "@/components/ui/dropdown-menu";
 
 interface TextStyle
   extends Omit<
@@ -134,8 +134,8 @@ export const SectionOne: React.FC<SectionOneProps> = React.memo(
             size={size}
             variant={variant}
           >
-            <LetterCaseCapitalizeIcon className="size-5" />
-            <CaretDownIcon className="size-5" />
+            <LetterCaseCapitalizeIcon className="" />
+            <CaretDownIcon className="" />
           </ToolbarButton>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-full">
