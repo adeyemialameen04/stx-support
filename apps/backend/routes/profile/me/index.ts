@@ -1,16 +1,16 @@
 import Elysia, { NotFoundError } from "elysia";
-import { selectUserSchema } from "../../src/db/schema/user";
-import { AuthorizationError } from "../../src/exceptions/errors";
-import { ERRORS } from "../../src/models/error-models";
-import { UpdateProfile } from "../../src/models/users";
-import { accessTokenPlugin } from "../../src/plugins/auth";
-import { profileService } from "../../src/services/profile";
-import { usersService } from "../../src/services/users";
-import { accessTokenSecurity } from "../../src/utils/helpers";
+import { t } from "elysia";
+import { selectUserSchema } from "../../../src/db/schema/user";
+import { AuthorizationError } from "../../../src/exceptions/errors";
+import { ERRORS } from "../../../src/models/error-models";
+import { UpdateProfile } from "../../../src/models/users";
+import { accessTokenPlugin } from "../../../src/plugins/auth";
+import { profileService } from "../../../src/services/profile";
+import { usersService } from "../../../src/services/users";
+import { accessTokenSecurity } from "../../../src/utils/helpers";
 
 const tags = ["Profile"];
-const profileRoutes = new Elysia({
-	prefix: "/me",
+export default new Elysia({
 	name: "api.profile.index",
 	tags,
 })
@@ -55,9 +55,22 @@ const profileRoutes = new Elysia({
 						},
 					},
 				)
+				// .post("", async ({ body: { username, userId } }) => {}, {
+				// 	body: t.Object({
+				// 		username: t.String(),
+				// 		userid: t.String(),
+				// 	}),
+				// 	detail: {
+				// 		summary: "Create a user profile",
+				// 		description: "Insert a new user profile",
+				// 	},
+				// })
 				.get(
 					"",
 					async ({ payload }) => {
+						// const user = await usersService.getUser(
+						// 	payload && "user" in payload ? payload.user.id : "",
+						// );
 						const user = await usersService.getUser(
 							payload && "user" in payload ? payload.user.id : "",
 						);
@@ -80,4 +93,3 @@ const profileRoutes = new Elysia({
 					},
 				),
 	);
-export default profileRoutes;

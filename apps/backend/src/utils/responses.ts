@@ -11,9 +11,9 @@ export const SendCreated = (data: any, resource: string) => {
 	};
 };
 
-export const SendSuccess = (data: any, resource: string) => {
+export const SendSuccess = (data: any, resource?: string, message?: string) => {
 	return {
-		message: `${resource} retrieved ${sc}`,
+		message: message ? message : `${resource} retrieved ${sc}`,
 		data,
 		status: StatusMapKeys[StatusMap.OK],
 	};

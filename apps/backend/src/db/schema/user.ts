@@ -3,6 +3,7 @@ import { pgTable, text } from "drizzle-orm/pg-core";
 import { commentTable, postTable, profileTable, settingsTable } from ".";
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
 import { TIMESTAMP, UUID } from "../utils";
+import { t } from "elysia";
 
 export const user = pgTable("user", {
 	...UUID,
@@ -14,7 +15,8 @@ export const user = pgTable("user", {
 	passwordHash: text().notNull(),
 });
 
-export const selectUserSchema = createSelectSchema(user);
+export const selectUserSchemaBase = createSelectSchema(user);
+export const selectUserSchema = t.Omit(selectUserSchemaBase, ["passwordHash"]);
 export const insertUserSchema = createInsertSchema(user);
 
 export const userRelations = relations(user, ({ many, one }) => ({
