@@ -17,6 +17,7 @@ export const LoginResponseModel = t.Object({
 	user: t.Object({
 		id: t.String({ format: "uuid" }),
 		stxAddressMainnet: t.String(),
+		profileId: t.String({ format: "uuid" }),
 	}),
 });
 
