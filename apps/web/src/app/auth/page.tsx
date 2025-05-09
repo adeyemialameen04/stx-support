@@ -17,7 +17,7 @@ export default function Home() {
 			authOptions={{
 				appDetails: {
 					name: "Stx Support",
-					icon: window.location.origin + "/logo.png",
+					icon: `${window.location.origin}/logo.png`,
 				},
 				redirectTo: "/",
 				onFinish: () => {

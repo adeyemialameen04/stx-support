@@ -12,7 +12,7 @@ export const profile = pgTable(
 		...UUID,
 		...USER_ID_REFERENCE,
 		...TIMESTAMP,
-		username: varchar({ length: 255 }).unique(),
+		username: varchar({ length: 255 }).unique().notNull(),
 		name: varchar({ length: 100 }),
 		profileImg: text(),
 		coverImg: text(),

@@ -43,6 +43,13 @@
       "when": 1733369371786,
       "tag": "0005_bouncy_gargoyle",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1733514358238,
+      "tag": "0006_jazzy_ikaris",
+      "breakpoints": true
     }
   ]
 }

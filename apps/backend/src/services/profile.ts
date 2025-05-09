@@ -1,7 +1,7 @@
 import postgres from "postgres";
 import { eq, and } from "drizzle-orm";
 import { db } from "../db";
-import { profileTable } from "../db/schema";
+import { profileTable, userTable } from "../db/schema";
 import { InvariantError } from "../exceptions/errors";
 
 export const profileService = {
@@ -29,6 +29,23 @@ export const profileService = {
 			}
 		}
 	},
+
+	createProfile: async (data: { username: string; userId: string }) => {
+		try {
+			const [profile] = await db
+				.insert(profileTable)
+				.values({
+					username: data.username,
+					userId: data.userId,
+				})
+				.returning();
+
+			return profile;
+		} catch (err) {
+			console.error(err);
+		}
+	},
+
 	isOwner: async (id: string, userId: string) => {
 		const profile = await db
 			.select()
@@ -38,11 +55,21 @@ export const profileService = {
 		return profile;
 	},
 
-	getProfile: async (id: string) => {
-		const user = await db.query.profileTable.findFirst({
-			where: eq(profileTable.id, id),
+	getProfile: async (stxAddressMainnet: string) => {
+		const result = await db.query.userTable.findFirst({
+			where: eq(userTable.stxAddressMainnet, stxAddressMainnet),
+			with: {
+				profile: true,
+			},
 		});
 
-		return user;
+		if (!result) return null;
+
+		return {
+			...result.profile,
+			user: {
+				stxAddressMainnet: result.stxAddressMainnet,
+			},
+		};
 	},
 };
